@@ -1,23 +1,32 @@
+import Section from "@/components/shared/Section";
+
 export default function About() {
   return (
-    <section className="flex flex-1 w-full max-w-3xl flex-col items-center justify-center py-8 px-16 bg-white dark:bg-black sm:items-start">
-      <h2 className="text-3xl font-bold text-center text-gray-1600 dark:text-white py-8">
+    <Section id="about">
+      <h2 className="text-3xl font-bold">
         About Me
       </h2>
-      <p className="text-lg text-left text-gray-600 dark:text-gray-300">
-        I'm a Full-Stack Developer with nearly four years of experience building
-        modern web applications and end-to-end software solutions. I specialize
-        in React, Next.js, TypeScript, Node.js, and Express, developing
-        everything from responsive user interfaces to scalable backend services
-        and APIs.
-      </p>
-      <br />
-      <p className="text-lg text-left text-gray-600 dark:text-gray-300">
-        I've built projects including e-commerce platforms, 3D model
-        marketplaces, task management systems, and AI-powered applications. I
-        enjoy turning ideas into production-ready products that are scalable,
-        maintainable, and focused on delivering great user experiences.
-      </p>
-    </section>
+
+      <div className="mt-6 max-w-3xl space-y-4 text-lg text-muted-foreground">
+        <p>
+          I'm a Full-Stack Developer with
+          nearly four years of professional
+          experience building modern web
+          applications and end-to-end software
+          solutions.
+        </p>
+
+        <p>
+          I've built projects ranging from
+          e-commerce platforms and 3D model
+          marketplaces to task management
+          systems and AI-powered applications.
+          I enjoy turning ideas into
+          production-ready products that are
+          scalable, maintainable, and focused
+          on delivering great user experiences.
+        </p>
+      </div>
+    </Section>
   );
 }

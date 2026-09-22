@@ -1,45 +1,74 @@
+import Link from "next/link";
+
 export default function Hero() {
   return (
-    <div>
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-center py-8 px-16 bg-white dark:bg-black sm:items-start">
-        <h1 className="text-4xl font-bold text-center text-gray-1600 dark:text-white">
-          Nuhamin Gulilat
-        </h1>
-        <h3 className="text-xl font-semibold text-center text-gray-700 dark:text-gray-300 py-12">
-          Full-Stack Developer
-        </h3>
-        <p className="text-lg text-left text-gray-600 dark:text-gray-300">
-          Building modern web applications with React, Next.js, TypeScript,
-          Node.js, and Express.
-        </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start">
-          <button className="mt-8 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-            View My Work
-          </button>
-          <button className="mt-8 ml-4 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
-            Download Resume
-          </button>
-        </div>
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-          <div className="text-lg font-normal text-gray-800 dark:text-white width-1/3 height-1/3 background-color-blue-700 dark:background-color-gray-800 p-4 max-w-sm rounded overflow-hidden shadow-lg">
-            4 Years of Experience
+    <section className="w-full py-28">
+      <div className="grid gap-12 lg:grid-cols-2 items-center">
+        <div>
+          <span className="rounded-full border px-4 py-2 text-sm">
+            Available for Opportunities
+          </span>
+
+          <h1 className="mt-6 text-5xl font-bold tracking-tight">
+            Nuhamin Gulilat
+          </h1>
+
+          <h2 className="mt-4 text-2xl font-medium text-muted-foreground">
+            Full-Stack Developer
+          </h2>
+
+          <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
+            Building modern web applications with
+            React, Next.js, TypeScript,
+            Node.js, and Express.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-4">
+            <Link
+              href="/projects"
+              className="rounded-lg bg-black px-6 py-3 text-white"
+            >
+              View Projects
+            </Link>
+
+            <Link
+              href="/resume"
+              className="rounded-lg border px-6 py-3"
+            >
+              Resume
+            </Link>
           </div>
-          <div className="text-lg font-normal text-gray-800 dark:text-white width-1/3 height-1/3 background-color-blue-700 dark:background-color-gray-800 p-4 max-w-sm rounded overflow-hidden shadow-lg">
-            5+ Projects Completed
-          </div>
-          <div className="text-lg font-normal text-gray-800 dark:text-white width-1/3 height-1/3 background-color-blue-700 dark:background-color-gray-800 p-4 max-w-sm rounded overflow-hidden shadow-lg">
-            Enterprise Experience
+
+          <div className="mt-10 grid grid-cols-3 gap-4">
+            <div className="rounded-xl border p-4">
+              <h3 className="text-2xl font-bold">4</h3>
+              <p className="text-sm text-muted-foreground">
+                Years Experience
+              </p>
+            </div>
+
+            <div className="rounded-xl border p-4">
+              <h3 className="text-2xl font-bold">5+</h3>
+              <p className="text-sm text-muted-foreground">
+                Major Projects
+              </p>
+            </div>
+
+            <div className="rounded-xl border p-4">
+              <h3 className="text-2xl font-bold">
+                Enterprise
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                Experience
+              </p>
+            </div>
           </div>
         </div>
-        <div className="mt-8">
-          <a
-            href="mailto:nuhamin.gulilat.7@gmail.com"
-            className="text-blue-600 hover:underline"
-          >
-            Contact Me
-          </a>
+
+        <div className="flex justify-center">
+          <div className="h-96 w-96 rounded-3xl border bg-muted" />
         </div>
-      </main>
-    </div>
+      </div>
+    </section>
   );
 }
