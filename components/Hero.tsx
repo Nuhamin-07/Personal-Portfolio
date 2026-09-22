@@ -1,7 +1,7 @@
 export default function Hero() {
   return (
     <div>
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-center py-32 px-16 bg-white dark:bg-black sm:items-start">
+      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-center py-8 px-16 bg-white dark:bg-black sm:items-start">
         <h1 className="text-4xl font-bold text-center text-gray-1600 dark:text-white">
           Nuhamin Gulilat
         </h1>
@@ -19,6 +19,25 @@ export default function Hero() {
           <button className="mt-8 ml-4 px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors">
             Download Resume
           </button>
+        </div>
+        <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+          <div className="text-lg font-normal text-gray-800 dark:text-white width-1/3 height-1/3 background-color-blue-700 dark:background-color-gray-800 p-4 max-w-sm rounded overflow-hidden shadow-lg">
+            4 Years of Experience
+          </div>
+          <div className="text-lg font-normal text-gray-800 dark:text-white width-1/3 height-1/3 background-color-blue-700 dark:background-color-gray-800 p-4 max-w-sm rounded overflow-hidden shadow-lg">
+            5+ Projects Completed
+          </div>
+          <div className="text-lg font-normal text-gray-800 dark:text-white width-1/3 height-1/3 background-color-blue-700 dark:background-color-gray-800 p-4 max-w-sm rounded overflow-hidden shadow-lg">
+            Enterprise Experience
+          </div>
+        </div>
+        <div className="mt-8">
+          <a
+            href="mailto:nuhamin.gulilat.7@gmail.com"
+            className="text-blue-600 hover:underline"
+          >
+            Contact Me
+          </a>
         </div>
       </main>
     </div>
