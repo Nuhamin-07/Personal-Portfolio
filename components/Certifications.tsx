@@ -1,97 +1,64 @@
 import Section from "@/components/shared/Section";
+import { certifications } from "@/data/certifications";
 
-const certifications = [
-  {
-    title: "Full-Stack Developer Career Path",
-    issuer: "Scrimba",
-    icon: "🚀",
-    description:
-      "Comprehensive full-stack engineering curriculum covering React, Next.js, Node.js, REST APIs, databases, authentication, and production project building.",
-    topics: ["React", "Node.js", "APIs", "DBs"],
-  },
-  {
-    title: "Frontend Developer Career Path",
-    issuer: "Scrimba",
-    icon: "⚡",
-    description:
-      "In-depth frontend mastery including modern JavaScript (ES6+), React state management, responsive UI design, performance optimization, and web APIs.",
-    topics: ["React", "JavaScript", "CSS Grid", "UI/UX"],
-  },
-  {
-    title: "Responsive Web Design",
-    issuer: "freeCodeCamp",
-    icon: "📱",
-    description:
-      "Rigorous training in modern HTML5, CSS3, Flexbox, Grid layouts, accessibility (WCAG), and building fluid cross-device web interfaces.",
-    topics: ["HTML5", "CSS3", "Flexbox", "a11y"],
-  },
-  {
-    title: "JS Algorithms & Data Structures",
-    issuer: "freeCodeCamp",
-    icon: "🧠",
-    description:
-      "Core training in JavaScript fundamentals, algorithmic problem solving, object-oriented programming, and essential data structure patterns.",
-    topics: ["ES6+", "Algorithms", "Data Structures"],
-  },
-];
 
 export default function Certifications() {
-  return (
-    <Section id="certifications">
-      {/* Section Header */}
-      <div className="mb-12 text-center md:text-left">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-          <span>Continuous Learning</span>
-        </div>
+    return (
+        <Section id="certifications">
+            {/* Section Header */}
+            <div className="mb-12 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+                    <span>Continuous Learning</span>
+                </div>
 
-        <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-          Certifications & Specialized Training
-        </h2>
+                <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+                    Certifications & Specialized Training
+                </h2>
 
-        <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
-          Professional training credentials verifying full-stack engineering expertise and commitment to modern web standards.
-        </p>
-      </div>
-
-      {/* Certification Cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {certifications.map((cert) => (
-          <article
-            key={cert.title}
-            className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
-          >
-            <div>
-              <div className="mb-4 flex items-center justify-between">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl group-hover:bg-primary group-hover:text-white transition-colors">
-                  {cert.icon}
-                </span>
-                <span className="rounded-full border border-border bg-muted/60 px-2.5 py-0.5 font-mono text-xs font-semibold text-primary">
-                  {cert.issuer}
-                </span>
-              </div>
-
-              <h3 className="text-base font-bold text-foreground leading-snug">
-                {cert.title}
-              </h3>
-
-              <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-                {cert.description}
-              </p>
+                <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
+                    Professional training credentials verifying full-stack engineering expertise and commitment to modern web standards.
+                </p>
             </div>
 
-            <div className="mt-5 pt-4 border-t border-border/60 flex flex-wrap gap-1">
-              {cert.topics.map((topic) => (
-                <span
-                  key={topic}
-                  className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-mono text-muted-foreground"
-                >
-                  {topic}
-                </span>
-              ))}
+            {/* Certification Cards */}
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {certifications.map((cert) => (
+                    <article
+                        key={cert.title}
+                        className="group flex flex-col justify-between rounded-2xl border border-border bg-card p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-md"
+                    >
+                        <div>
+                            <div className="mb-4 flex items-center justify-between">
+                                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-xl group-hover:bg-primary group-hover:text-white transition-colors">
+                                    {cert.icon}
+                                </span>
+                                <span className="rounded-full border border-border bg-muted/60 px-2.5 py-0.5 font-mono text-xs font-semibold text-primary">
+                                    {cert.issuer}
+                                </span>
+                            </div>
+
+                            <h3 className="text-base font-bold text-foreground leading-snug">
+                                {cert.title}
+                            </h3>
+
+                            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                                {cert.description}
+                            </p>
+                        </div>
+
+                        <div className="mt-5 pt-4 border-t border-border/60 flex flex-wrap gap-1">
+                            {cert.topics.map((topic) => (
+                                <span
+                                    key={topic}
+                                    className="rounded-md bg-muted px-2 py-0.5 text-[11px] font-mono text-muted-foreground"
+                                >
+                                    {topic}
+                                </span>
+                            ))}
+                        </div>
+                    </article>
+                ))}
             </div>
-          </article>
-        ))}
-      </div>
-    </Section>
-  );
+        </Section>
+    );
 }

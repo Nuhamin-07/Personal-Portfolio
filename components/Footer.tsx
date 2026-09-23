@@ -38,7 +38,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://linkedin.com/in/nuhamin-gulilat"
+                href="https://www.linkedin.com/in/nuhamin-gulilat-66635318b/"
                 target="_blank"
                 rel="noreferrer"
                 className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-primary hover:text-primary"
