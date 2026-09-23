@@ -1,25 +1,28 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Hero from "../components/Hero";
-import About from "../components/About";
+import Navbar from "@/components/Navbar";
+import Hero from "@/components/Hero";
 import Projects from "@/components/Projects";
-import Skills from "@/components/Skills";
 import Experience from "@/components/Experience";
+import Skills from "@/components/Skills";
 import Certifications from "@/components/Certifications";
+import About from "@/components/About";
 import ContactCTA from "@/components/ContactCTS";
-
-const inter = Inter({ subsets: ["latin"] });
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-center py-0 px-16">
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <Experience />
-      <Certifications />
-      <ContactCTA />
+    <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors">
+      <Navbar />
+      <main className="flex-1 w-full">
+        <Hero />
+        <Projects />
+        <Experience />
+        <Skills />
+        <Certifications />
+        <About />
+        <ContactCTA />
+      </main>
+      <Footer />
     </div>
   );
 }
+
