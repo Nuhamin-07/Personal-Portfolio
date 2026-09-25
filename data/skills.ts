@@ -1,26 +1,46 @@
-export const skillCategories = [
+export interface SkillCategory {
+    title: string;
+    icon: string;
+    description: string;
+    skills: string[];
+}
+
+export const skillCategories: SkillCategory[] = [
     {
         title: "Frontend Engineering",
         icon: "💻",
         description: "Building responsive, modern, accessible user interfaces",
-        skills: ["React", "Next.js", "TypeScript", "JavaScript (ES6+)", "Tailwind CSS", "HTML5 / CSS3", "shadcn/ui", "CSS Modules"],
+        skills: ["Next.js", "React.js", "TypeScript", "JavaScript (ES6+)", "Redux / Redux Toolkit", "React Query", "Tailwind CSS", "Material UI", "Sass / CSS3", "HTML5"],
     },
     {
-        title: "Backend & APIs",
+        title: "Backend & API Architecture",
         icon: "⚙️",
-        description: "Architecting REST services and server-side application logic",
-        skills: ["Node.js", "Express", "RESTful APIs", "JWT Auth", "Serverless Functions", "Power Pages"],
+        description: "Architecting RESTful services, server authentication, and backend workflows",
+        skills: ["Node.js", "Express.js", "REST APIs", "Session Authentication", "JWT Auth", "API Integration", "Java"],
     },
     {
-        title: "Databases & Data",
+        title: "Databases & Storage",
         icon: "🗄️",
-        description: "Managing data storage, vector search, and schema models",
-        skills: ["SQLite", "MongoDB", "MySQL", "Supabase", "Dataverse", "JSON / Data Pipelines"],
+        description: "Managing relational, document, and enterprise data models",
+        skills: ["MongoDB", "MySQL", "SQLite", "Microsoft Dataverse", "SQL"],
     },
     {
-        title: "Tools & Workflow",
+        title: "Automated Testing & QA",
+        icon: "🧪",
+        description: "Ensuring code quality, visual regression prevention, and E2E reliability",
+        skills: ["Cypress", "Puppeteer", "Jest", "TDD (Test-Driven Dev)", "BDD (Behavior-Driven Dev)"],
+    },
+    {
+        title: "Microsoft Power Platform",
+        icon: "⚡",
+        description: "Building enterprise portals, low-code apps, workflows, and analytics",
+        skills: ["Power Pages", "Power Apps (Canvas & Model-Driven)", "Power Automate", "Dataverse", "Power BI", "Liquid", "FetchXML"],
+    },
+    {
+        title: "Developer Tools & Workflow",
         icon: "🛠️",
-        description: "Version control, deployment, design tools, and modern environments",
-        skills: ["Git", "GitHub", "Vercel", "Figma", "Postman", "npm / pnpm", "VS Code"],
+        description: "Version control, collaboration, design handoff, and agile methodologies",
+        skills: ["Git", "GitHub", "GitLab", "Figma", "Agile Scrum", "SAFe", "Postman", "Vercel / Netlify"],
     },
 ];
+

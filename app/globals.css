@@ -3,32 +3,32 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #f0f4f9;
+  --foreground: #090e1a;
   --card: #ffffff;
-  --card-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --border: #e2e8f0;
-  --primary: #2563eb;
+  --card-foreground: #090e1a;
+  --muted: #e2e8f0;
+  --muted-foreground: #475569;
+  --border: #cbd5e1;
+  --primary: #1d4ed8;
   --primary-foreground: #ffffff;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
+  --accent: #e0f2fe;
+  --accent-foreground: #0369a1;
 }
 
 .dark,
 [data-theme="dark"] {
-  --background: #090d16;
-  --foreground: #f8fafc;
-  --card: #0f172a;
+  --background: #060a14; /* Deep Blue-Black */
+  --foreground: #f1f5f9;
+  --card: #0d1527;       /* Midnight Blue-Black Card */
   --card-foreground: #f8fafc;
-  --muted: #1e293b;
+  --muted: #141f36;
   --muted-foreground: #94a3b8;
-  --border: #1e293b;
-  --primary: #3b82f6;
+  --border: #1d2b45;     /* Blue-Black Border */
+  --primary: #3b82f6;    /* Vibrant Blue Accent */
   --primary-foreground: #ffffff;
-  --accent: #111827;
-  --accent-foreground: #f8fafc;
+  --accent: #0f172a;
+  --accent-foreground: #38bdf8;
 }
 
 @theme inline {
@@ -59,6 +59,77 @@ body {
   overflow-x: hidden;
   transition: background-color 0.25s ease, color 0.25s ease;
 }
+
+@media print {
+  @page {
+    margin: 10mm 12mm;
+    size: portrait;
+  }
+
+  /* Hide entire portfolio page background (Header, Main, Footer) */
+  header,
+  main,
+  footer {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Reset modal overlay container for printing */
+  .cv-modal-overlay {
+    position: static !important;
+    display: block !important;
+    background: transparent !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+  }
+
+  /* Display CV modal content full page without scroll limits */
+  .cv-modal-content {
+    position: static !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Hide print buttons, close icons, and action bars */
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Optimize typography for crisp paper print / PDF */
+  .cv-modal-content * {
+    color: #000000 !important;
+    border-color: #e5e7eb !important;
+  }
+
+  .cv-modal-content .text-primary {
+    color: #1d4ed8 !important;
+  }
+
+  .cv-modal-content .text-muted-foreground {
+    color: #374151 !important;
+  }
+
+  /* Prevent awkward page breaks inside experience blocks */
+  .cv-modal-content .space-y-4 > div {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+}
+
 
 
 
