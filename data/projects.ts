@@ -63,7 +63,7 @@ export const projects: Project[] = [
             "Optimized React Query caching reducing unnecessary API network calls by 30%"
         ],
         technologies: ["React", "JavaScript", "Material UI", "React Query", "Axios", "Cypress", "BDD"],
-        githubUrl: "https://github.com/Nuhamin-07/Ecommerce-Platform",
+        // githubUrl: "https://github.com/Nuhamin-07/Ecommerce-Platform",
         gradient: "from-emerald-600/20 via-teal-600/10 to-cyan-600/20",
         icon: "🛍️",
         isFeatured: true,
