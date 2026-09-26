@@ -10,7 +10,8 @@
   --muted: #f1f5f9;
   --muted-foreground: #475569;
   --border: #e2e8f0;
-  --primary: #0a1628;
+  /* --primary: #0a1628; */
+  --primary: #050b14;
   --primary-foreground: #ffffff;
   --secondary: #f1f5f9;
   --secondary-foreground: #0a1628;
@@ -21,14 +22,18 @@
 
 .dark,
 [data-theme="dark"] {
-  --background: #050b14; /* Ultimate Deep Blue-Black */
+  --background: #050b14;
+  /* Ultimate Deep Blue-Black */
   --foreground: #f8fafc;
-  --card: #0b1220;       /* Midnight Blue-Black Card Surface */
+  --card: #0b1220;
+  /* Midnight Blue-Black Card Surface */
   --card-foreground: #f8fafc;
   --muted: #131c2e;
   --muted-foreground: #94a3b8;
-  --border: #1e2b42;     /* Blue-Black Border */
-  --primary: #2563eb;    /* Vibrant Accent Blue */
+  --border: #1e2b42;
+  /* Blue-Black Border */
+  --primary: #2563eb;
+  /* Vibrant Accent Blue */
   --primary-foreground: #ffffff;
   --secondary: #131c2e;
   --secondary-foreground: #f8fafc;
@@ -127,12 +132,8 @@ body {
     color: #374151 !important;
   }
 
-  .cv-modal-content .space-y-4 > div {
+  .cv-modal-content .space-y-4>div {
     page-break-inside: avoid;
     break-inside: avoid;
   }
 }
-
-
-
-

@@ -72,7 +72,7 @@ export const experiences: ExperienceItem[] = [
         period: "March 2022 – November 2022",
         project: "Merchant Portal & Multi-Tenant E-Commerce Platform",
         description:
-            "Engineered responsive React web applications for fintech and merchant platforms, delivering scalable CRUD interfaces, dynamic data dashboards, and automated test suites.",
+            "Engineered responsive React web applications for merchant platforms, delivering scalable CRUD interfaces, dynamic data dashboards, and automated test suites.",
         responsibilities: [
             "Built responsive React single-page applications for merchant management and e-commerce administration with Material UI.",
             "Integrated RESTful APIs using React Query and Axios, building advanced data features including filtering, multi-field searching, sorting, and pagination.",
