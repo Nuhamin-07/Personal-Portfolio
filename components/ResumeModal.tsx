@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ResumeModal({
   isOpen,
@@ -10,6 +10,21 @@ export default function ResumeModal({
   onClose: () => void;
 }) {
   const [copied, setCopied] = useState(false);
+  const [activeView, setActiveView] = useState<"pdf" | "text">("pdf");
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -25,168 +40,264 @@ export default function ResumeModal({
 
   return (
     <div
-      className="cv-modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm animate-in fade-in duration-200"
+      className="cv-modal-overlay fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-3 sm:p-6 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="cv-modal-content relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl border border-border bg-card p-6 sm:p-8 shadow-2xl text-foreground"
+        className="cv-modal-content relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border border-border bg-card p-5 sm:p-8 shadow-2xl text-foreground overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 flex h-8 w-8 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground transition-colors hover:text-foreground"
+          type="button"
+          className="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-muted text-muted-foreground transition-all hover:bg-primary hover:text-white cursor-pointer z-10"
           aria-label="Close CV Modal"
         >
           ✕
         </button>
 
-        {/* CV Header */}
-        <div className="border-b border-border pb-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        {/* Modal Header */}
+        <div className="border-b border-border pb-5 shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pr-8">
             <div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
                 Nuhamin Gulilat Masresha
               </h2>
-              <p className="text-base font-semibold text-primary mt-1">
-                Full-Stack Developer & Frontend Engineer
+              <p className="text-sm font-semibold text-primary mt-0.5">
+                Full-Stack Developer | Next.js • React • TypeScript • Node.js • Express.js
               </p>
               <p className="text-xs text-muted-foreground mt-1">
-                📍 Addis Ababa, Ethiopia (UTC+3) • Available for US / EU / Global Remote
+                📍 Addis Ababa, Ethiopia • +251 947 939 507 • nuhamin.gulilat.7@gmail.com
               </p>
             </div>
 
+            {/* Action Bar */}
             <div className="flex flex-wrap items-center gap-2 print:hidden">
-              <button
-                onClick={handlePrint}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-white shadow transition-all hover:bg-primary/90"
+              <a
+                href="/cv/Nuhamin-Gulilat-CV.pdf"
+                download="Nuhamin-Gulilat-CV.pdf"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
               >
-                📄 Print / Save PDF
-              </button>
-              <button
-                onClick={copyContact}
+                📥 Download PDF
+              </a>
+
+              <a
+                href="/cv/Nuhamin-Gulilat-CV.pdf"
+                target="_blank"
+                rel="noreferrer"
                 className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted px-3 py-2 text-xs font-semibold text-foreground transition-all hover:bg-border"
               >
-                {copied ? "✓ Copied Email" : "✉️ Copy Email"}
+                ↗ Open PDF
+              </a>
+
+              <button
+                onClick={handlePrint}
+                type="button"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted px-3 py-2 text-xs font-semibold text-foreground transition-all hover:bg-border cursor-pointer hidden sm:inline-flex"
+              >
+                🖨️ Print
               </button>
             </div>
           </div>
 
-          <div className="mt-4 flex flex-wrap gap-4 text-xs font-mono text-muted-foreground">
-            <span>✉️ nuhamin.gulilat.7@gmail.com</span>
-            <span>🌐 nuhamin-dev.netlify.app</span>
-            <span>🐙 github.com/Nuhamin-07</span>
-            <span>💼 linkedin.com/in/nuhamin-gulilat-66635318b</span>
+          {/* View Switcher Tabs */}
+          <div className="mt-4 flex items-center justify-between border-t border-border/60 pt-3 print:hidden">
+            <div className="flex items-center gap-1.5 rounded-lg bg-muted p-1 border border-border">
+              <button
+                type="button"
+                onClick={() => setActiveView("pdf")}
+                className={`rounded-md px-3 py-1 text-xs font-medium transition-all cursor-pointer ${
+                  activeView === "pdf"
+                    ? "bg-primary text-primary-foreground shadow-xs"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                📄 PDF Document View
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveView("text")}
+                className={`rounded-md px-3 py-1 text-xs font-medium transition-all cursor-pointer ${
+                  activeView === "text"
+                    ? "bg-primary text-primary-foreground shadow-xs"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                📝 Interactive Text View
+              </button>
+            </div>
+
+            <button
+              onClick={copyContact}
+              type="button"
+              className="text-xs font-medium text-muted-foreground hover:text-primary transition-colors cursor-pointer"
+            >
+              {copied ? "✓ Email Copied!" : "📋 Copy Email"}
+            </button>
           </div>
         </div>
 
-        {/* CV Body */}
-        <div className="mt-6 space-y-6 text-sm leading-relaxed">
-          {/* Summary */}
-          <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
-              Professional Summary
-            </h3>
-            <p className="mt-2 text-muted-foreground">
-              Full-Stack Developer with nearly 4 years of experience engineering enterprise web applications, SaaS platforms, and hospital management systems. Specialized in Next.js, React, TypeScript, Node.js, Express, REST APIs, and Microsoft Power Platform solutions. Proven expertise in automated Cypress E2E testing and remote collaboration.
-            </p>
-          </div>
-
-          {/* Education */}
-          <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
-              Education
-            </h3>
-            <div className="mt-2 flex justify-between items-start">
-              <div>
-                <p className="font-bold text-foreground">Bachelor of Science in Electrical and Computer Engineering</p>
-                <p className="text-xs text-muted-foreground">Computer Engineering Stream • Arba Minch University</p>
-              </div>
-              <span className="font-mono text-xs text-muted-foreground">Jan 2021</span>
-            </div>
-          </div>
-
-          {/* Technical Skills */}
-          <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
-              Technical Skills
-            </h3>
-            <div className="mt-2 space-y-1.5 text-xs text-muted-foreground">
-              <p><strong className="text-foreground">Frontend:</strong> Next.js, React.js, TypeScript, JavaScript (ES6+), Redux Toolkit, React Query, Tailwind CSS, Material UI, Sass</p>
-              <p><strong className="text-foreground">Backend & DB:</strong> Node.js, Express.js, REST APIs, Session Auth, MongoDB, MySQL, SQLite, Dataverse</p>
-              <p><strong className="text-foreground">QA & Automation:</strong> Cypress, Puppeteer, Jest, TDD, BDD</p>
-              <p><strong className="text-foreground">Enterprise:</strong> Power Pages, Power Apps, Power Automate, Dataverse, Power BI</p>
-            </div>
-          </div>
-
-          {/* Experience */}
-          <div>
-            <h3 className="text-xs font-bold uppercase tracking-wider text-primary">
-              Professional Experience
-            </h3>
-
-            <div className="mt-3 space-y-4">
-              <div>
-                <div className="flex justify-between items-baseline">
-                  <p className="font-bold text-foreground">Software Developer | Florida University Southeast (FUSE)</p>
-                  <span className="font-mono text-xs text-muted-foreground">Jul 2024 – Present</span>
-                </div>
-                <p className="text-xs text-primary font-medium">Remote • SIMS Platform</p>
-                <ul className="mt-1.5 list-disc list-inside space-y-1 text-xs text-muted-foreground">
-                  <li>Built and maintained Power Pages student portals with JavaScript, Liquid, and FetchXML.</li>
-                  <li>Engineered automated Power Automate cloud workflows for admissions and grade processing.</li>
-                  <li>Modeled Dataverse security data structures and developed Power BI decision dashboards.</li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex justify-between items-baseline">
-                  <p className="font-bold text-foreground">Software Developer | Gotemeri Network Integrator</p>
-                  <span className="font-mono text-xs text-muted-foreground">Jan 2023 – Dec 2023</span>
-                </div>
-                <p className="text-xs text-primary font-medium">Addis Ababa • Hospital Management System</p>
-                <ul className="mt-1.5 list-disc list-inside space-y-1 text-xs text-muted-foreground">
-                  <li>Engineered 7 clinical modules including Lab Requests, Pathology, Prescriptions, and HR.</li>
-                  <li>Implemented sub-second MySQL database reporting pipelines for patient auditing.</li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex justify-between items-baseline">
-                  <p className="font-bold text-foreground">Frontend Developer | 2F Capital PLC</p>
-                  <span className="font-mono text-xs text-muted-foreground">Mar 2022 – Nov 2022</span>
-                </div>
-                <p className="text-xs text-primary font-medium">Addis Ababa • Merchant Portal & E-Commerce</p>
-                <ul className="mt-1.5 list-disc list-inside space-y-1 text-xs text-muted-foreground">
-                  <li>Developed responsive React SPAs with React Query caching and Material UI data tables.</li>
-                  <li>Authored Cypress E2E automated test suites following BDD practices.</li>
-                </ul>
-              </div>
-
-              <div>
-                <div className="flex justify-between items-baseline">
-                  <p className="font-bold text-foreground">Frontend Developer | iWork Technology PLC</p>
-                  <span className="font-mono text-xs text-muted-foreground">Jul 2021 – Jan 2022</span>
-                </div>
-                <p className="text-xs text-primary font-medium">Addis Ababa • Enterprise ERP System</p>
-                <ul className="mt-1.5 list-disc list-inside space-y-1 text-xs text-muted-foreground">
-                  <li>Built HR and automated payroll interfaces using React and Redux state management.</li>
-                  <li>Created Cypress and Puppeteer automated visual regression tests.</li>
-                </ul>
+        {/* Modal Body Container */}
+        <div className="mt-4 flex-1 overflow-y-auto pr-1">
+          {activeView === "pdf" ? (
+            <div className="w-full h-full min-h-[550px] flex flex-col items-center justify-center rounded-xl border border-border bg-muted/20 overflow-hidden">
+              <iframe
+                src="/cv/Nuhamin-Gulilat-CV.pdf#toolbar=0"
+                className="w-full h-[600px] border-0 rounded-xl"
+                title="Nuhamin Gulilat CV PDF"
+              />
+              <div className="w-full bg-card p-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground sm:hidden">
+                <span>PDF Preview active</span>
+                <a
+                  href="/cv/Nuhamin-Gulilat-CV.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-semibold text-primary underline"
+                >
+                  Full Screen PDF ↗
+                </a>
               </div>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-6 text-sm leading-relaxed p-2">
+              {/* Summary */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-primary border-b border-border/60 pb-1">
+                  Professional Summary
+                </h3>
+                <p className="mt-2 text-muted-foreground">
+                  Full-Stack Developer with nearly 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, JavaScript, Node.js, and Express.js, with hands-on experience developing scalable solutions across education, healthcare, ERP, and e-commerce domains.
+                  Experienced in frontend architecture, REST API integration, session-based authentication, responsive UI development, automated testing, and Microsoft Power Platform solutions.
+                </p>
+              </div>
+
+              {/* Technical Skills */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-primary border-b border-border/60 pb-1">
+                  Technical Skills
+                </h3>
+                <div className="mt-2 space-y-1.5 text-xs text-muted-foreground">
+                  <p><strong className="text-foreground">Frontend:</strong> Next.js, React.js, TypeScript, JavaScript (ES6+), Redux, React Query, HTML5, CSS3, Sass, Tailwind CSS, Material UI, Bootstrap</p>
+                  <p><strong className="text-foreground">Backend:</strong> Node.js, Express.js, REST APIs, Session-Based Authentication, API Integration</p>
+                  <p><strong className="text-foreground">Databases:</strong> MongoDB, MySQL, SQLite, PostgreSQL, Microsoft Dataverse</p>
+                  <p><strong className="text-foreground">Microsoft Power Platform:</strong> Power Apps, Power Pages, Power Automate, Dataverse, Power BI</p>
+                  <p><strong className="text-foreground">Testing & Automation:</strong> Cypress, Puppeteer, Jest, BDD, TDD</p>
+                  <p><strong className="text-foreground">Tools & Practices:</strong> Git, GitHub, GitLab, Figma, Agile Scrum, SAFe Framework</p>
+                </div>
+              </div>
+
+              {/* Professional Experience */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-primary border-b border-border/60 pb-1">
+                  Professional Experience
+                </h3>
+
+                <div className="mt-3 space-y-5">
+                  <div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                      <p className="font-bold text-foreground text-base">Software Developer</p>
+                      <span className="font-mono text-xs text-muted-foreground">July 2024 – Present</span>
+                    </div>
+                    <p className="text-xs font-semibold text-primary">Florida University Southeast (FUSE) – Remote</p>
+                    <p className="text-xs text-muted-foreground italic mt-0.5">Student Information Management System (SIMS)</p>
+                    <ul className="mt-2 list-disc list-inside space-y-1 text-xs text-muted-foreground">
+                      <li>Develop and maintain Student Information Management System solutions.</li>
+                      <li>Build Power Pages portals, Power Apps, Power Automate workflows, and Dataverse solutions.</li>
+                      <li>Create Power BI reports and support enrollment, grading, attendance, and academic administration processes.</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                      <p className="font-bold text-foreground text-base">Software Developer</p>
+                      <span className="font-mono text-xs text-muted-foreground">January 2023 – December 2023</span>
+                    </div>
+                    <p className="text-xs font-semibold text-primary">Gotemeri Network Integrator Pvt. Ltd. Co.</p>
+                    <p className="text-xs text-muted-foreground italic mt-0.5">Hospital Management System</p>
+                    <ul className="mt-2 list-disc list-inside space-y-1 text-xs text-muted-foreground">
+                      <li>Developed Hospital Management System modules including laboratory, pathology, prescription, referral, HR, and reporting features.</li>
+                      <li>Participated in testing, deployment, and maintenance activities.</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                      <p className="font-bold text-foreground text-base">Frontend Developer</p>
+                      <span className="font-mono text-xs text-muted-foreground">March 2022 – November 2022</span>
+                    </div>
+                    <p className="text-xs font-semibold text-primary">2F Capital PLC</p>
+                    <p className="text-xs text-muted-foreground italic mt-0.5">Merchant Portal & Multi-Tenant E-Commerce Platform</p>
+                    <ul className="mt-2 list-disc list-inside space-y-1 text-xs text-muted-foreground">
+                      <li>Developed merchant portal and e-commerce applications using React and Material UI.</li>
+                      <li>Implemented CRUD operations, filtering, sorting, searching, and API integrations.</li>
+                      <li>Built Cypress end-to-end automation tests and BDD unit tests.</li>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-baseline">
+                      <p className="font-bold text-foreground text-base">Frontend Developer</p>
+                      <span className="font-mono text-xs text-muted-foreground">July 2021 – January 2022</span>
+                    </div>
+                    <p className="text-xs font-semibold text-primary">iWork Technology PLC</p>
+                    <p className="text-xs text-muted-foreground italic mt-0.5">ERP System</p>
+                    <ul className="mt-2 list-disc list-inside space-y-1 text-xs text-muted-foreground">
+                      <li>Developed ERP interfaces and HR/payroll modules using React and Redux.</li>
+                      <li>Built automated tests using Cypress and Puppeteer.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Certifications */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-primary border-b border-border/60 pb-1">
+                  Certifications
+                </h3>
+                <ul className="mt-2 list-disc list-inside space-y-1 text-xs text-muted-foreground">
+                  <li><strong className="text-foreground">Full Stack Developer Career Path</strong> — Scrimba</li>
+                  <li><strong className="text-foreground">Frontend Developer Career Path</strong> — Scrimba</li>
+                  <li><strong className="text-foreground">Microsoft Power Up Program</strong> — Credly</li>
+                  <li><strong className="text-foreground">JavaScript Algorithms and Data Structures</strong> — freeCodeCamp</li>
+                  <li><strong className="text-foreground">Responsive Web Design</strong> — freeCodeCamp</li>
+                </ul>
+              </div>
+
+              {/* Education */}
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-primary border-b border-border/60 pb-1">
+                  Education
+                </h3>
+                <div className="mt-2">
+                  <p className="font-bold text-foreground text-sm">Bachelor of Science in Electrical and Computer Engineering</p>
+                  <p className="text-xs text-muted-foreground">Computer Engineering Stream • Arba Minch University</p>
+                  <p className="text-xs font-mono text-muted-foreground mt-0.5">CGPA: 3.07 / 4.00 • Graduated: January 2021</p>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Modal Footer */}
-        <div className="mt-8 pt-4 border-t border-border flex items-center justify-between text-xs text-muted-foreground print:hidden">
-          <span>Nuhamin Gulilat CV • Ready for Hiring</span>
-          <button
-            onClick={onClose}
-            className="rounded-lg bg-muted px-4 py-2 font-semibold text-foreground hover:bg-border transition-colors"
-          >
-            Close Preview
-          </button>
+        <div className="mt-4 pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground shrink-0 print:hidden">
+          <span>Nuhamin-Gulilat-CV.pdf</span>
+          <div className="flex items-center gap-3">
+            <a
+              href="/cv/Nuhamin-Gulilat-CV.pdf"
+              download="Nuhamin-Gulilat-CV.pdf"
+              className="font-semibold text-primary hover:underline"
+            >
+              Download PDF
+            </a>
+            <button
+              onClick={onClose}
+              type="button"
+              className="rounded-lg bg-muted px-4 py-1.5 font-semibold text-foreground hover:bg-border transition-colors cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
     </div>

@@ -1,125 +1,139 @@
 export interface Project {
-    title: string;
-    category: string;
-    description: string;
-    problem: string;
-    solution: string;
-    highlights: string[];
-    technologies: string[];
-    githubUrl?: string;
-    liveUrl?: string;
-    gradient: string;
-    icon: string;
-    isFeatured?: boolean;
+  title: string;
+  category: string;
+  description: string;
+  problem?: string;
+  solution?: string;
+  highlights: string[];
+  technologies: string[];
+  githubUrl?: string;
+  liveUrl?: string;
+  gradient: string;
+  icon: string;
+  isFeatured?: boolean;
 }
 
 export const projects: Project[] = [
-    {
-        title: "Task Management System",
-        category: "Full-Stack Web App",
-        description:
-            "A full-stack workflow and task management dashboard featuring secure session-based authentication, user role management, protected routes, and instant task CRUD pipelines.",
-        problem: "Users and teams need a lightweight, distraction-free productivity app with persistent authentication and zero third-party lock-in.",
-        solution: "Engineered an end-to-end full-stack web application with Node.js/Express server logic, SQLite data persistence, Express sessions, and a responsive React frontend.",
-        highlights: [
-            "Session-based authentication with secure cookie management and protected route boundaries",
-            "Complete CRUD task operations with real-time status transitions and priority tags",
-            "Multi-parameter search, category filtering, and responsive mobile layout"
-        ],
-        technologies: ["React", "TypeScript", "Node.js", "Express", "SQLite", "Express Session"],
-        githubUrl: "https://github.com/Nuhamin-07/Task-Manager",
-        liveUrl: "https://nuhamin-task-management.netlify.app/",
-        gradient: "from-blue-600/20 via-indigo-600/10 to-purple-600/20",
-        icon: "⚡",
-        isFeatured: true,
-    },
-    {
-        title: "Student Information System (SIMS)",
-        category: "Enterprise System",
-        description:
-            "Enterprise higher-education portal for Florida University Southeast managing student admissions, course registrations, grading, attendance, and academic administration.",
-        problem: "Educational institutions require unified, highly secure portals to process multi-department student data with strict role authorization.",
-        solution: "Delivered a custom Power Pages portal backed by Microsoft Dataverse data schemas, Liquid templates, FetchXML queries, and automated cloud workflows.",
-        highlights: [
-            "Role-based security & Dataverse row-level data access governance",
-            "Automated multi-stage approval workflows for admissions and transcript processing",
-            "Real-time Power BI administrative reporting dashboards for academic leads"
-        ],
-        technologies: ["Power Pages", "Dataverse", "Power Automate", "Power BI", "JavaScript", "Liquid", "FetchXML"],
-        gradient: "from-sky-600/20 via-blue-600/10 to-indigo-600/20",
-        icon: "🎓",
-        isFeatured: true,
-    },
-    {
-        title: "Merchant Portal & Platform",
-        category: "Fintech & SaaS",
-        description:
-            "High-traffic SaaS merchant management portal and multi-tenant e-commerce platform featuring transaction analytics, product catalog management, and automated testing.",
-        problem: "Merchants and administrators require fast data tables with sub-second filtering and automated regression testing across checkout flows.",
-        solution: "Built a modular React application powered by React Query for server-state caching, Material UI design components, and comprehensive Cypress E2E automation.",
-        highlights: [
-            "Advanced data table pagination, multi-field searching, sorting, and tag filtering",
-            "Behavior-Driven Development (BDD) Cypress E2E test suites verifying core checkout paths",
-            "Optimized React Query caching reducing unnecessary API network calls by 30%"
-        ],
-        technologies: ["React", "JavaScript", "Material UI", "React Query", "Axios", "Cypress", "BDD"],
-        // githubUrl: "https://github.com/Nuhamin-07/Ecommerce-Platform",
-        gradient: "from-emerald-600/20 via-teal-600/10 to-cyan-600/20",
-        icon: "🛍️",
-        isFeatured: true,
-    },
-    {
-        title: "Hospital Management System",
-        category: "Healthcare Software",
-        description:
-            "Enterprise clinical software suite powering medical laboratory requests, pathology diagnostic reports, digital prescriptions, patient referrals, and HR management.",
-        problem: "Hospitals experience diagnostic delays when relying on manual paper-based record routing between departments.",
-        solution: "Architected a multi-module Java application backed by MySQL database with custom audit logging, medical certificate generation, and secure record lookups.",
-        highlights: [
-            "7 core clinical modules: Lab Requests, Lab Reports, Pathology, Prescriptions, Referrals, Certificates, HR",
-            "Optimized MySQL database query structures for instant patient history retrieval",
-            "Built-in PDF report generation and medical staff credential tracking"
-        ],
-        technologies: ["Java", "Java Swing", "MySQL", "JDBC", "SQL", "Agile"],
-        gradient: "from-purple-600/20 via-fuchsia-600/10 to-pink-600/20",
-        icon: "🏥",
-        isFeatured: false,
-    },
-    {
-        title: "ERP HR & Payroll System",
-        category: "Enterprise System",
-        description:
-            "Enterprise Resource Planning system interfaces specializing in automated payroll processing, employee directory management, and complex workflow forms.",
-        problem: "Large organizations need predictable state management and error-free payroll calculation interfaces.",
-        solution: "Developed modular React interfaces managed with Redux Toolkit and validated using Puppeteer and Cypress automated test runs.",
-        highlights: [
-            "Redux global state store architecture for multi-step payroll wizard steps",
-            "Automated visual regression and E2E test coverage using Puppeteer and Cypress",
-            "Responsive enterprise UI styling with Sass and custom CSS design systems"
-        ],
-        technologies: ["React", "Redux", "JavaScript", "Sass", "Cypress", "Puppeteer"],
-        gradient: "from-amber-600/20 via-orange-600/10 to-red-600/20",
-        icon: "🏢",
-        isFeatured: false,
-    },
-    {
-        title: "PrintForge 3D Marketplace",
-        category: "Full-Stack Web App",
-        description:
-            "Modern 3D printable model marketplace featuring SSR product catalogs, dynamic filter algorithms, creator collections, and responsive checkout UX.",
-        problem: "3D creators needed a fast, performant platform to showcase, license, and download complex 3D assets with rich metadata.",
-        solution: "Built a high-speed Next.js marketplace with SSR catalog pages, dynamic search indexing, and optimized asset loading pipelines.",
-        highlights: [
-            "Dynamic catalog searching and multi-category filtering system",
-            "SSR optimized product detail pages with instant navigation and SEO metadata",
-            "Custom responsive 3D model card previews and dark mode visual theme"
-        ],
-        technologies: ["Next.js", "TypeScript", "Tailwind CSS", "React", "Node.js"],
-        githubUrl: "https://github.com/Nuhamin-07/PrintForge",
-        liveUrl: "https://printforge-3d-models.netlify.app",
-        gradient: "from-rose-600/20 via-pink-600/10 to-red-600/20",
-        icon: "🖨️",
-        isFeatured: true,
-    },
+  {
+    title: "Task Management System",
+    category: "Full-Stack Web App",
+    description:
+      "Full-stack task management application with session-based authentication, user role management, protected routes, and persistent RESTful API endpoints.",
+    highlights: [
+      "Developed a full-stack task management application with session-based authentication and protected routes.",
+      "Implemented user and task CRUD operations, search functionality, and responsive user interfaces.",
+      "Built RESTful APIs and integrated SQLite for persistent data storage."
+    ],
+    technologies: ["React", "TypeScript", "Node.js", "Express.js", "SQLite", "Session Auth"],
+    githubUrl: "https://github.com/Nuhamin-07/Task-Manager",
+    liveUrl: "https://nuhamin-task-management.netlify.app/",
+    gradient: "from-slate-900/40 via-blue-950/30 to-slate-900/40",
+    icon: "⚡",
+    isFeatured: true,
+  },
+  {
+    title: "PrintForge 3D Models Platform",
+    category: "Full-Stack Web App",
+    description:
+      "Modern 3D model showcase and digital asset marketplace platform featuring reusable UI components and optimized frontend architecture.",
+    highlights: [
+      "Developed a modern 3D model showcase platform using Next.js and TypeScript.",
+      "Built reusable UI components and responsive layouts.",
+      "Implemented scalable frontend architecture and optimized performance."
+    ],
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "React", "Node.js"],
+    githubUrl: "https://github.com/Nuhamin-07/PrintForge",
+    liveUrl: "https://printforge-3d-models.netlify.app/",
+    gradient: "from-blue-950/40 via-slate-900/30 to-blue-900/40",
+    icon: "🖨️",
+    isFeatured: true,
+  },
+  {
+    title: "E-Commerce Platform",
+    category: "Full-Stack Web App",
+    description:
+      "Modern e-commerce application engineered with reusable components, responsive product browsing experiences, and scalable frontend architecture.",
+    highlights: [
+      "Developed a modern e-commerce application with reusable components and responsive design.",
+      "Built product browsing experiences and scalable frontend architecture."
+    ],
+    technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+    liveUrl: "https://nuhamin-ecommerce-shop.netlify.app/",
+    gradient: "from-slate-900/40 via-indigo-950/30 to-slate-900/40",
+    icon: "🛍️",
+    isFeatured: true,
+  },
+  {
+    title: "Tattoo Studio Website",
+    category: "Frontend & Web App",
+    description:
+      "Responsive tattoo studio web application featuring artist profile showcases, dynamic gallery pages, service listings, and appointment booking workflows.",
+    highlights: [
+      "Designed and developed a responsive tattoo studio website featuring artist profiles, gallery pages, services, and appointment booking workflows.",
+      "Implemented dynamic routing, reusable components, and mobile-first design principles."
+    ],
+    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "React"],
+    liveUrl: "https://tattoo-studio-site.netlify.app/",
+    gradient: "from-slate-950/40 via-slate-900/30 to-blue-950/40",
+    icon: "🎨",
+    isFeatured: true,
+  },
+  {
+    title: "Student Information Management System (SIMS)",
+    category: "Enterprise System",
+    description:
+      "Enterprise higher-education portal for Florida University Southeast supporting admissions, enrollment, grading, attendance, reporting, and academic administration.",
+    highlights: [
+      "Developed admissions, enrollment, attendance, grading, workflow automation, and reporting solutions.",
+      "Built internal and external portals and automated academic processes with Power Pages and Dataverse."
+    ],
+    technologies: ["Power Apps", "Power Pages", "Power Automate", "Dataverse", "Power BI", "JavaScript", "Liquid", "FetchXML"],
+    gradient: "from-blue-900/40 via-slate-900/30 to-indigo-950/40",
+    icon: "🎓",
+    isFeatured: true,
+  },
+  {
+    title: "Hospital Management System",
+    category: "Healthcare Software",
+    description:
+      "Desktop clinical software application powering laboratory request tracking, pathology diagnostic reports, digital prescriptions, patient referrals, and HR management.",
+    highlights: [
+      "Developed laboratory, pathology, prescription, referral, HR management, and reporting modules.",
+      "Participated in testing, deployment, and database maintenance activities."
+    ],
+    technologies: ["Java", "Java Swing", "MySQL", "SQL"],
+    gradient: "from-slate-900/40 via-slate-950/30 to-blue-950/40",
+    icon: "🏥",
+    isFeatured: false,
+  },
+  {
+    title: "Merchant Portal",
+    category: "Fintech & SaaS",
+    description:
+      "High-traffic merchant management portal and multi-tenant e-commerce platform delivering CRUD operations, advanced data tables, and Cypress E2E automation.",
+    highlights: [
+      "Developed merchant portal and e-commerce applications using React and Material UI.",
+      "Implemented CRUD functionality, filtering, sorting, searching, pagination, and API integrations.",
+      "Built Cypress end-to-end automation tests and BDD unit tests."
+    ],
+    technologies: ["React", "Material UI", "React Query", "Axios", "Cypress", "JavaScript", "GitLab"],
+    gradient: "from-slate-900/40 via-blue-900/30 to-slate-950/40",
+    icon: "💳",
+    isFeatured: true,
+  },
+  {
+    title: "ERP System",
+    category: "Enterprise System",
+    description:
+      "Enterprise Resource Planning platform user interfaces supporting finance, warehouse operations, HR directories, and automated payroll workflows.",
+    highlights: [
+      "Developed ERP interfaces and HR/payroll modules using React and Redux.",
+      "Built automated testing pipelines using Cypress and Puppeteer."
+    ],
+    technologies: ["React", "Redux", "JavaScript", "Sass", "CSS", "Cypress", "Puppeteer"],
+    gradient: "from-blue-950/40 via-slate-900/30 to-slate-900/40",
+    icon: "🏢",
+    isFeatured: false,
+  },
 ];
 

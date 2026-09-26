@@ -30,8 +30,8 @@ export default function Projects() {
     <Section id="projects">
       {/* Section Header */}
       <div className="mb-10 text-center md:text-left">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-          <span>Production Portfolio</span>
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+          <span>Featured Projects</span>
         </div>
 
         <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -39,7 +39,7 @@ export default function Projects() {
         </h2>
 
         <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
-          Full-stack web applications, enterprise portals, and clinical systems engineered with React, Next.js, TypeScript, Node.js, and Power Platform.
+          Full-stack web applications, enterprise portals, and clinical systems engineered with Next.js, React, TypeScript, Node.js, and Power Platform.
         </p>
       </div>
 
@@ -53,15 +53,15 @@ export default function Projects() {
               key={cat}
               type="button"
               onClick={() => setSelectedCategory(cat)}
-              className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-200 cursor-pointer ${
+              className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-200 cursor-pointer ${
                 isActive
-                  ? "bg-primary text-primary-foreground shadow-md shadow-primary/25 scale-105"
+                  ? "bg-primary text-primary-foreground shadow-md scale-105"
                   : "border border-border bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
               }`}
             >
               <span>{cat}</span>
               <span
-                className={`rounded-full px-1.5 py-0.2 text-[10px] font-mono ${
+                className={`rounded-full px-2 py-0.5 text-[10px] font-mono ${
                   isActive ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
                 }`}
               >
@@ -126,15 +126,15 @@ export default function Projects() {
                 ))}
               </div>
 
-              {/* Explicit Functional Actions Bar (GitHub & Live Demo) */}
+              {/* Functional Actions Bar (GitHub & Live Demo) */}
               <div className="mt-6 flex flex-wrap items-center justify-end gap-2.5 border-t border-border/60 pt-4">
                 {project.githubUrl && (
                   <a
                     href={project.githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted/60 px-3 py-1.5 text-xs font-semibold text-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
-                    title="GitHub Code Repository"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-muted/60 px-3.5 py-2 text-xs font-semibold text-foreground transition-all hover:border-primary/50 hover:bg-primary/10 hover:text-primary"
+                    title="GitHub Repository"
                   >
                     <svg className="h-3.5 w-3.5 fill-current" viewBox="0 0 24 24">
                       <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
@@ -148,7 +148,7 @@ export default function Projects() {
                     href={project.liveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white transition-all hover:bg-emerald-700 shadow-sm"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
                     title="Live Deployed Demo"
                   >
                     Live Demo ↗

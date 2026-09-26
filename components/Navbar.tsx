@@ -8,6 +8,7 @@ import ResumeModal from "@/components/ResumeModal";
 const navLinks = [
   { name: "Projects", href: "#projects" },
   { name: "Experience", href: "#experience" },
+  { name: "Resume / CV", href: "#resume" },
   { name: "Skills", href: "#skills" },
   { name: "Certifications", href: "#certifications" },
   { name: "About", href: "#about" },
@@ -51,16 +52,16 @@ export default function Navbar() {
               href="#"
               className="group flex items-center gap-2 text-lg font-bold tracking-tight text-foreground transition-colors hover:text-primary"
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10 font-mono text-sm text-primary group-hover:bg-primary group-hover:text-white transition-all">
+              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground font-mono text-xs font-bold transition-all shadow-sm group-hover:scale-105">
                 NG
               </span>
-              <span>
+              <span className="text-lg font-bold tracking-tight text-foreground">
                 Nuhamin<span className="text-primary">.dev</span>
               </span>
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-1 rounded-full border border-border/60 bg-background/60 px-4 py-1.5 backdrop-blur-sm shadow-sm">
+            <nav className="hidden md:flex items-center gap-1 rounded-full border border-border/80 bg-card/80 px-4 py-1.5 backdrop-blur-md shadow-xs">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
@@ -75,20 +76,21 @@ export default function Navbar() {
             {/* Desktop CTAs & Theme Toggle */}
             <div className="hidden md:flex items-center gap-3">
               <ThemeToggle />
-              
+
               <button
                 onClick={() => setIsCvOpen(true)}
                 type="button"
-                className="rounded-lg border border-primary/40 bg-primary/10 px-3.5 py-2 text-xs font-semibold text-primary transition-all hover:bg-primary hover:text-white cursor-pointer"
+                className="rounded-lg border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground transition-all hover:border-primary/50 hover:bg-muted cursor-pointer"
               >
-                📄 CV / Resume
+                📄 Preview CV
               </button>
 
               <a
-                href="#contact"
-                className="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 hover:shadow"
+                href="/cv/Nuhamin-Gulilat-CV.pdf"
+                download="Nuhamin-Gulilat-CV.pdf"
+                className="rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs transition-all hover:bg-primary/90"
               >
-                Get In Touch
+                📥 Download CV
               </a>
             </div>
 
@@ -128,7 +130,7 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Slide-Out Drawer */}
+          {/* Mobile Navigation Drawer */}
           {isOpen && (
             <div className="mt-3 rounded-2xl border border-border bg-card p-5 shadow-2xl md:hidden animate-in fade-in slide-in-from-top-2 duration-200 relative z-50">
               <nav className="flex flex-col space-y-2">
@@ -149,16 +151,17 @@ export default function Navbar() {
                       setIsCvOpen(true);
                     }}
                     type="button"
-                    className="w-full text-center rounded-lg border border-primary/40 bg-primary/10 px-4 py-2.5 text-sm font-semibold text-primary cursor-pointer"
+                    className="w-full text-center rounded-lg border border-border bg-muted px-4 py-2.5 text-sm font-semibold text-foreground cursor-pointer"
                   >
-                    📄 View / Download CV
+                    📄 Preview CV
                   </button>
                   <a
-                    href="#contact"
+                    href="/cv/Nuhamin-Gulilat-CV.pdf"
+                    download="Nuhamin-Gulilat-CV.pdf"
                     onClick={() => setIsOpen(false)}
-                    className="w-full text-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow"
+                    className="w-full text-center rounded-lg bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-xs"
                   >
-                    Get In Touch
+                    📥 Download CV (PDF)
                   </a>
                 </div>
               </nav>
@@ -170,7 +173,7 @@ export default function Navbar() {
       {/* Mobile Menu Backdrop */}
       {isOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs md:hidden"
+          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs md:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}

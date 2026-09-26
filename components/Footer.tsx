@@ -4,7 +4,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full border-t border-border bg-card/50 py-12 transition-colors">
+    <footer className="w-full border-t border-border bg-card/60 py-12 transition-colors">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 md:grid-cols-4">
           {/* Brand Info */}
@@ -13,15 +13,14 @@ export default function Footer() {
               href="#"
               className="flex items-center gap-2 text-lg font-bold tracking-tight text-foreground"
             >
-              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary/10 font-mono text-xs text-primary">
+              <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground font-mono text-xs font-bold">
                 NG
               </span>
-              <span>Nuhamin Gulilat</span>
+              <span>Nuhamin Gulilat Masresha</span>
             </Link>
 
             <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-              Full-Stack Developer specializing in building responsive, scalable,
-              and performant web applications using React, Next.js, TypeScript, and Node.js.
+              Full-Stack Developer with nearly 4 years of experience building scalable, performant web applications using Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform.
             </p>
 
             <div className="mt-6 flex items-center gap-3">
@@ -29,7 +28,7 @@ export default function Footer() {
                 href="https://github.com/Nuhamin-07"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-all hover:border-primary hover:text-primary hover:bg-muted"
                 aria-label="GitHub Profile"
               >
                 <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -41,7 +40,7 @@ export default function Footer() {
                 href="https://www.linkedin.com/in/nuhamin-gulilat-66635318b/"
                 target="_blank"
                 rel="noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-all hover:border-primary hover:text-primary hover:bg-muted"
                 aria-label="LinkedIn Profile"
               >
                 <svg className="h-4 w-4 fill-current" viewBox="0 0 24 24">
@@ -51,8 +50,8 @@ export default function Footer() {
 
               <a
                 href="mailto:nuhamin.gulilat.7@gmail.com"
-                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-primary hover:text-primary"
-                aria-label="Email Me"
+                className="flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-all hover:border-primary hover:text-primary hover:bg-muted"
+                aria-label="Email Nuhamin"
               >
                 <svg className="h-4 w-4 fill-none stroke-current" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -78,6 +77,11 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a href="#resume" className="text-muted-foreground transition-colors hover:text-primary">
+                  Resume / CV
+                </a>
+              </li>
+              <li>
                 <a href="#skills" className="text-muted-foreground transition-colors hover:text-primary">
                   Technical Skills
                 </a>
@@ -95,25 +99,36 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Direct Contact */}
+          {/* Direct Contact & CV Download */}
           <div>
             <h3 className="text-sm font-semibold uppercase tracking-wider text-foreground">
-              Contact
+              Downloads & Contact
             </h3>
             <p className="mt-4 text-sm text-muted-foreground">
-              Open for full-time frontend & full-stack roles or high-impact projects.
+              Open for full-time frontend, backend & full-stack remote roles.
             </p>
-            <a
-              href="mailto:nuhamin.gulilat.7@gmail.com"
-              className="mt-3 inline-block font-mono text-sm text-primary hover:underline"
-            >
-              nuhamin.gulilat.7@gmail.com
-            </a>
+            <div className="mt-4 space-y-2">
+              <a
+                href="/cv/Nuhamin-Gulilat-CV.pdf"
+                download="Nuhamin-Gulilat-CV.pdf"
+                className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
+              >
+                📥 Download CV (PDF)
+              </a>
+              <div>
+                <a
+                  href="mailto:nuhamin.gulilat.7@gmail.com"
+                  className="font-mono text-xs text-muted-foreground hover:text-primary transition-colors"
+                >
+                  nuhamin.gulilat.7@gmail.com
+                </a>
+              </div>
+            </div>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-8 sm:flex-row text-xs text-muted-foreground">
-          <p>© {currentYear} Nuhamin Gulilat. Built with Next.js & Tailwind CSS.</p>
+          <p>© {currentYear} Nuhamin Gulilat Masresha. Built with Next.js & Tailwind CSS.</p>
 
           <a
             href="#"
