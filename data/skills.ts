@@ -22,7 +22,7 @@ export const skillCategories: SkillCategory[] = [
         title: "Databases & Storage",
         icon: "🗄️",
         description: "Managing relational, document, and enterprise data models",
-        skills: ["MongoDB", "MySQL", "SQLite", "Microsoft Dataverse", "SQL"],
+        skills: ["MongoDB", "MySQL", "SQLite", "Microsoft Dataverse"],
     },
     {
         title: "Automated Testing & QA",
