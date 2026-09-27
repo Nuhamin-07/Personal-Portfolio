@@ -7,7 +7,7 @@ export default function About() {
         {/* Left Column: Story */}
         <div className="lg:col-span-7">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-            <span>Background & Engineering Philosophy</span>
+            <span>Background</span>
           </div>
 
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

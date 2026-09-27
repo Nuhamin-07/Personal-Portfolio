@@ -18,13 +18,13 @@ export default function Hero() {
           <div className="lg:col-span-7">
             {/* Availability & Location Badge */}
             <div className="flex flex-wrap items-center gap-3">
-              <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+              {/* <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                 <span className="relative flex h-2 w-2">
                   <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500"></span>
                 </span>
                 <span>Available for Remote Roles (Global / US / EU)</span>
-              </div>
+              </div> */}
 
               <span className="inline-flex items-center rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground">
                 📍 Addis Ababa, Ethiopia (UTC+3)
@@ -40,7 +40,7 @@ export default function Hero() {
             </h2>
 
             <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Full-Stack Developer with nearly 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.
+              Full-Stack Developer with 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.
             </p>
 
             {/* Action Buttons */}
@@ -82,7 +82,7 @@ export default function Hero() {
             {/* Stats Summary Grid */}
             <div className="mt-10 grid grid-cols-3 gap-3 sm:gap-4">
               <div className="rounded-2xl border border-border bg-card/60 p-4 backdrop-blur-sm transition-all hover:border-primary/40">
-                <p className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">Nearly 4</p>
+                <p className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">4</p>
                 <p className="mt-1 text-xs sm:text-sm font-medium text-muted-foreground">
                   Years Experience
                 </p>
@@ -139,7 +139,7 @@ export default function Hero() {
                 </div>
                 <div className="pl-4">
                   <span className="text-slate-400">experience:</span>{" "}
-                  <span className="text-amber-300">&quot;Nearly 4 Years&quot;</span>,
+                  <span className="text-amber-300">&quot;4 Years&quot;</span>,
                 </div>
                 <div className="pl-4">
                   <span className="text-slate-400">techStack:</span> [
@@ -182,4 +182,4 @@ export default function Hero() {
   );
 }
 
-
+
