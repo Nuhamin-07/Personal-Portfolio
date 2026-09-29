@@ -20,7 +20,7 @@ export default function About() {
             </p>
 
             <p>
-              Over nearly four years of professional software development experience, I have engineered mission-critical web software across higher education, hospital healthcare management, SaaS merchant platforms, and enterprise ERP systems.
+              Four years of professional software development experience, I have engineered mission-critical web software across higher education, hospital healthcare management, SaaS merchant platforms, and enterprise ERP systems.
             </p>
 
             <p>
