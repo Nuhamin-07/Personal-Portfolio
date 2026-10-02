@@ -82,7 +82,7 @@ export default function Navbar() {
               <button
                 onClick={() => setIsCvOpen(true)}
                 type="button"
-                className="rounded-lg border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground transition-all hover:border-primary/50 hover:bg-muted cursor-pointer"
+                className="rounded-lg border border-border bg-card px-3.5 py-2 text-xs font-semibold text-foreground transition-all hover:border-primary/50 hover:bg-muted hover:text-primary-foreground cursor-pointer"
               >
                 📄 Preview CV
               </button>
