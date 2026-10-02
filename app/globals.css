@@ -7,11 +7,12 @@
   --foreground: #0b1326;
   --card: #ffffff;
   --card-foreground: #0b1326;
-  --muted: #f1f5f9;
+  --muted: #92400E;
   --muted-foreground: #475569;
   --border: #e2e8f0;
   /* --primary: #0a1628; */
-  --primary: #050b14;
+  --primary: #78350F;
+  /* --primary: #050b14; */
   --primary-foreground: #ffffff;
   --secondary: #f1f5f9;
   --secondary-foreground: #0a1628;

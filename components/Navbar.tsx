@@ -39,11 +39,13 @@ export default function Navbar() {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-          scrolled
-            ? "bg-background/90 backdrop-blur-md border-b border-border shadow-md py-3"
-            : "bg-transparent py-5"
-        }`}
+        className={`sticky top-0 z-50 w-full transition-all duration-300 bg-stone-50 backdrop-blur-md border-b border-border shadow-md py-3`}
+      //   ${
+      //   scrolled
+      //     ? "bg-background/90 backdrop-blur-md border-b border-border shadow-md py-3"
+      //     : "bg-transparent py-5"
+      // }
+
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -66,7 +68,7 @@ export default function Navbar() {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="rounded-full px-3.5 py-1.5 text-xs font-semibold text-muted-foreground transition-all hover:text-foreground hover:bg-muted"
+                  className="rounded-full px-3.5 py-1.5 text-xs font-semibold text-muted-foreground transition-all hover:text-primary-foreground hover:bg-muted"
                 >
                   {link.name}
                 </a>
