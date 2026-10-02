@@ -40,7 +40,7 @@ export default function ThemeToggle() {
         </>
       ) : (
         <>
-          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500/20 text-amber-500 text-foreground transition-all hover:border-primary/50 hover:bg-muted hover:text-white cursor-pointer">
+          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500/20 text-foreground transition-all hover:bg-muted hover:text-primary-foreground cursor-pointer">
             ☀️
           </span>
           <span>Light</span>
