@@ -106,6 +106,7 @@ export default function Hero() {
 
           {/* Right Column: Developer Showcase Card */}
           <div className="lg:col-span-5 flex justify-center w-100 h-100 rounded-full border-1">
+            <img src="/nuhamin-img.jpg" alt="Developer" className="w-full h-full object-cover w-100 h-100 rounded-full" />
             {/* <div className="relative w-full max-w-md rounded-2xl border border-border bg-card shadow-2xl overflow-hidden transition-all hover:border-primary/50"> */}
             {/* Card Window Header */}
             {/* <div className="flex items-center justify-between border-b border-border bg-muted/60 px-4 py-3">
