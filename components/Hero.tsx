@@ -39,10 +39,6 @@ export default function Hero() {
               Full-Stack Developer | Next.js • React • TypeScript • Node.js • Express.js
             </h2>
 
-            <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Full-Stack Developer with 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.
-            </p>
-
             {/* Action Buttons */}
             <div className="mt-8 flex flex-wrap items-center gap-3.5">
               <a
@@ -107,74 +103,15 @@ export default function Hero() {
           {/* Right Column: Developer Showcase Card */}
           <div className="lg:col-span-5 flex justify-center w-100 h-100 rounded-full border-1">
             <img src="/nuhamin-img.jpg" alt="Developer" className="w-full h-full object-cover w-100 h-100 rounded-full" />
-            {/* <div className="relative w-full max-w-md rounded-2xl border border-border bg-card shadow-2xl overflow-hidden transition-all hover:border-primary/50"> */}
-            {/* Card Window Header */}
-            {/* <div className="flex items-center justify-between border-b border-border bg-muted/60 px-4 py-3">
-                <div className="flex items-center gap-2">
-                  <div className="h-3 w-3 rounded-full bg-red-500/80" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
-                  <div className="h-3 w-3 rounded-full bg-green-500/80" />
-                </div>
-                <span className="font-mono text-xs text-muted-foreground">nuhamin.ts</span>
-                <span className="text-xs text-emerald-500 font-mono font-medium">● Available Remote</span>
-              </div> */}
 
-            {/* Code Snippet Content */}
-            {/* <div className="p-5 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto bg-[#070e1b] text-slate-100">
-                <div>
-                  <span className="text-purple-400">const</span>{" "}
-                  <span className="text-blue-400">engineer</span>{" "}
-                  <span className="text-slate-400">=</span> {"{"}
-                </div>
-                <div className="pl-4">
-                  <span className="text-slate-400">name:</span>{" "}
-                  <span className="text-emerald-300">&quot;Nuhamin Gulilat Masresha&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-slate-400">title:</span>{" "}
-                  <span className="text-emerald-300">&quot;Full-Stack Developer&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-slate-400">education:</span>{" "}
-                  <span className="text-emerald-300">&quot;B.Sc. Computer Engineering&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-slate-400">experience:</span>{" "}
-                  <span className="text-amber-300">&quot;4 Years&quot;</span>,
-                </div>
-                <div className="pl-4">
-                  <span className="text-slate-400">techStack:</span> [
-                </div>
-                <div className="pl-8 text-sky-300">
-                  &quot;Next.js&quot;, &quot;React&quot;, &quot;TypeScript&quot;,
-                </div>
-                <div className="pl-8 text-sky-300">
-                  &quot;Node.js&quot;, &quot;Express&quot;, &quot;Power Platform&quot;
-                </div>
-                <div className="pl-4">],</div>
-                <div className="pl-4">
-                  <span className="text-slate-400">databases:</span>{" "}
-                  <span className="text-emerald-300">&quot;MongoDB, MySQL, SQLite, Dataverse&quot;</span>
-                </div>
-                <div>{"};"}</div>
-
-                <div className="mt-4 pt-4 border-t border-slate-800 text-slate-400 text-xs">
-                  <span className="text-purple-400">console</span>.<span className="text-blue-400">log</span>(
-                  <span className="text-emerald-300">&quot;Delivering high-quality software! 🚀&quot;</span>);
-                </div>
-              </div>
-
-              {/* Card Footer Highlights *
-              <div className="p-4 bg-muted/30 border-t border-border flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <span className="h-2 w-2 rounded-full bg-primary" />
-                  <span>Full-Stack & Enterprise</span>
-                </div>
-                <span className="font-medium text-foreground">Global Remote Ready</span>
-              </div> */}
-            {/* </div> */}
           </div>
         </div>
+      </div>
+
+      <div className="bg-black mx-auto w-[80%] mt-10">
+        <p className="mt-6 text-base leading-relaxed  text-white w-full h-full sm:text-lg px-10 py-3">
+          Full-Stack Developer with 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.
+        </p>
       </div>
 
       {/* Resume Modal */}
