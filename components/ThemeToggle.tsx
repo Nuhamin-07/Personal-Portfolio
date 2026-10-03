@@ -27,7 +27,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggleTheme}
       type="button"
-      className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-all duration-200 hover:border-primary/60 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
+      className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-semibold text-foreground shadow-sm transition-all duration-200 hover:border-primary/60 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary hover:bg-muted hover:text-primary-foreground cursor-pointer"
       aria-label={`Switch to ${isDark ? "Light" : "Dark"} mode`}
       title={`Current: ${isDark ? "Dark Blue-Black" : "Light"} mode. Click to toggle.`}
     >
@@ -40,10 +40,10 @@ export default function ThemeToggle() {
         </>
       ) : (
         <>
-          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500/20 text-foreground transition-all hover:bg-muted hover:text-primary-foreground cursor-pointer">
+          <span className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500/20 text-foreground">
             ☀️
           </span>
-          <span>Light</span>
+          <span className="hover:bg-muted hover:text-primary-foreground cursor-pointer">Light</span>
         </>
       )}
     </button>

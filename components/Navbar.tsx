@@ -77,7 +77,7 @@ export default function Navbar() {
 
             {/* Desktop CTAs & Theme Toggle */}
             <div className="hidden md:flex items-center gap-3">
-              <ThemeToggle />
+              {/* <ThemeToggle /> */}
 
               <button
                 onClick={() => setIsCvOpen(true)}

@@ -58,7 +58,7 @@ export default function Hero() {
               <button
                 onClick={() => setIsCvOpen(true)}
                 type="button"
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-muted hover:border-primary/40 cursor-pointer"
+                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-muted hover:border-primary/40 hover:bg-muted hover:text-primary-foreground cursor-pointer"
               >
                 📄 Preview CV
               </button>
@@ -73,7 +73,7 @@ export default function Hero() {
 
               <a
                 href="#contact"
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-muted"
+                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-5 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-muted hover:text-primary-foreground cursor-pointer"
               >
                 Get In Touch
               </a>
@@ -105,10 +105,10 @@ export default function Hero() {
           </div>
 
           {/* Right Column: Developer Showcase Card */}
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-md rounded-2xl border border-border bg-card shadow-2xl overflow-hidden transition-all hover:border-primary/50">
-              {/* Card Window Header */}
-              <div className="flex items-center justify-between border-b border-border bg-muted/60 px-4 py-3">
+          <div className="lg:col-span-5 flex justify-center w-100 h-100 rounded-full border-1">
+            {/* <div className="relative w-full max-w-md rounded-2xl border border-border bg-card shadow-2xl overflow-hidden transition-all hover:border-primary/50"> */}
+            {/* Card Window Header */}
+            {/* <div className="flex items-center justify-between border-b border-border bg-muted/60 px-4 py-3">
                 <div className="flex items-center gap-2">
                   <div className="h-3 w-3 rounded-full bg-red-500/80" />
                   <div className="h-3 w-3 rounded-full bg-yellow-500/80" />
@@ -116,10 +116,10 @@ export default function Hero() {
                 </div>
                 <span className="font-mono text-xs text-muted-foreground">nuhamin.ts</span>
                 <span className="text-xs text-emerald-500 font-mono font-medium">● Available Remote</span>
-              </div>
+              </div> */}
 
-              {/* Code Snippet Content */}
-              <div className="p-5 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto bg-[#070e1b] text-slate-100">
+            {/* Code Snippet Content */}
+            {/* <div className="p-5 font-mono text-xs sm:text-sm leading-relaxed overflow-x-auto bg-[#070e1b] text-slate-100">
                 <div>
                   <span className="text-purple-400">const</span>{" "}
                   <span className="text-blue-400">engineer</span>{" "}
@@ -163,15 +163,15 @@ export default function Hero() {
                 </div>
               </div>
 
-              {/* Card Footer Highlights */}
+              {/* Card Footer Highlights *
               <div className="p-4 bg-muted/30 border-t border-border flex items-center justify-between text-xs">
                 <div className="flex items-center gap-2 text-muted-foreground">
                   <span className="h-2 w-2 rounded-full bg-primary" />
                   <span>Full-Stack & Enterprise</span>
                 </div>
                 <span className="font-medium text-foreground">Global Remote Ready</span>
-              </div>
-            </div>
+              </div> */}
+            {/* </div> */}
           </div>
         </div>
       </div>
