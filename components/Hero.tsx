@@ -101,9 +101,12 @@ export default function Hero() {
           </div>
 
           {/* Right Column: Developer Showcase Card */}
-          <div className="lg:col-span-5 flex justify-center w-80 h-80 rounded-full">
-            <img src="/nuhamin-img.jpg" alt="Nuhamin" className="w-full h-full object-cover w-80 h-80 rounded-full" />
-
+          <div className="lg:col-span-5 flex justify-center items-center relative w-80 h-80 rounded-full">
+            <img src="/nuhamin-img.jpg" alt="Nuhamin" className="w-full h-full object-cover rounded-full" />
+            <div className="absolute bottom-10 right-[-5%] w-24 h-24 cursor-pointer flex items-center justify-center rounded-full bg-primary text-sm text-white transition-colors hover:bg-primary/80">
+              Hire Me
+              <i className="fa-solid fa-circle-arrow-down text-white"></i>
+            </div>
           </div>
         </div>
       </div>
