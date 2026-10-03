@@ -26,7 +26,7 @@ export default function Hero() {
                 <span>Available for Remote Roles (Global / US / EU)</span>
               </div> */}
 
-              <span className="inline-flex items-center rounded-full border border-border bg-muted/60 px-3 py-1 text-xs font-medium text-muted-foreground">
+              <span className="inline-flex items-center rounded-full border border-border bg-muted/80 px-3 py-1 text-xs font-medium text-white">
                 📍 Addis Ababa, Ethiopia (UTC+3)
               </span>
             </div>
@@ -40,7 +40,7 @@ export default function Hero() {
             </h2>
 
             {/* Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center gap-3.5">
+            {/* <div className="mt-8 flex flex-wrap items-center gap-3.5">
               <a
                 href="#projects"
                 className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:scale-105"
@@ -73,10 +73,10 @@ export default function Hero() {
               >
                 Get In Touch
               </a>
-            </div>
+            </div> */}
 
             {/* Stats Summary Grid */}
-            <div className="mt-10 grid grid-cols-3 gap-3 sm:gap-4">
+            {/* <div className="mt-10 grid grid-cols-3 gap-3 sm:gap-4">
               <div className="rounded-2xl border border-border bg-card/60 p-4 backdrop-blur-sm transition-all hover:border-primary/40">
                 <p className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">4</p>
                 <p className="mt-1 text-xs sm:text-sm font-medium text-muted-foreground">
@@ -97,21 +97,25 @@ export default function Hero() {
                   Remote Proven
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Right Column: Developer Showcase Card */}
-          <div className="lg:col-span-5 flex justify-center w-100 h-100 rounded-full border-1">
-            <img src="/nuhamin-img.jpg" alt="Developer" className="w-full h-full object-cover w-100 h-100 rounded-full" />
+          <div className="lg:col-span-5 flex justify-center w-80 h-80 rounded-full border-1">
+            <img src="/nuhamin-img.jpg" alt="Nuhamin" className="w-full h-full object-cover w-80 h-80 rounded-full" />
 
           </div>
         </div>
       </div>
 
-      <div className="bg-black mx-auto w-[80%] mt-10">
-        <p className="mt-6 text-base leading-relaxed  text-white w-full h-full sm:text-lg px-10 py-3">
+      <div className="bg-primary mx-auto w-[80%] mt-15 flex">
+        <p className="mt-4 text-base leading-relaxed  text-white w-1/2 h-full sm:text-lg px-10 py-3">
           Full-Stack Developer with 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.
         </p>
+        <div className="w-1/2 mt-7 mx-auto align-center">
+          <img src="/nuhamin.jpg" className="h-40 items-center" />
+
+        </div>
       </div>
 
       {/* Resume Modal */}
