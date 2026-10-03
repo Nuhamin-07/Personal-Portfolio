@@ -101,7 +101,7 @@ export default function Hero() {
           </div>
 
           {/* Right Column: Developer Showcase Card */}
-          <div className="lg:col-span-5 flex justify-center w-80 h-80 rounded-full border-1">
+          <div className="lg:col-span-5 flex justify-center w-80 h-80 rounded-full">
             <img src="/nuhamin-img.jpg" alt="Nuhamin" className="w-full h-full object-cover w-80 h-80 rounded-full" />
 
           </div>
@@ -112,9 +112,13 @@ export default function Hero() {
         <p className="mt-4 text-base leading-relaxed  text-white w-1/2 h-full sm:text-lg px-10 py-3">
           Full-Stack Developer with 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.
         </p>
-        <div className="w-1/2 mt-7 mx-auto align-center">
+        <div className="w-1/2 mt-7 mx-auto align-center flex">
           <img src="/nuhamin.jpg" className="h-40 items-center" />
-
+          <div className="flex-col mt-8 ml-[-3%]">
+            <button className="bg-muted rounded-3xl py-2 px-3 text-white mb-4 hover:bg-primary cursor-pointer"><a href="#projects">View Projects</a></button>
+            <br />
+            <button className="bg-black rounded-3xl py-2 px-5 text-white hover:bg-muted-foreground cursor-pointer"><a href="#contact">Contact Me</a></button>
+          </div>
         </div>
       </div>
 
