@@ -254,7 +254,7 @@ export default function Hero() {
               </div>
 
               {/* Soft circular background */}
-              <div className="absolute inset-0 rounded-full bg-[#f0e4d8] dark:bg-[#261a12] shadow-inner" />
+              <div className="absolute inset-0 rounded-full bg-[#f0e4d8] dark:bg-[#261a12] shadow-inner"></div>
 
               {/* Portrait image */}
               <div className="relative w-full h-full rounded-full overflow-hidden shadow-2xl border-4 border-[#faf4ed] dark:border-[#1c130d]">
