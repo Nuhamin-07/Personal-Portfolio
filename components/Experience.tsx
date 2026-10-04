@@ -1,92 +1,287 @@
+"use client";
+
+import { useState, useEffect, useRef, useCallback } from "react";
 import { experiences } from "@/data/experiences";
 import Section from "@/components/shared/Section";
+import {
+  Briefcase,
+  Calendar,
+  MapPin,
+  Sparkles,
+  Building2,
+  CheckCircle2,
+  Pause,
+  Play,
+  ChevronLeft,
+  ChevronRight,
+  Layers,
+} from "lucide-react";
 
+const AUTOPLAY_INTERVAL = 4500; // 4.5 seconds per slide
 
 export default function Experience() {
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isPaused, setIsPaused] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
+  const total = experiences.length;
+
+  const nextSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev + 1) % total);
+    setProgress(0);
+  }, [total]);
+
+  const prevSlide = useCallback(() => {
+    setCurrentIndex((prev) => (prev - 1 + total) % total);
+    setProgress(0);
+  }, [total]);
+
+  const goToSlide = (index: number) => {
+    setCurrentIndex(index);
+    setProgress(0);
+  };
+
+  // Autoplay timer effect
+  useEffect(() => {
+    if (isPaused) return;
+
+    const startTime = Date.now();
+    setProgress(0);
+
+    const progressInterval = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const pct = Math.min(100, (elapsed / AUTOPLAY_INTERVAL) * 100);
+      setProgress(pct);
+    }, 50);
+
+    const timer = setTimeout(() => {
+      nextSlide();
+    }, AUTOPLAY_INTERVAL);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(progressInterval);
+    };
+  }, [currentIndex, isPaused, nextSlide]);
+
   return (
     <Section id="experience">
       {/* Section Header */}
-      <div className="mb-14 text-center md:text-left">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
+      <div className="mb-10 text-center max-w-3xl mx-auto px-4">
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary mb-3">
+          <Layers className="w-3.5 h-3.5" />
           <span>Career Track</span>
         </div>
 
-        <h2 className="mt-3 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
           Professional Experience
         </h2>
 
-        <p className="mt-3 max-w-2xl text-base text-muted-foreground sm:text-lg">
+        <p className="mt-3.5 text-base text-muted-foreground sm:text-lg leading-relaxed">
           Nearly 4 years of hands-on software development experience building web products, enterprise systems, and client solutions.
         </p>
+
+        {/* Carousel Navigation Tabs & Autoplay Toggle */}
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+          {experiences.map((exp, idx) => {
+            const isActive = currentIndex === idx;
+            return (
+              <button
+                key={exp.company + idx}
+                type="button"
+                onClick={() => goToSlide(idx)}
+                className={`inline-flex items-center gap-2 rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
+                  isActive
+                    ? "bg-primary text-primary-foreground shadow-md scale-105 ring-2 ring-primary/30"
+                    : "border border-border/80 bg-card text-muted-foreground hover:bg-muted hover:text-foreground hover:border-primary/40"
+                }`}
+                aria-label={`Go to slide ${idx + 1}: ${exp.company}`}
+              >
+                <span
+                  className={`font-mono text-[11px] px-1.5 py-0.5 rounded-md ${
+                    isActive ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
+                  }`}
+                >
+                  0{idx + 1}
+                </span>
+                <span>{exp.company}</span>
+              </button>
+            );
+          })}
+
+          {/* Pause / Play Autoplay Toggle */}
+          <button
+            type="button"
+            onClick={() => setIsPaused((prev) => !prev)}
+            className="inline-flex items-center justify-center h-9 w-9 rounded-full border border-border/80 bg-card text-muted-foreground hover:bg-muted hover:text-foreground transition-all cursor-pointer ml-1"
+            aria-label={isPaused ? "Resume autoplay" : "Pause autoplay"}
+            title={isPaused ? "Resume autoplay" : "Pause autoplay"}
+          >
+            {isPaused ? <Play className="w-3.5 h-3.5 text-primary fill-primary" /> : <Pause className="w-3.5 h-3.5" />}
+          </button>
+        </div>
       </div>
 
-      {/* Timeline Layout */}
-      <div className="relative border-l-2 border-border ml-3 md:ml-6 pl-6 md:pl-10 space-y-12">
-        {experiences.map((exp, index) => (
-          <div key={exp.company + exp.period} className="relative group">
-            {/* Timeline Node Dot */}
-            <div className="absolute -left-[31px] md:-left-[47px] top-1.5 flex h-6 w-6 items-center justify-center rounded-full border-2 border-primary bg-background shadow-md transition-transform group-hover:scale-125">
-              <div className="h-2 w-2 rounded-full bg-primary" />
+      {/* Main Carousel Slider Section */}
+      <div
+        className="max-w-4xl mx-auto relative px-2 sm:px-4"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Animated Progress Line */}
+        <div className="w-full bg-border/40 h-1.5 rounded-full overflow-hidden mb-6 max-w-md mx-auto">
+          <div
+            className="bg-primary h-full transition-all duration-75 ease-linear rounded-full"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+
+        {/* Carousel Outer Stage with Side Navigation Controls */}
+        <div className="relative">
+          {/* Previous Slide Button */}
+          <button
+            type="button"
+            onClick={prevSlide}
+            className="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 rounded-full border border-border/80 bg-background/90 text-foreground shadow-xl backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 hover:border-primary cursor-pointer active:scale-95"
+            aria-label="Previous experience"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+
+          {/* Next Slide Button */}
+          <button
+            type="button"
+            onClick={nextSlide}
+            className="absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 rounded-full border border-border/80 bg-background/90 text-foreground shadow-xl backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 hover:border-primary cursor-pointer active:scale-95"
+            aria-label="Next experience"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+
+          {/* Slider Slides Container */}
+          <div className="overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-card shadow-xl">
+            <div
+              className="flex transition-transform duration-600 ease-[cubic-bezier(0.25,1,0.5,1)]"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+              {experiences.map((exp, index) => {
+                const formattedIndex = index < 9 ? `0${index + 1}` : `${index + 1}`;
+                return (
+                  <article
+                    key={exp.company + exp.period}
+                    className="w-full shrink-0 p-6 sm:p-8 lg:p-10 flex flex-col justify-between"
+                  >
+                    {/* Slide Top Meta Bar */}
+                    <div>
+                      <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-border/60">
+                        <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
+                          <span className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground font-mono text-sm sm:text-base font-black shadow-sm">
+                            {formattedIndex}
+                          </span>
+
+                          <div className="min-w-0 flex-1">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">
+                                {exp.role}
+                              </h3>
+                              <span className="hidden sm:inline text-muted-foreground/60">•</span>
+                              <span className="text-base sm:text-lg font-semibold text-primary">
+                                {exp.company}
+                              </span>
+                            </div>
+
+                            <div className="mt-1 flex flex-wrap items-center gap-3 text-xs sm:text-sm text-muted-foreground font-medium">
+                              <span className="inline-flex items-center gap-1.5">
+                                <MapPin className="w-3.5 h-3.5 text-primary/70" />
+                                {exp.location}
+                              </span>
+                              <span>•</span>
+                              <span className="inline-flex items-center gap-1.5">
+                                <Briefcase className="w-3.5 h-3.5 text-primary/70" />
+                                {exp.type}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Date Period Badge */}
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 font-mono text-xs sm:text-sm font-semibold text-primary">
+                          <Calendar className="w-4 h-4" />
+                          {exp.period}
+                        </span>
+                      </div>
+
+                      {/* Associated Project Tag */}
+                      {exp.project && (
+                        <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-amber-700 dark:text-amber-300">
+                          <Sparkles className="w-4 h-4 text-amber-500" />
+                          <span>Key Project: {exp.project}</span>
+                        </div>
+                      )}
+
+                      {/* Summary Description */}
+                      <p className="mt-6 text-sm sm:text-base leading-relaxed text-muted-foreground">
+                        {exp.description}
+                      </p>
+
+                      {/* Key Responsibilities List */}
+                      <div className="mt-6">
+                        <h4 className="text-xs font-bold uppercase tracking-wider text-foreground mb-3 flex items-center gap-2">
+                          <Building2 className="w-4 h-4 text-primary" />
+                          <span>Key Responsibilities & Impact</span>
+                        </h4>
+                        <ul className="space-y-2.5">
+                          {exp.responsibilities.map((item, idx) => (
+                            <li
+                              key={idx}
+                              className="flex items-start gap-3 text-xs sm:text-sm text-muted-foreground"
+                            >
+                              <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                              <span className="leading-relaxed">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+
+                    {/* Technologies Stack */}
+                    <div className="mt-8 pt-6 border-t border-border/60">
+                      <h5 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3">
+                        Technologies & Tools Used
+                      </h5>
+                      <div className="flex flex-wrap gap-2">
+                        {exp.technologies.map((tech) => (
+                          <span
+                            key={tech}
+                            className="inline-flex items-center rounded-full bg-primary/10 border border-primary/15 px-3.5 py-1 font-mono text-xs font-medium text-primary dark:bg-primary/15 dark:text-primary-foreground"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
-
-            {/* Experience Card */}
-            <article className="rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-primary/40 hover:shadow-md md:p-8">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-foreground sm:text-2xl">
-                    {exp.role}
-                  </h3>
-                  <div className="mt-1 flex flex-wrap items-center gap-2">
-                    <span className="text-base font-semibold text-primary">
-                      {exp.company}
-                    </span>
-                    <span className="text-muted-foreground">•</span>
-                    <span className="text-xs font-medium text-muted-foreground rounded-full bg-muted px-2.5 py-0.5">
-                      {exp.type}
-                    </span>
-                  </div>
-                </div>
-
-                <span className="inline-flex items-center rounded-full border border-border bg-muted/50 px-3 py-1 font-mono text-xs font-semibold text-foreground">
-                  {exp.period}
-                </span>
-              </div>
-
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                {exp.description}
-              </p>
-
-              {/* Responsibilities List */}
-              <div className="mt-6">
-                <h4 className="text-xs font-semibold uppercase tracking-wider text-foreground">
-                  Key Contributions & Achievements
-                </h4>
-                <ul className="mt-3 space-y-2.5">
-                  {exp.responsibilities.map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-3 text-sm text-muted-foreground">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                      <span className="leading-relaxed">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Technologies */}
-              <div className="mt-6 pt-5 border-t border-border/60">
-                <div className="flex flex-wrap gap-1.5">
-                  {exp.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="rounded-md border border-border bg-muted/40 px-2.5 py-1 font-mono text-xs text-foreground/80"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </article>
           </div>
-        ))}
+        </div>
+
+        {/* Carousel Pagination Indicator Dots */}
+        <div className="mt-6 flex items-center justify-center gap-2">
+          {experiences.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => goToSlide(idx)}
+              className={`h-2.5 transition-all duration-300 rounded-full cursor-pointer ${
+                currentIndex === idx
+                  ? "w-8 bg-primary"
+                  : "w-2.5 bg-border hover:bg-muted-foreground/40"
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </Section>
   );
