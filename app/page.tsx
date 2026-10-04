@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import StatsSummary from "@/components/StatsSummary";
 import Projects from "@/components/Projects";
 import Experience from "@/components/Experience";
 import ResumeSection from "@/components/ResumeSection";
@@ -16,6 +17,7 @@ export default function Home() {
       <Navbar />
       <main className="flex-1 w-full">
         <Hero />
+        <StatsSummary />
         <Projects />
         <Experience />
         <ResumeSection />
