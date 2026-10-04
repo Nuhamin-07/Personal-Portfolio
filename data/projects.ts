@@ -8,8 +8,7 @@ export interface Project {
     technologies: string[];
     githubUrl?: string;
     liveUrl?: string;
-    gradient: string;
-    icon: string;
+    image: string;
     isFeatured?: boolean;
 }
 
@@ -27,8 +26,7 @@ export const projects: Project[] = [
         technologies: ["React", "TypeScript", "Node.js", "Express.js", "SQLite", "Session Auth"],
         githubUrl: "https://github.com/Nuhamin-07/Task-Manager",
         liveUrl: "https://nuhamin-task-management.netlify.app/",
-        gradient: "from-slate-900/40 via-blue-950/30 to-slate-900/40",
-        icon: "⚡",
+        image: "/projects/task-management.jpg",
         isFeatured: true,
     },
     {
@@ -44,8 +42,7 @@ export const projects: Project[] = [
         technologies: ["Next.js", "TypeScript", "Tailwind CSS", "React", "Node.js"],
         githubUrl: "https://github.com/Nuhamin-07/PrintForge",
         liveUrl: "https://printforge-3d-models.netlify.app/",
-        gradient: "from-blue-950/40 via-slate-900/30 to-blue-900/40",
-        icon: "🖨️",
+        image: "/projects/print-forge.jpg",
         isFeatured: true,
     },
     {
@@ -60,8 +57,7 @@ export const projects: Project[] = [
         technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
         githubUrl: "https://github.com/Nuhamin-07/ecommerce-shop",
         liveUrl: "https://nuhamin-ecommerce-shop.netlify.app/",
-        gradient: "from-slate-900/40 via-indigo-950/30 to-slate-900/40",
-        icon: "🛍️",
+        image: "/projects/ecommerce.jpg",
         isFeatured: true,
     },
     {
@@ -76,8 +72,7 @@ export const projects: Project[] = [
         technologies: ["Next.js", "TypeScript", "Tailwind CSS", "React"],
         githubUrl: "https://github.com/Nuhamin-07/tattoo-studio",
         liveUrl: "https://tattoo-studio-site.netlify.app/",
-        gradient: "from-slate-950/40 via-slate-900/30 to-blue-950/40",
-        icon: "🎨",
+        image: "/projects/tatoo.jpg",
         isFeatured: true,
     },
     {
@@ -90,8 +85,7 @@ export const projects: Project[] = [
             "Built internal and external portals and automated academic processes with Power Pages and Dataverse."
         ],
         technologies: ["Power Apps", "Power Pages", "Power Automate", "Dataverse", "Power BI", "JavaScript", "Liquid", "FetchXML"],
-        gradient: "from-blue-900/40 via-slate-900/30 to-indigo-950/40",
-        icon: "🎓",
+        image: "/projects/sims.jpg",
         isFeatured: true,
     },
     {
@@ -104,8 +98,7 @@ export const projects: Project[] = [
             "Participated in testing, deployment, and database maintenance activities."
         ],
         technologies: ["Java", "Java Swing", "MySQL", "SQL"],
-        gradient: "from-slate-900/40 via-slate-950/30 to-blue-950/40",
-        icon: "🏥",
+        image: "/projects/hms-two.jpg",
         isFeatured: false,
     },
     {
@@ -119,8 +112,7 @@ export const projects: Project[] = [
             "Built Cypress end-to-end automation tests and BDD unit tests."
         ],
         technologies: ["React", "Material UI", "React Query", "Axios", "Cypress", "JavaScript", "GitLab"],
-        gradient: "from-slate-900/40 via-blue-900/30 to-slate-950/40",
-        icon: "☁️",
+        image: "/projects/merchant-portal.jpg",
         isFeatured: true,
     },
     {
@@ -133,8 +125,7 @@ export const projects: Project[] = [
             "Built automated testing pipelines using Cypress and Puppeteer."
         ],
         technologies: ["React", "Redux", "JavaScript", "Sass", "CSS", "Cypress", "Puppeteer"],
-        gradient: "from-blue-950/40 via-slate-900/30 to-slate-900/40",
-        icon: "🏢",
+        image: "/projects/erp.jpg",
         isFeatured: false,
     },
 ];
