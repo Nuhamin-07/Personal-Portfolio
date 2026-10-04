@@ -21,10 +21,10 @@ export default function Hero() {
 
     const tl = gsap.timeline();
     tl.fromTo(
-        qsa(".hero-headline-line"),
-        { y: 70, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.75, stagger: 0.15, ease: "power4.out" }
-      )
+      qsa(".hero-headline-line"),
+      { y: 70, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.75, stagger: 0.15, ease: "power4.out" }
+    )
       .fromTo(
         qs(".hero-location"),
         { x: -24, opacity: 0 },
@@ -83,25 +83,25 @@ export default function Hero() {
     // Spinning portrait ring
     const ringAnim = ringRef.current
       ? gsap.to(ringRef.current, {
-          rotation: 360,
-          duration: 16,
-          repeat: -1,
-          ease: "none",
-          transformOrigin: "50% 50%",
-        })
+        rotation: 360,
+        duration: 16,
+        repeat: -1,
+        ease: "none",
+        transformOrigin: "50% 50%",
+      })
       : null;
 
     // Glow pulse
     const glowEl = qs(".hero-glow");
     const glowAnim = glowEl
       ? gsap.to(glowEl, {
-          scale: 1.18,
-          opacity: 0.65,
-          duration: 2.8,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        })
+        scale: 1.18,
+        opacity: 0.65,
+        duration: 2.8,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut",
+      })
       : null;
 
     return () => {
