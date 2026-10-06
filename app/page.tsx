@@ -22,7 +22,7 @@ export default function Home() {
         <Experience />
         <ResumeSection />
         <Skills />
-        {/* <RemoteReadiness /> */}
+        <RemoteReadiness />
         <Certifications />
         <About />
         <ContactCTA />
