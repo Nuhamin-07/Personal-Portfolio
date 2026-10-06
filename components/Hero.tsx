@@ -131,7 +131,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 flex flex-col gap-6 lg:gap-8 relative z-10">
+      <div className="mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-12 flex flex-col gap-6 lg:gap-8 relative z-10">
         {/* TOP GRID */}
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-8 pt-1">
 

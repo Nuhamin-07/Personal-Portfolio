@@ -39,21 +39,21 @@ export default function StatsSummary() {
                 </div>
                 <div className="w-[50%] ml-10 bg-gray-100 p-5 h-fit">
                     <div className="flex border-b border-gray-300 py-6">
-                        <Image src="/frontend.jpg" alt="frontend" width={80} height={80} className="" />
+                        <Image src="/frontend.jpg" alt="frontend" width={80} height={80} className="w-20 h-20 object-cover rounded-xl shrink-0" style={{ width: "auto", height: "auto" }} />
                         <div className="ml-5">
                             <h3 className="text-lg font-semibold text-foreground">Frontend Development</h3>
                             <p className="text-sm text-muted-foreground">Building responsive and user-friendly interfaces with React, Next.js, and TypeScript.</p>
                         </div>
                     </div>
                     <div className="flex border-b border-gray-300 py-6">
-                        <Image src="/fullstack.jpg" alt="fullstack" width={80} height={80} className="" />
+                        <Image src="/fullstack.jpg" alt="fullstack" width={80} height={80} className="w-20 h-20 object-cover rounded-xl shrink-0" style={{ width: "auto", height: "auto" }} />
                         <div className="ml-5">
                             <h3 className="text-lg font-semibold text-foreground">Fullstack Development</h3>
                             <p className="text-sm text-muted-foreground">Building full-stack web applications with React, Next.js, TypeScript, Node.js, and Express.js.</p>
                         </div>
                     </div>
                     <div className="flex py-6">
-                        <Image src="/end-to-end.jpg" alt="end-to-end" width={80} height={80} className="" />
+                        <Image src="/end-to-end.jpg" alt="end-to-end" width={80} height={80} className="w-20 h-20 object-cover rounded-xl shrink-0" style={{ width: "auto", height: "auto" }} />
                         <div className="ml-5">
                             <h3 className="text-lg font-semibold text-foreground">End-to-End Automation Testing</h3>
                             <p className="text-sm text-muted-foreground">Building end-to-end automation test solutions with Cypress.js.</p>
