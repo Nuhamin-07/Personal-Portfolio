@@ -66,7 +66,7 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full bg-[#fdfbf7]/95 dark:bg-[#120c08]/95 backdrop-blur-md transition-all duration-200">
-        <div className="mx-auto max-w-7xl px-6 sm:px-4 lg:px-8">
+        <div className="mx-auto max-w-[1440px] px-6 sm:px-4 lg:px-8">
           <div className="flex h-24 sm:h-28 items-center justify-between">
             {/* Logo / Brand - Flush with Left Edge */}
             <Link
