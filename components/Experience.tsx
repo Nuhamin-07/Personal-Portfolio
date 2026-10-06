@@ -1,380 +1,265 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { experiences, ExperienceItem } from "@/data/experiences";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { experiences } from "@/data/experiences";
 import Section from "@/components/shared/Section";
-import {
-  Briefcase,
-  Calendar,
-  MapPin,
-  Sparkles,
-  Building2,
-  CheckCircle2,
-  Pause,
-  Play,
-  ChevronLeft,
-  ChevronRight,
-  Layers,
-} from "lucide-react";
-
-const AUTOPLAY_INTERVAL = 3000; // 3 seconds display time per experience
-const ANIMATION_DURATION = 1400; // 1400ms smooth overlap transition duration
+import SkillIcon from "@/components/shared/SkillIcon";
+import { ArrowUpRight } from "lucide-react";
 
 export default function Experience() {
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [incomingIndex, setIncomingIndex] = useState<number | null>(null);
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
-  const [isSlideActive, setIsSlideActive] = useState<boolean>(false);
-  const [isPaused, setIsPaused] = useState<boolean>(false);
-  const [progress, setProgress] = useState<number>(0);
-  const [reducedMotion, setReducedMotion] = useState<boolean>(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const cardElementsRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const total = experiences.length;
-
-  // Check for prefers-reduced-motion
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mediaQuery.matches);
+    gsap.registerPlugin(ScrollTrigger);
 
-    const handleChange = (e: MediaQueryListEvent) => {
-      setReducedMotion(e.matches);
-    };
+    const ctx = gsap.context(() => {
+      const cards = cardElementsRef.current.filter(Boolean) as HTMLDivElement[];
 
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
+      cards.forEach((card, i) => {
+        const cardInner = card.querySelector(".card-3d-inner") as HTMLDivElement | null;
+        const cardGlow = card.querySelector(".card-3d-glow") as HTMLDivElement | null;
+
+        // 1. GSAP ScrollTrigger for 3D Perspective Stacking on Scroll (using rotationX & z)
+        if (i < cards.length - 1) {
+          const nextCard = cards[i + 1];
+
+          ScrollTrigger.create({
+            trigger: nextCard,
+            start: "top 85%",
+            end: "top 20%",
+            scrub: 0.5,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              // Smooth, pronounced 3D spatial transformation into Z-axis
+              const scale = 1 - progress * 0.055;
+              const opacity = 1 - progress * 0.2;
+              const rotationX = progress * 6; // 6deg backwards 3D tilt
+              const z = progress * -80;
+              const y = progress * -16;
+
+              gsap.to(card, {
+                scale,
+                opacity,
+                rotationX,
+                z,
+                y,
+                transformOrigin: "center top",
+                duration: 0.1,
+                ease: "none",
+                overwrite: "auto",
+              });
+            },
+          });
+        }
+
+        // 2. 100% Warning-Free 3D Parallax Mouse Tilt via Native CSS & Smooth Animation
+        if (cardInner) {
+          let reqId: number | null = null;
+          let targetRx = 0;
+          let targetRy = 0;
+          let currentRx = 0;
+          let currentRy = 0;
+
+          const updateTilt = () => {
+            currentRx += (targetRx - currentRx) * 0.12;
+            currentRy += (targetRy - currentRy) * 0.12;
+
+            cardInner.style.transform = `perspective(1000px) rotateX(${currentRx}deg) rotateY(${currentRy}deg)`;
+
+            if (Math.abs(targetRx - currentRx) > 0.01 || Math.abs(targetRy - currentRy) > 0.01) {
+              reqId = requestAnimationFrame(updateTilt);
+            } else {
+              reqId = null;
+            }
+          };
+
+          const onMouseMove = (e: MouseEvent) => {
+            const rect = card.getBoundingClientRect();
+            const relX = (e.clientX - rect.left) / rect.width - 0.5; // -0.5 to 0.5
+            const relY = (e.clientY - rect.top) / rect.height - 0.5; // -0.5 to 0.5
+
+            targetRy = relX * 12; // -6 to 6 deg
+            targetRx = -relY * 12; // -6 to 6 deg
+
+            if (!reqId) {
+              reqId = requestAnimationFrame(updateTilt);
+            }
+
+            // Move ambient specular sheen
+            if (cardGlow) {
+              const glowX = (relX + 0.5) * 100;
+              const glowY = (relY + 0.5) * 100;
+              cardGlow.style.background = `radial-gradient(circle at ${glowX}% ${glowY}%, rgba(255,255,255,0.08) 0%, transparent 65%)`;
+              cardGlow.style.opacity = "1";
+            }
+          };
+
+          const onMouseLeave = () => {
+            targetRx = 0;
+            targetRy = 0;
+            if (!reqId) {
+              reqId = requestAnimationFrame(updateTilt);
+            }
+            if (cardGlow) {
+              cardGlow.style.opacity = "0";
+            }
+          };
+
+          card.addEventListener("mousemove", onMouseMove);
+          card.addEventListener("mouseleave", onMouseLeave);
+        }
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
   }, []);
 
-  // Bottom-to-top overlapping transition trigger
-  const startTransition = useCallback(
-    (targetIndex: number) => {
-      if (isAnimating || targetIndex === currentIndex) return;
-
-      setIsAnimating(true);
-      setIncomingIndex(targetIndex);
-      setIsSlideActive(false);
-    },
-    [currentIndex, isAnimating]
-  );
-
-  // Next and Previous handlers
-  const nextSlide = useCallback(() => {
-    const nextIdx = (currentIndex + 1) % total;
-    startTransition(nextIdx);
-  }, [currentIndex, total, startTransition]);
-
-  const prevSlide = useCallback(() => {
-    const prevIdx = (currentIndex - 1 + total) % total;
-    startTransition(prevIdx);
-  }, [currentIndex, total, startTransition]);
-
-  const goToSlide = (index: number) => {
-    startTransition(index);
-  };
-
-  // Two-phase animation trigger: once incoming card is mounted at initial position (translateY 75%), animate to translateY(0%)
-  useEffect(() => {
-    if (incomingIndex !== null && !isSlideActive) {
-      const raf1 = requestAnimationFrame(() => {
-        const raf2 = requestAnimationFrame(() => {
-          setIsSlideActive(true);
-        });
-        return () => cancelAnimationFrame(raf2);
-      });
-      return () => cancelAnimationFrame(raf1);
-    }
-  }, [incomingIndex, isSlideActive]);
-
-  // Complete transition after duration finishes
-  useEffect(() => {
-    if (incomingIndex === null || !isSlideActive) return;
-
-    const duration = reducedMotion ? 200 : ANIMATION_DURATION;
-    const timer = setTimeout(() => {
-      setCurrentIndex(incomingIndex);
-      setIncomingIndex(null);
-      setIsSlideActive(false);
-      setIsAnimating(false);
-      setProgress(0);
-    }, duration);
-
-    return () => clearTimeout(timer);
-  }, [incomingIndex, isSlideActive, reducedMotion]);
-
-  // Autoplay timer effect
-  useEffect(() => {
-    if (isPaused || isAnimating) return;
-
-    const startTime = Date.now();
-    setProgress(0);
-
-    const progressInterval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const pct = Math.min(100, (elapsed / AUTOPLAY_INTERVAL) * 100);
-      setProgress(pct);
-    }, 50);
-
-    const timer = setTimeout(() => {
-      nextSlide();
-    }, AUTOPLAY_INTERVAL);
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(progressInterval);
-    };
-  }, [currentIndex, isPaused, isAnimating, nextSlide]);
-
-  // Render Card Content Helper
-  const renderCardContent = (exp: ExperienceItem, index: number) => {
-    const formattedIndex = index < 9 ? `0${index + 1}` : `${index + 1}`;
-    return (
-      <div className="w-full h-full flex flex-col justify-between">
-        <div>
-          {/* Card Top Meta Header */}
-          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-border/60">
-            <div className="flex items-center gap-3.5 sm:gap-4 flex-1 min-w-0">
-              <span className="flex h-10 w-10 sm:h-12 sm:w-12 shrink-0 items-center justify-center rounded-2xl bg-primary text-primary-foreground font-mono text-sm sm:text-base font-black shadow-sm">
-                {formattedIndex}
-              </span>
-
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold tracking-tight text-foreground">
-                    {exp.role}
-                  </h3>
-                  <span className="hidden sm:inline text-muted-foreground/60">•</span>
-                  <span className="text-base sm:text-lg font-semibold text-primary">
-                    {exp.company}
-                  </span>
-                </div>
-
-                <div className="mt-1 flex flex-wrap items-center gap-3 text-xs sm:text-sm text-muted-foreground font-medium">
-                  <span className="inline-flex items-center gap-1.5">
-                    <MapPin className="w-3.5 h-3.5 text-primary/70" />
-                    {exp.location}
-                  </span>
-                  <span>•</span>
-                  <span className="inline-flex items-center gap-1.5">
-                    <Briefcase className="w-3.5 h-3.5 text-primary/70" />
-                    {exp.type}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Date Period Badge */}
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 font-mono text-xs sm:text-sm font-semibold text-primary">
-              <Calendar className="w-4 h-4" />
-              {exp.period}
-            </span>
-          </div>
-
-          {/* Associated Project Tag */}
-          {exp.project && (
-            <div className="mt-6 inline-flex items-center gap-2 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3.5 py-1.5 text-xs sm:text-sm font-semibold text-amber-700 dark:text-amber-300">
-              <Sparkles className="w-4 h-4 text-amber-500" />
-              <span>Key Project: {exp.project}</span>
-            </div>
-          )}
-
-          {/* Summary Description */}
-          <p className="mt-6 text-sm sm:text-base leading-relaxed text-muted-foreground">
-            {exp.description}
-          </p>
-
-          {/* Key Responsibilities List */}
-          <div className="mt-6">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-foreground mb-3 flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-primary" />
-              <span>Key Responsibilities & Impact</span>
-            </h4>
-            <ul className="space-y-2.5">
-              {exp.responsibilities.map((item, idx) => (
-                <li
-                  key={idx}
-                  className="flex items-start gap-3 text-xs sm:text-sm text-muted-foreground"
-                >
-                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                  <span className="leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        {/* Technologies Stack */}
-        <div className="mt-8 pt-6 border-t border-border/60">
-          <h5 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-3">
-            Technologies & Tools Used
-          </h5>
-          <div className="flex flex-wrap gap-2">
-            {exp.technologies.map((tech) => (
-              <span
-                key={tech}
-                className="inline-flex items-center rounded-full bg-primary/10 border border-primary/15 px-3.5 py-1 font-mono text-xs font-medium text-primary dark:bg-primary/15 dark:text-primary-foreground"
-              >
-                {tech}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   return (
-    <Section id="experience">
-      {/* Section Header */}
-      <div className="mb-10 text-center max-w-3xl mx-auto px-4">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary mb-3">
-          <Layers className="w-3.5 h-3.5" />
-          <span>Career Track</span>
+    <Section id="experience" className="relative pt-12 pb-36 sm:pb-48">
+      {/* ── 1. Section Header ── */}
+      <div className="mb-14 sm:mb-18 max-w-4xl">
+        <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold tracking-widest text-[#8b4513] dark:text-[#c26510] uppercase mb-4">
+          <span className="inline-block w-6 h-[2px] bg-[#8b4513] dark:bg-[#c26510]" />
+          <span>[ 03 / CAREER & TRACK RECORD ]</span>
         </div>
 
-        <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-          Professional Experience
+        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0] leading-[1.05]">
+          Professional <br className="hidden sm:inline" />
+          <span className="text-[#8b4513] dark:text-[#c26510]">Experience.</span>
         </h2>
 
-        <p className="mt-3.5 text-base text-muted-foreground sm:text-lg leading-relaxed">
-          Nearly 4 years of hands-on software development experience building web products, enterprise systems, and client solutions.
+        <p className="mt-4 text-base sm:text-lg text-[#7c6455] dark:text-[#a89587] max-w-2xl font-medium leading-relaxed">
+          Transforming complex business requirements into high-performance, elegant software systems and scalable enterprise architectures.
         </p>
-
-        {/* Navigation Tabs & Autoplay Toggle */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
-          {experiences.map((exp, idx) => {
-            const isActive = currentIndex === idx || incomingIndex === idx;
-            return (
-              <button
-                key={exp.company + idx}
-                type="button"
-                onClick={() => goToSlide(idx)}
-                disabled={isAnimating}
-                className={`inline-flex items-center gap-2 rounded-full px-4 sm:px-5 py-2 text-xs sm:text-sm font-bold transition-all duration-300 cursor-pointer ${
-                  isActive
-                    ? "bg-primary text-primary-foreground shadow-md scale-105 ring-2 ring-primary/30"
-                    : "border border-border/80 bg-card text-muted-foreground hover:bg-muted hover:text-foreground hover:border-primary/40"
-                }`}
-                aria-label={`Go to experience ${idx + 1}: ${exp.company}`}
-              >
-                <span
-                  className={`font-mono text-[11px] px-1.5 py-0.5 rounded-md ${
-                    isActive ? "bg-white/20 text-white" : "bg-muted text-muted-foreground"
-                  }`}
-                >
-                  0{idx + 1}
-                </span>
-                <span>{exp.company}</span>
-              </button>
-            );
-          })}
-
-          {/* Pause / Play Autoplay Toggle */}
-          <button
-            type="button"
-            onClick={() => setIsPaused((prev) => !prev)}
-            className="inline-flex items-center justify-center h-9 w-9 rounded-full border border-border/80 bg-card text-muted-foreground hover:bg-muted hover:text-foreground transition-all cursor-pointer ml-1"
-            aria-label={isPaused ? "Resume autoplay" : "Pause autoplay"}
-            title={isPaused ? "Resume autoplay" : "Pause autoplay"}
-          >
-            {isPaused ? <Play className="w-3.5 h-3.5 text-primary fill-primary" /> : <Pause className="w-3.5 h-3.5" />}
-          </button>
-        </div>
       </div>
 
-      {/* Main Experience Card Stage */}
+      {/* ── 2. 3D Perspective Card Deck Container ── */}
       <div
-        className="max-w-4xl mx-auto relative px-2 sm:px-4"
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
+        ref={containerRef}
+        className="relative space-y-12 sm:space-y-16 [perspective:1400px] [transform-style:preserve-3d]"
       >
-        {/* Animated Progress Bar */}
-        <div className="w-full bg-border/40 h-1.5 rounded-full overflow-hidden mb-6 max-w-md mx-auto">
-          <div
-            className="bg-primary h-full transition-all duration-75 ease-linear rounded-full"
-            style={{ width: `${progress}%` }}
-          />
-        </div>
+        {experiences.map((exp, index) => {
+          const formattedIndex = index < 9 ? `0${index + 1}` : `${index + 1}`;
 
-        {/* Card Stage Container with Side Navigation Controls */}
-        <div className="relative">
-          {/* Previous Slide Button */}
-          <button
-            type="button"
-            onClick={prevSlide}
-            disabled={isAnimating}
-            className="absolute -left-3 sm:-left-6 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 rounded-full border border-border/80 bg-background/90 text-foreground shadow-xl backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 hover:border-primary cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Previous experience"
-          >
-            <ChevronLeft className="h-5 w-5" />
-          </button>
+          // Split role into two lines for giant editorial title
+          const roleParts = exp.role.split(" ");
+          const line1 = roleParts[0];
+          const line2 = roleParts.slice(1).join(" ") || "Developer";
 
-          {/* Next Slide Button */}
-          <button
-            type="button"
-            onClick={nextSlide}
-            disabled={isAnimating}
-            className="absolute -right-3 sm:-right-6 top-1/2 -translate-y-1/2 z-30 h-11 w-11 sm:h-12 sm:w-12 rounded-full border border-border/80 bg-background/90 text-foreground shadow-xl backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 hover:border-primary cursor-pointer active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-            aria-label="Next experience"
-          >
-            <ChevronRight className="h-5 w-5" />
-          </button>
+          // Breathing room below navbar (7rem start, 2.75rem stacking steps)
+          const stickyTopOffset = `calc(7rem + ${index * 2.75}rem)`;
 
-          {/* Overlapping Card Container Stage */}
-          <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl border border-border/80 bg-card shadow-xl">
-            {/* 1. Layout Spacer (invisible, in DOM flow to maintain responsive section height) */}
+          return (
             <div
-              className="invisible pointer-events-none select-none p-6 sm:p-8 lg:p-10"
-              aria-hidden="true"
+              key={exp.id || index}
+              ref={(el) => {
+                cardElementsRef.current[index] = el;
+              }}
+              style={{
+                top: stickyTopOffset,
+                zIndex: index + 10,
+              }}
+              className="sticky will-change-transform [transform-style:preserve-3d]"
             >
-              {renderCardContent(experiences[currentIndex], currentIndex)}
-            </div>
+              {/* 3D Card Inner Wrapper with Parallax Tilt */}
+              <article className="card-3d-inner group relative overflow-hidden rounded-[2.2rem] sm:rounded-[3rem] p-8 sm:p-12 lg:p-14 border border-white/[0.14] border-t-2 border-t-white/[0.3] bg-[#14110e] text-[#f2ede6] shadow-[0_30px_70px_rgba(0,0,0,0.6)] dark:shadow-[0_45px_100px_rgba(0,0,0,0.95)] hover:border-white/25 transition-colors [transform-style:preserve-3d] flex flex-col justify-between">
+                {/* Dynamic Specular Sheen Glow on 3D Tilt */}
+                <div
+                  className="card-3d-glow pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 rounded-[2.2rem] sm:rounded-[3rem]"
+                  style={{
+                    background:
+                      "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.08) 0%, transparent 65%)",
+                  }}
+                />
 
-            {/* 2. Current Card (Layer 1 - z-index 10, stays stationary behind) */}
-            <article
-              className="absolute inset-0 z-10 w-full h-full p-6 sm:p-8 lg:p-10 bg-card rounded-2xl sm:rounded-3xl border border-border/80 shadow-md flex flex-col justify-between overflow-y-auto"
-              style={{ transform: "translateY(0)" }}
-            >
-              {renderCardContent(experiences[currentIndex], currentIndex)}
-            </article>
+                {/* Subtle Ambient Index Watermark */}
+                <div
+                  className="absolute right-6 -top-6 sm:-top-10 font-black text-8xl sm:text-[11rem] text-white/[0.025] select-none pointer-events-none"
+                  aria-hidden="true"
+                >
+                  {formattedIndex}
+                </div>
 
-            {/* 3. Incoming Card (Layer 2 - z-index 20, emerges from bottom inside container & slides up over current card) */}
-            {incomingIndex !== null && (
-              <article
-                className="absolute inset-0 z-20 w-full h-full p-6 sm:p-8 lg:p-10 bg-card rounded-2xl sm:rounded-3xl border border-border/80 border-t-2 border-t-primary/40 shadow-[0_-15px_40px_rgba(0,0,0,0.18)] dark:shadow-[0_-15px_40px_rgba(0,0,0,0.7)] flex flex-col justify-between overflow-y-auto"
-                style={{
-                  transition: reducedMotion
-                    ? "opacity 200ms ease"
-                    : "transform 1400ms cubic-bezier(0.22, 1, 0.36, 1)",
-                  transform: reducedMotion
-                    ? "translateY(0)"
-                    : isSlideActive
-                    ? "translateY(0%) scale(1)"
-                    : "translateY(75%) scale(0.98)",
-                  opacity: reducedMotion ? (isSlideActive ? 1 : 0) : 1,
-                }}
-              >
-                {renderCardContent(experiences[incomingIndex], incomingIndex)}
+                {/* ── TOP ROW: Giant Two-Line Title + Clean Year & Meta (with 3D pop) ── */}
+                <div className="relative z-10 flex flex-col sm:flex-row sm:items-start justify-between gap-6 [transform:translateZ(20px)]">
+                  {/* Left: Giant Two-Line Headline */}
+                  <div>
+                    <h3 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[0.98] text-[#ffffff]">
+                      <span className="block">{line1}</span>
+                      <span className="block text-[#827a72]">{line2}</span>
+                    </h3>
+                    <a
+                      href={exp.companyUrl || "#"}
+                      target={exp.companyUrl ? "_blank" : undefined}
+                      rel={exp.companyUrl ? "noopener noreferrer" : undefined}
+                      className="inline-flex items-center gap-1.5 mt-3 sm:mt-4 text-base sm:text-xl font-bold text-[#c7b89f] hover:text-[#ffffff] transition-colors tracking-tight group/link"
+                    >
+                      <span>@ {exp.company}</span>
+                      <ArrowUpRight className="w-4 h-4 text-[#c7b89f] group-hover/link:text-[#ffffff] transition-transform group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
+                    </a>
+                  </div>
+
+                  {/* Right: Clean Year Badge & Location */}
+                  <div className="flex flex-wrap sm:flex-col sm:items-end gap-2 text-xs sm:text-sm text-[#9e958b]">
+                    <div className="inline-flex items-center gap-2 bg-white/[0.08] border border-white/10 px-4 py-1.5 rounded-full text-white font-bold text-xs sm:text-sm tracking-wide shadow-xs">
+                      {exp.isCurrent && (
+                        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                      )}
+                      <span>{exp.period}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-[#827a72] mt-0.5 font-medium">
+                      <span>{exp.location}</span>
+                      <span>•</span>
+                      <span>{exp.type}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* ── MIDDLE ROW: Single Unified Technology Stack Pill Stream (with 3D pop) ── */}
+                <div className="relative z-10 my-6 sm:my-7 flex flex-wrap items-center gap-2 text-xs font-medium text-[#b5aba0] [transform:translateZ(15px)]">
+                  {exp.technologies.map((tech) => (
+                    <span
+                      key={tech}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-[#f2ede6] hover:bg-white/[0.09] hover:border-white/20 transition-all"
+                    >
+                      <SkillIcon name={tech} className="w-3.5 h-3.5" />
+                      <span>{tech}</span>
+                    </span>
+                  ))}
+                </div>
+
+                {/* ── BOTTOM ROW: Narrative Summary & Key Engineering Highlights (with 3D pop) ── */}
+                <div className="relative z-10 pt-6 sm:pt-7 border-t border-white/[0.08] flex flex-col lg:flex-row lg:items-start justify-between gap-6 [transform:translateZ(10px)]">
+                  {/* Left Narrative */}
+                  <div className="flex items-start gap-3 max-w-2xl">
+                    <span className="text-xl text-[#c7b89f] select-none leading-none mt-0.5">
+                      ✦
+                    </span>
+                    <p className="text-sm sm:text-base leading-relaxed text-[#a8a096] font-normal">
+                      {exp.description}
+                    </p>
+                  </div>
+
+                  {/* Right Key Deliverable Highlights */}
+                  <div className="flex flex-col gap-2 shrink-0 max-w-md">
+                    {exp.responsibilities.slice(0, 2).map((item, idx) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-2 text-xs sm:text-sm text-[#d4c3b7] leading-relaxed"
+                      >
+                        <span className="text-[#c7b89f] font-bold mt-0.5 select-none">✦</span>
+                        <span>{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </article>
-            )}
-          </div>
-        </div>
-
-        {/* Pagination Indicator Dots */}
-        <div className="mt-6 flex items-center justify-center gap-2">
-          {experiences.map((_, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => goToSlide(idx)}
-              disabled={isAnimating}
-              className={`h-2.5 transition-all duration-300 rounded-full cursor-pointer ${
-                (currentIndex === idx && incomingIndex === null) || incomingIndex === idx
-                  ? "w-8 bg-primary"
-                  : "w-2.5 bg-border hover:bg-muted-foreground/40"
-              }`}
-              aria-label={`Go to experience ${idx + 1}`}
-            />
-          ))}
-        </div>
+            </div>
+          );
+        })}
       </div>
     </Section>
   );
