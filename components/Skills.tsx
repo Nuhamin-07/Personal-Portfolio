@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Section from "@/components/shared/Section";
+import SectionHeader from "@/components/shared/SectionHeader";
 import SkillIcon from "@/components/shared/SkillIcon";
 import { skillCategories, DetailedSkill } from "@/data/skills";
 import { Search, X, Sparkles, ChevronRight, Award } from "lucide-react";
@@ -59,19 +60,18 @@ export default function Skills() {
 
   return (
     <Section id="skills">
-      {/* 1. Main Header - Matched directly to reference design */}
-      <div className="text-center max-w-3xl mx-auto px-4">
-        <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">
-          Skills
-        </h2>
-
-        <p className="mt-3.5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
-          Here are some of my core skills and technologies on which I have been working for the past 4 years.
-        </p>
-      </div>
+      {/* 1. Reusable Editorial Section Header */}
+      <SectionHeader
+        tag="[ 04 / TECH & CAPABILITIES ]"
+        title="Skills &"
+        titleSecondLine="tools."
+        stickerText="4+ YEARS EXP"
+        countBadge="30+ Tech"
+        description="Core technical competencies and tools applied across frontend architecture, backend systems, and automated testing."
+      />
 
       {/* 2. Controls: Search Bar & Quick Category Filters */}
-      <div className="mt-8 max-w-4xl mx-auto px-4 space-y-4">
+      <div className="mt-6 sm:mt-8 max-w-4xl mx-auto px-1 sm:px-4 space-y-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
           {/* Search Box */}
           <div className="relative w-full sm:w-80">
@@ -96,11 +96,11 @@ export default function Skills() {
           </div>
 
           {/* Quick Category Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 scrollbar-none">
+          <div className="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1.5 scrollbar-none max-w-full">
             <button
               type="button"
               onClick={() => setSelectedCategory("all")}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-all cursor-pointer ${
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold shrink-0 transition-all cursor-pointer ${
                 selectedCategory === "all"
                   ? "bg-primary text-primary-foreground shadow-xs"
                   : "border border-border/80 bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -126,25 +126,25 @@ export default function Skills() {
         </div>
       </div>
 
-      {/* 3. Skills Cards Grid - Matched closely to attached reference composition */}
-      <div className="mt-10 grid gap-8 grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto px-2 sm:px-4">
+      {/* 3. Skills Cards Grid */}
+      <div className="mt-8 sm:mt-10 grid gap-6 sm:gap-8 grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto px-0 sm:px-4">
         {filteredCategories.map((category) => (
           <div
             key={category.id}
-            className="group rounded-3xl border-2 border-primary/25 bg-card/90 dark:bg-[#13101c]/80 backdrop-blur-md p-6 sm:p-8 shadow-[0_0_25px_rgba(139,69,19,0.06)] dark:shadow-[0_0_30px_rgba(180,83,9,0.12)] transition-all duration-300 hover:border-primary/60 hover:shadow-[0_0_35px_rgba(180,83,9,0.22)] flex flex-col justify-between"
+            className="group rounded-3xl border-2 border-primary/25 bg-card/90 dark:bg-[#13101c]/80 backdrop-blur-md p-4 sm:p-8 shadow-[0_0_25px_rgba(139,69,19,0.06)] dark:shadow-[0_0_30px_rgba(180,83,9,0.12)] transition-all duration-300 hover:border-primary/60 hover:shadow-[0_0_35px_rgba(180,83,9,0.22)] flex flex-col justify-between"
           >
             <div>
               {/* Category Title */}
-              <h3 className="text-2xl font-bold text-center text-foreground tracking-tight mb-2">
+              <h3 className="text-xl sm:text-2xl font-bold text-center text-foreground tracking-tight mb-2">
                 {category.title}
               </h3>
 
-              <p className="text-xs text-center text-muted-foreground max-w-sm mx-auto mb-6">
+              <p className="text-xs text-center text-muted-foreground max-w-sm mx-auto mb-5 sm:mb-6">
                 {category.description}
               </p>
 
-              {/* Skill Pills Container - Matching reference image pill layout */}
-              <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-3.5">
+              {/* Skill Pills Container */}
+              <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-3.5">
                 {category.detailedSkills.map((skill) => (
                   <button
                     key={skill.name}
@@ -152,11 +152,11 @@ export default function Skills() {
                     onClick={() =>
                       setActiveModalSkill({ skill, categoryTitle: category.title })
                     }
-                    className="group/pill inline-flex items-center gap-2.5 rounded-xl border border-border/80 dark:border-slate-700/80 bg-background/80 dark:bg-slate-900/80 px-4 py-2.5 text-xs sm:text-sm font-semibold text-foreground shadow-xs transition-all duration-200 hover:scale-105 hover:border-primary hover:bg-primary/10 hover:shadow-md cursor-pointer active:scale-95"
+                    className="group/pill inline-flex items-center gap-2 sm:gap-2.5 rounded-xl border border-border/80 dark:border-slate-700/80 bg-background/80 dark:bg-slate-900/80 px-3 sm:px-4 py-2 sm:py-2.5 text-xs sm:text-sm font-semibold text-foreground shadow-xs transition-all duration-200 hover:scale-105 hover:border-primary hover:bg-primary/10 hover:shadow-md cursor-pointer active:scale-95"
                     title={`Click to view details for ${skill.name}`}
                   >
-                    <span className="flex h-5 w-5 items-center justify-center shrink-0 transition-transform group-hover/pill:scale-110">
-                      <SkillIcon iconKey={skill.iconKey} name={skill.name} className="w-5 h-5" />
+                    <span className="flex h-4 sm:h-5 w-4 sm:w-5 items-center justify-center shrink-0 transition-transform group-hover/pill:scale-110">
+                      <SkillIcon iconKey={skill.iconKey} name={skill.name} className="w-4 h-4 sm:w-5 sm:h-5" />
                     </span>
                     <span>{skill.name}</span>
                   </button>
@@ -165,7 +165,7 @@ export default function Skills() {
             </div>
 
             {/* Subtle bottom info indicator */}
-            <div className="mt-8 pt-4 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground">
+            <div className="mt-6 sm:mt-8 pt-3.5 sm:pt-4 border-t border-border/40 flex items-center justify-between text-[11px] text-muted-foreground">
               <span className="font-mono text-primary font-bold">
                 {category.detailedSkills.length} Technologies
               </span>

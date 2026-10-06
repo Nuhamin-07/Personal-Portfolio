@@ -124,14 +124,14 @@ export default function Hero() {
     >
       {/* Radial ambient glow */}
       <div
-        className="hero-glow absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full pointer-events-none opacity-40"
+        className="hero-glow absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full pointer-events-none opacity-40 max-w-full"
         style={{
           background:
             "radial-gradient(ellipse at center, rgba(139,69,19,0.18) 0%, transparent 70%)",
         }}
       />
 
-      <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-12 flex flex-col gap-6 lg:gap-8 relative z-10">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 flex flex-col gap-6 lg:gap-8 relative z-10">
         {/* TOP GRID */}
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-8 pt-1">
 
@@ -139,7 +139,7 @@ export default function Hero() {
           <div className="relative lg:col-span-7 flex flex-col justify-center">
 
             {/* Headline — each line clips from below */}
-            <h1 className="text-4xl sm:text-5xl lg:text-[3.9rem] xl:text-[4.5rem] font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0] leading-[1.08]">
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl lg:text-[3.9rem] xl:text-[4.5rem] font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0] leading-[1.08] break-words">
               <span className="block overflow-hidden pb-1">
                 <span className="hero-headline-line block">Hi, I&apos;m Nuhamin</span>
               </span>
@@ -200,19 +200,19 @@ export default function Hero() {
             </div>
 
             {/* Location */}
-            <div className="hero-location mt-6 sm:mt-7 flex items-center gap-2.5 text-sm sm:text-base font-semibold text-[#664d3d] dark:text-[#c9b4a5]">
-              <div className="flex items-center justify-center p-1.5 rounded-full bg-[#8b4513]/10 text-[#8b4513] dark:text-[#c26510] animate-bounce">
-                <MapPin className="w-4 h-4 sm:w-5 sm:h-5" />
+            <div className="hero-location mt-5 sm:mt-7 flex items-center gap-2.5 text-xs sm:text-base font-semibold text-[#664d3d] dark:text-[#c9b4a5]">
+              <div className="flex items-center justify-center p-1.5 rounded-full bg-[#8b4513]/10 text-[#8b4513] dark:text-[#c26510] animate-bounce shrink-0">
+                <MapPin className="w-3.5 h-3.5 sm:w-5 sm:h-5" />
               </div>
               <span>Based in Addis Ababa, Ethiopia.</span>
             </div>
 
             {/* CTA Buttons */}
-            <div className="mt-8 flex flex-wrap gap-3 sm:gap-4">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4">
               <button
                 type="button"
                 onClick={() => scrollToSection("projects")}
-                className="hero-cta group inline-flex items-center gap-2 rounded-full bg-[#8b4513] hover:bg-[#70360f] dark:bg-[#b45309] dark:hover:bg-[#92400e] px-7 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95 cursor-pointer"
+                className="hero-cta group inline-flex items-center justify-center gap-2 rounded-full bg-[#8b4513] hover:bg-[#70360f] dark:bg-[#b45309] dark:hover:bg-[#92400e] px-7 py-3.5 text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl active:scale-95 cursor-pointer w-full sm:w-auto"
               >
                 <Code2 className="w-4 h-4" />
                 View My Work
@@ -220,7 +220,7 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={() => scrollToSection("contact")}
-                className="hero-cta group inline-flex items-center gap-2 rounded-full border-2 border-[#8b4513]/40 dark:border-[#b45309]/40 bg-transparent hover:bg-[#8b4513]/10 dark:hover:bg-[#b45309]/10 px-7 py-3.5 text-sm font-bold text-[#8b4513] dark:text-[#c26510] transition-all duration-300 hover:scale-105 hover:border-[#8b4513] dark:hover:border-[#c26510] active:scale-95 cursor-pointer"
+                className="hero-cta group inline-flex items-center justify-center gap-2 rounded-full border-2 border-[#8b4513]/40 dark:border-[#b45309]/40 bg-transparent hover:bg-[#8b4513]/10 dark:hover:bg-[#b45309]/10 px-7 py-3.5 text-sm font-bold text-[#8b4513] dark:text-[#c26510] transition-all duration-300 hover:scale-105 hover:border-[#8b4513] dark:hover:border-[#c26510] active:scale-95 cursor-pointer w-full sm:w-auto"
               >
                 <Zap className="w-4 h-4 transition-transform group-hover:rotate-12" />
                 Let&apos;s Talk
@@ -229,8 +229,8 @@ export default function Hero() {
           </div>
 
           {/* ── Right Column: Portrait ── */}
-          <div className="lg:col-span-5 flex justify-center items-center relative pr-4 sm:pr-8">
-            <div className="hero-portrait relative w-64 h-64 sm:w-76 sm:h-76 lg:w-[21rem] lg:h-[21rem] xl:w-[23rem] xl:h-[23rem] flex items-center justify-center">
+          <div className="lg:col-span-5 flex justify-center items-center relative py-4 lg:py-0">
+            <div className="hero-portrait relative w-56 h-56 sm:w-76 sm:h-76 lg:w-[21rem] lg:h-[21rem] xl:w-[23rem] xl:h-[23rem] flex items-center justify-center">
 
               {/* Spinning gradient ring */}
               <div className="absolute inset-0 rounded-full pointer-events-none" style={{ willChange: "transform" }}>
@@ -269,7 +269,7 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={() => scrollToSection("contact")}
-                className="hero-hire-badge absolute top-1/2 -translate-y-1/2 -right-4 sm:-right-6 lg:-right-8 w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full bg-[#8b4513] hover:bg-[#70360f] text-white flex flex-col items-center justify-center shadow-2xl transition-colors duration-300 hover:scale-110 active:scale-95 group cursor-pointer z-30 ring-4 ring-white dark:ring-[#120c08]"
+                className="hero-hire-badge absolute top-1/2 -translate-y-1/2 -right-1 sm:-right-6 lg:-right-8 w-24 h-24 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full bg-[#8b4513] hover:bg-[#70360f] text-white flex flex-col items-center justify-center shadow-2xl transition-colors duration-300 hover:scale-110 active:scale-95 group cursor-pointer z-30 ring-4 ring-white dark:ring-[#120c08]"
                 aria-label="Hire Nuhamin - Scroll to Contact"
                 style={{ willChange: "transform, opacity" }}
               >
@@ -302,7 +302,7 @@ export default function Hero() {
 
                 {/* Centred down arrow */}
                 <svg
-                  className="h-7 w-7 lg:h-8 lg:w-8 text-white mt-5 transition-transform duration-300 group-hover:translate-y-1.5 animate-bounce"
+                  className="h-5 w-5 sm:h-7 sm:w-7 lg:h-8 lg:w-8 text-white mt-4 sm:mt-5 transition-transform duration-300 group-hover:translate-y-1.5 animate-bounce"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -321,7 +321,7 @@ export default function Hero() {
         </div>
 
         {/* ── BOTTOM DARK CARD ── */}
-        <div className="hero-card w-full rounded-3xl bg-[#160f0b] border border-[#38261a] text-white p-6 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
+        <div className="hero-card w-full rounded-3xl bg-[#160f0b] border border-[#38261a] text-white p-5 sm:p-8 lg:p-10 shadow-2xl relative overflow-hidden">
           <div
             className="absolute top-0 right-0 w-64 h-64 rounded-full pointer-events-none"
             style={{
@@ -334,31 +334,31 @@ export default function Hero() {
               <span className="text-[#d97706] text-xs sm:text-sm font-black tracking-widest uppercase">
                 Testimonials
               </span>
-              <blockquote className="text-lg sm:text-xl lg:text-[1.45rem] xl:text-[1.6rem] font-semibold leading-snug text-[#faf4ed] tracking-tight">
+              <blockquote className="text-base sm:text-xl lg:text-[1.45rem] xl:text-[1.6rem] font-semibold leading-snug text-[#faf4ed] tracking-tight">
                 "Working with Nuhamin has been a great experience. She is a very
                 talented full-stack developer who builds robust, scalable web
                 platforms."
               </blockquote>
               <div className="flex items-center gap-4 pt-1 sm:pt-1.5">
-                <span className="text-[#d97706] font-bold text-base sm:text-lg">
+                <span className="text-[#d97706] font-bold text-sm sm:text-lg">
                   Nuhamin Gulilat
                 </span>
-                <div className="h-[2px] w-24 sm:w-36 bg-[#d97706]/80" />
+                <div className="h-[2px] w-20 sm:w-36 bg-[#d97706]/80" />
               </div>
             </div>
 
-            <div className="lg:col-span-5 flex items-center justify-start lg:justify-end gap-5">
-              <div className="w-28 h-36 sm:w-36 sm:h-44 rounded-2xl overflow-hidden bg-[#241912] shadow-xl border border-[#4a3426] flex-shrink-0">
+            <div className="lg:col-span-5 flex flex-col sm:flex-row items-center justify-start lg:justify-end gap-4 sm:gap-5 w-full">
+              <div className="w-24 h-32 sm:w-36 sm:h-44 rounded-2xl overflow-hidden bg-[#241912] shadow-xl border border-[#4a3426] shrink-0">
                 <img
                   src="/nuhamin.jpg"
                   alt="Nuhamin Gulilat"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="flex flex-col gap-3.5 flex-shrink-0">
+              <div className="flex flex-col gap-3 w-full sm:w-40 shrink-0">
                 <a
                   href="#projects"
-                  className="group inline-flex items-center justify-center gap-2 w-36 sm:w-40 py-3.5 rounded-full bg-[#241812] hover:bg-[#34231a] text-white text-xs sm:text-sm font-bold border border-[#4d3425] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]"
+                  className="group inline-flex items-center justify-center gap-2 w-full py-3 sm:py-3.5 rounded-full bg-[#241812] hover:bg-[#34231a] text-white text-xs sm:text-sm font-bold border border-[#4d3425] transition-all duration-300 hover:scale-[1.03] active:scale-[0.98]"
                 >
                   <span>Portfolio</span>
                   <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -368,7 +368,7 @@ export default function Hero() {
                 <button
                   onClick={() => scrollToSection("contact")}
                   type="button"
-                  className="group inline-flex items-center justify-center gap-2 w-36 sm:w-40 py-3.5 rounded-full bg-gradient-to-r from-[#8b4513] to-[#a04e17] hover:from-[#73380e] hover:to-[#8b4513] text-white text-xs sm:text-sm font-bold transition-all duration-300 shadow-lg hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
+                  className="group inline-flex items-center justify-center gap-2 w-full py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-[#8b4513] to-[#a04e17] hover:from-[#73380e] hover:to-[#8b4513] text-white text-xs sm:text-sm font-bold transition-all duration-300 shadow-lg hover:scale-[1.03] active:scale-[0.98] cursor-pointer"
                 >
                   <span>Hire Me</span>
                   <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
