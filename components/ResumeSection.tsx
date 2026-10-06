@@ -8,8 +8,8 @@ export default function ResumeSection() {
   const [isCvOpen, setIsCvOpen] = useState(false);
 
   return (
-    <Section id="resume" className="py-16">
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-8 md:p-12 shadow-xl">
+    <Section id="resume" className="py-10 sm:py-16">
+      <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 sm:p-8 md:p-12 shadow-xl">
         {/* Background Ambient Accent Glow */}
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />
@@ -21,18 +21,18 @@ export default function ResumeSection() {
               <span>Verified Resume</span>
             </div>
 
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+            <h2 className="mt-3 sm:mt-4 text-2xl font-extrabold tracking-tight text-foreground sm:text-4xl">
               Curriculum Vitae / Resume
             </h2>
 
-            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+            <p className="mt-3 sm:mt-4 text-xs sm:text-base leading-relaxed text-muted-foreground sm:text-lg">
               Full-Stack Developer with nearly 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.
             </p>
 
             {/* Quick Details Badges */}
-            <div className="mt-6 flex flex-wrap gap-2 text-xs font-mono">
+            <div className="mt-5 flex flex-wrap gap-2 text-xs font-mono">
               <span className="rounded-lg border border-border bg-muted/60 px-3 py-1.5 text-foreground">
-                🎓 B.Sc. Electrical & Computer Engineering (AMU)
+                🎓 B.Sc. Electrical &amp; Computer Engineering (AMU)
               </span>
               <span className="rounded-lg border border-border bg-muted/60 px-3 py-1.5 text-foreground">
                 💼 Nearly 4 Years Experience
@@ -43,12 +43,12 @@ export default function ResumeSection() {
             </div>
 
             {/* Action Buttons */}
-            <div className="mt-8 flex flex-wrap items-center gap-3.5">
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-3.5 w-full">
               {/* Preview CV Button */}
               <button
                 onClick={() => setIsCvOpen(true)}
                 type="button"
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:scale-105 cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-xs sm:text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:scale-105 active:scale-95 cursor-pointer w-full sm:w-auto"
               >
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -61,7 +61,7 @@ export default function ResumeSection() {
               <a
                 href="/cv/Nuhamin-Gulilat-CV.pdf"
                 download="Nuhamin-Gulilat-CV.pdf"
-                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground shadow-xs transition-all hover:bg-muted hover:border-primary/40"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-xs sm:text-sm font-semibold text-foreground shadow-xs transition-all hover:bg-muted hover:border-primary/40 active:scale-95 w-full sm:w-auto"
               >
                 <svg className="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -74,7 +74,7 @@ export default function ResumeSection() {
                 href="/cv/Nuhamin-Gulilat-CV.pdf"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors py-2 px-1"
+                className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors py-2 px-1 text-center"
               >
                 Open PDF in Tab ↗
               </a>
@@ -83,21 +83,21 @@ export default function ResumeSection() {
 
           {/* Right Visual Card */}
           <div className="lg:col-span-4 flex justify-center">
-            <div className="w-full max-w-xs rounded-2xl border border-border bg-muted/30 p-6 text-center shadow-sm backdrop-blur-xs">
-              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary text-3xl font-bold">
+            <div className="w-full max-w-xs rounded-2xl border border-border bg-muted/30 p-5 sm:p-6 text-center shadow-sm backdrop-blur-xs">
+              <div className="mx-auto flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary text-2xl sm:text-3xl font-bold">
                 📄
               </div>
-              <h3 className="mt-4 text-lg font-bold text-foreground">Nuhamin Gulilat CV</h3>
-              <p className="mt-1 text-xs text-muted-foreground">Official Verified PDF Document</p>
+              <h3 className="mt-3 text-base sm:text-lg font-bold text-foreground">Nuhamin Gulilat CV</h3>
+              <p className="mt-0.5 text-xs text-muted-foreground">Official Verified PDF Document</p>
               
-              <div className="mt-5 space-y-2 pt-4 border-t border-border/60 text-left text-xs text-muted-foreground">
+              <div className="mt-4 space-y-2 pt-3.5 border-t border-border/60 text-left text-xs text-muted-foreground">
                 <div className="flex items-center justify-between">
                   <span>Format:</span>
                   <span className="font-mono text-foreground font-medium">PDF Document</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>File Name:</span>
-                  <span className="font-mono text-foreground font-medium">Nuhamin-Gulilat-CV.pdf</span>
+                  <span className="font-mono text-foreground font-medium truncate max-w-[130px]">Nuhamin-Gulilat-CV.pdf</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Status:</span>

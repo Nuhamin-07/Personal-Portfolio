@@ -256,17 +256,17 @@ export default function Footer() {
     <footer
       ref={footerRef}
       id="footer"
-      className="w-full bg-white dark:bg-[#0c0805] text-[#140e0a] dark:text-[#faf6f0] border-t border-[#140e0a]/10 dark:border-white/10 pt-20 sm:pt-28 pb-10 sm:pb-14 transition-colors relative z-40 overflow-hidden"
+      className="w-full bg-white dark:bg-[#0c0805] text-[#140e0a] dark:text-[#faf6f0] border-t border-[#140e0a]/10 dark:border-white/10 pt-16 sm:pt-28 pb-10 sm:pb-14 transition-colors relative z-40 overflow-hidden"
     >
-      <div className="w-full px-6 sm:px-12 lg:px-16 max-w-[1550px] mx-auto">
+      <div className="w-full px-4 sm:px-12 lg:px-16 max-w-[1550px] mx-auto">
         {/* ── TOP SECTION: SITEMAP, SOCIALS, EXPANDED LIVE TYPING BLACK IDE, LET'S WORK TOGETHER ── */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14 pb-20 sm:pb-28 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-14 pb-14 sm:pb-28 items-start">
           {/* Column 1: SITEMAP */}
           <div className="footer-col md:col-span-3 flex flex-col">
-            <span className="text-xs font-mono tracking-[0.22em] text-[#140e0a]/50 dark:text-[#faf6f0]/50 uppercase mb-6 sm:mb-8 font-semibold">
+            <span className="text-xs font-mono tracking-[0.22em] text-[#140e0a]/50 dark:text-[#faf6f0]/50 uppercase mb-4 sm:mb-8 font-semibold">
               SITEMAP
             </span>
-            <ul className="space-y-3.5 sm:space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               {[
                 { name: "Home", href: "#hero" },
                 { name: "Works", href: "#projects" },
@@ -277,7 +277,7 @@ export default function Footer() {
                 <li key={item.name}>
                   <a
                     href={item.href}
-                    className="group relative inline-flex items-center text-xl sm:text-2xl lg:text-[1.65rem] font-semibold tracking-tight text-[#140e0a] dark:text-[#faf6f0] hover:text-[#8b4513] dark:hover:text-[#d97706] transition-colors duration-300"
+                    className="group relative inline-flex items-center text-lg sm:text-2xl lg:text-[1.65rem] font-semibold tracking-tight text-[#140e0a] dark:text-[#faf6f0] hover:text-[#8b4513] dark:hover:text-[#d97706] transition-colors duration-300"
                   >
                     <span className="transition-transform duration-300 group-hover:translate-x-2">
                       {item.name}
@@ -291,10 +291,10 @@ export default function Footer() {
 
           {/* Column 2: SOCIALS */}
           <div className="footer-col md:col-span-3 flex flex-col">
-            <span className="text-xs font-mono tracking-[0.22em] text-[#140e0a]/50 dark:text-[#faf6f0]/50 uppercase mb-6 sm:mb-8 font-semibold">
+            <span className="text-xs font-mono tracking-[0.22em] text-[#140e0a]/50 dark:text-[#faf6f0]/50 uppercase mb-4 sm:mb-8 font-semibold">
               SOCIALS
             </span>
-            <ul className="space-y-3.5 sm:space-y-4">
+            <ul className="space-y-3 sm:space-y-4">
               {[
                 {
                   name: "LinkedIn",
@@ -318,7 +318,7 @@ export default function Footer() {
                     href={item.href}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
                     rel="noreferrer"
-                    className="group relative inline-flex items-center text-xl sm:text-2xl lg:text-[1.65rem] font-semibold tracking-tight text-[#140e0a] dark:text-[#faf6f0] hover:text-[#8b4513] dark:hover:text-[#d97706] transition-colors duration-300"
+                    className="group relative inline-flex items-center text-lg sm:text-2xl lg:text-[1.65rem] font-semibold tracking-tight text-[#140e0a] dark:text-[#faf6f0] hover:text-[#8b4513] dark:hover:text-[#d97706] transition-colors duration-300"
                   >
                     <span className="transition-transform duration-300 group-hover:translate-x-2">
                       {item.name}
@@ -331,27 +331,27 @@ export default function Footer() {
           </div>
 
           {/* Column 3: DEVELOPER INFO — LIVE TYPING Black IDE Box */}
-          <div className="footer-col md:col-span-4 lg:col-span-4 flex flex-col">
-            <span className="text-xs font-mono tracking-[0.22em] text-[#140e0a]/50 dark:text-[#faf6f0]/50 uppercase mb-6 sm:mb-8 font-semibold">
+          <div className="footer-col md:col-span-4 lg:col-span-4 flex flex-col max-w-full overflow-hidden">
+            <span className="text-xs font-mono tracking-[0.22em] text-[#140e0a]/50 dark:text-[#faf6f0]/50 uppercase mb-4 sm:mb-8 font-semibold">
               DEVELOPER INFO
             </span>
 
             {/* Enlarged Sleek Black IDE Card */}
-            <div className="footer-ide-card rounded-2xl border border-[#2a1d15] bg-[#140d08] text-[#faf4ed] p-5 sm:p-6 font-mono shadow-2xl transition-all duration-300 hover:border-[#8b4513] hover:shadow-[0_16px_40px_rgba(139,69,19,0.25)] group">
+            <div className="footer-ide-card rounded-2xl border border-[#2a1d15] bg-[#140d08] text-[#faf4ed] p-4 sm:p-6 font-mono shadow-2xl transition-all duration-300 hover:border-[#8b4513] hover:shadow-[0_16px_40px_rgba(139,69,19,0.25)] group max-w-full overflow-x-auto">
               {/* Traffic Lights & Tab header */}
-              <div className="flex items-center justify-between pb-3.5 mb-4 border-b border-[#2a1d15]">
-                <div className="flex items-center gap-2">
-                  <span className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-                  <span className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                  <span className="w-3 h-3 rounded-full bg-[#28c840]" />
+              <div className="flex items-center justify-between pb-3 mb-3.5 border-b border-[#2a1d15]">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ff5f57]" />
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ffbd2e]" />
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#28c840]" />
                 </div>
-                <span className="text-xs text-[#a89587] font-mono tracking-wider">
+                <span className="text-[11px] sm:text-xs text-[#a89587] font-mono tracking-wider truncate">
                   nuhamin.developer.ts
                 </span>
               </div>
 
               {/* Code lines — Smooth Live Typing with Caret */}
-              <div className="space-y-2 text-sm sm:text-[14.5px] leading-[1.85] font-mono select-text min-h-[175px]">
+              <div className="space-y-1.5 sm:space-y-2 text-xs sm:text-[14.5px] leading-[1.85] font-mono select-text min-h-[160px] overflow-x-auto">
                 {IDE_CODE_LINES.map((line, li) => {
                   const isPastLine = li < typingState.lineIdx;
                   const isCurrentLine = li === typingState.lineIdx;
@@ -366,7 +366,7 @@ export default function Footer() {
                   return (
                     <div
                       key={li}
-                      className="flex items-center"
+                      className="flex items-center whitespace-pre"
                       style={{ minHeight: "1.85em" }}
                     >
                       <span>{renderTokensUpTo(line.tokens, charCount)}</span>
@@ -374,7 +374,7 @@ export default function Footer() {
                       {/* Blinking amber cursor on the active line */}
                       {isCurrentLine && !typingState.isComplete && (
                         <span
-                          className="inline-block w-[2px] h-[15px] bg-[#d97706] ml-1 align-middle"
+                          className="inline-block w-[2px] h-[15px] bg-[#d97706] ml-1 align-middle shrink-0"
                           style={{
                             animation: "ideCursorBlink 0.9s ease-in-out infinite",
                             boxShadow: "0 0 8px rgba(217, 119, 6, 0.8)",
@@ -387,29 +387,29 @@ export default function Footer() {
               </div>
 
               {/* Terminal quick action */}
-              <div className="mt-4 pt-3.5 border-t border-[#2a1d15] flex items-center justify-between text-xs">
+              <div className="mt-4 pt-3 border-t border-[#2a1d15] flex flex-wrap items-center justify-between gap-2 text-xs">
                 <a
                   href="/cv/Nuhamin-Gulilat-CV.pdf"
                   download="Nuhamin-Gulilat-CV.pdf"
-                  className="inline-flex items-center gap-2 font-mono text-[#d97706] hover:text-[#fbbf24] transition-colors py-1"
+                  className="inline-flex items-center gap-2 font-mono text-[#d97706] hover:text-[#fbbf24] transition-colors py-0.5 text-[11px] sm:text-xs"
                 >
-                  <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse" />
+                  <span className="w-2 h-2 rounded-full bg-[#10b981] animate-pulse shrink-0" />
                   <span className="font-semibold">$ download --resume.pdf</span>
                   <span className="transition-transform group-hover:translate-x-1.5">→</span>
                 </a>
-                <span className="text-[11px] text-[#a89587]">UTF-8</span>
+                <span className="text-[10px] sm:text-[11px] text-[#a89587]">UTF-8</span>
               </div>
             </div>
           </div>
 
           {/* Column 4: LET'S WORK TOGETHER (Clean, bold, uncluttered) */}
-          <div className="footer-col md:col-span-2 lg:col-span-2 flex md:justify-end items-start pt-3 md:pt-0">
+          <div className="footer-col md:col-span-2 lg:col-span-2 flex md:justify-end items-start pt-2 md:pt-0">
             <a
               href="#contact"
-              className="group relative inline-flex items-center gap-1.5 text-base sm:text-lg font-bold tracking-[0.15em] uppercase text-[#140e0a] dark:text-[#faf6f0] hover:text-[#8b4513] dark:hover:text-[#d97706] transition-colors duration-300 pb-1"
+              className="group relative inline-flex items-center gap-1.5 text-sm sm:text-lg font-bold tracking-[0.15em] uppercase text-[#140e0a] dark:text-[#faf6f0] hover:text-[#8b4513] dark:hover:text-[#d97706] transition-colors duration-300 pb-1"
             >
               <span>LET&apos;S WORK TOGETHER</span>
-              <span className="text-base transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
+              <span className="text-sm sm:text-base transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
                 ↗
               </span>
               <span className="absolute bottom-0 left-0 w-full h-[2px] bg-[#140e0a] dark:bg-[#faf6f0] group-hover:bg-[#8b4513] dark:group-hover:bg-[#d97706] transition-colors duration-300" />
@@ -419,10 +419,10 @@ export default function Footer() {
 
         {/* ── METADATA BAR (Above the 100% full-width giant name) ── */}
         <div className="w-full">
-          <div className="footer-divider-line w-full h-[1px] bg-[#140e0a]/10 dark:bg-white/10 mb-4 sm:mb-5" />
-          <div className="flex items-center justify-between text-xs sm:text-sm font-mono tracking-[0.2em] text-[#140e0a]/45 dark:text-[#faf6f0]/45 uppercase pb-2">
-            <span>FULL-STACK DEVELOPER / SOFTWARE ENGINEER</span>
-            <span>PORTFOLIO {currentYear}</span>
+          <div className="footer-divider-line w-full h-[1px] bg-[#140e0a]/10 dark:bg-white/10 mb-3 sm:mb-5" />
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 sm:gap-4 text-[10px] sm:text-sm font-mono tracking-[0.15em] sm:tracking-[0.2em] text-[#140e0a]/45 dark:text-[#faf6f0]/45 uppercase pb-2">
+            <span className="truncate max-w-full">FULL-STACK DEVELOPER / SOFTWARE ENGINEER</span>
+            <span className="shrink-0">PORTFOLIO {currentYear}</span>
           </div>
         </div>
 

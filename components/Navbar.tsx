@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import ResumeModal from "@/components/ResumeModal";
+import ThemeToggle from "@/components/ThemeToggle";
 import { X } from "lucide-react";
 
 const navItems = [
@@ -66,21 +67,22 @@ export default function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full bg-[#fdfbf7]/95 dark:bg-[#120c08]/95 backdrop-blur-md transition-all duration-200">
-        <div className="mx-auto max-w-[1440px] px-6 sm:px-4 lg:px-8">
-          <div className="flex h-24 sm:h-28 items-center justify-between">
+        <div className="mx-auto max-w-[1440px] px-3.5 sm:px-6 lg:px-8">
+          <div className="flex h-16 sm:h-24 md:h-28 items-center justify-between gap-2">
             {/* Logo / Brand - Flush with Left Edge */}
             <Link
               href="/"
-              className="flex items-center gap-3.5 transition-transform hover:scale-102 group p-0 m-0"
+              className="flex items-center gap-2 sm:gap-3.5 transition-transform hover:scale-102 group p-0 m-0 min-w-0 flex-shrink"
             >
               <img
                 src="/logo.png"
                 alt="Nuhamin Gulilat Logo"
-                className="h-14 sm:h-18 md:h-20 w-auto object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-105"
+                className="h-10 sm:h-16 md:h-20 w-auto object-contain drop-shadow-sm transition-transform duration-300 group-hover:scale-105 shrink-0"
               />
-              <span className="flex items-baseline gap-1.5 text-2xl sm:text-3xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0]">
-                Nuhamin Gulilat
-                <span className="text-[10px] font-bold tracking-wider text-white bg-[#8b4513] dark:bg-[#b45309] px-1.5 py-0.5 rounded-full leading-none align-baseline">.dev</span>
+              <span className="flex items-baseline gap-1 text-base sm:text-2xl md:text-3xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0] truncate">
+                <span>Nuhamin</span>
+                <span className="hidden xs:inline">Gulilat</span>
+                <span className="text-[9px] sm:text-[10px] font-bold tracking-wider text-white bg-[#8b4513] dark:bg-[#b45309] px-1.5 py-0.5 rounded-full leading-none align-baseline shrink-0">.dev</span>
               </span>
             </Link>
 
@@ -134,19 +136,21 @@ export default function Navbar() {
               })}
             </nav>
 
-            {/* Right Controls: CV Preview + Contact CTA + Fullscreen Menu Trigger */}
-            <div className="flex items-center gap-4 sm:gap-5">
+            {/* Right Controls: Theme Toggle + CV Preview + Contact CTA + Fullscreen Menu Trigger */}
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+              <ThemeToggle />
+
               <button
                 onClick={() => setIsCvOpen(true)}
                 type="button"
-                className="hidden sm:inline-block text-base font-semibold text-[#574134] dark:text-[#d4c3b7] hover:text-[#8b4513] dark:hover:text-[#b45309] transition-colors px-2 py-2 cursor-pointer"
+                className="hidden sm:inline-block text-sm sm:text-base font-semibold text-[#574134] dark:text-[#d4c3b7] hover:text-[#8b4513] dark:hover:text-[#b45309] transition-colors px-2 py-2 cursor-pointer"
               >
                 CV Preview
               </button>
 
               <a
                 href="#contact"
-                className="hidden sm:inline-flex items-center justify-center rounded-full bg-[#8b4513] hover:bg-[#70360f] dark:bg-[#b45309] dark:hover:bg-[#92400e] px-7 py-3 text-sm sm:text-base font-bold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer"
+                className="hidden md:inline-flex items-center justify-center rounded-full bg-[#8b4513] hover:bg-[#70360f] dark:bg-[#b45309] dark:hover:bg-[#92400e] px-6 py-2.5 sm:px-7 sm:py-3 text-sm font-bold text-white shadow-md transition-all duration-200 hover:shadow-lg hover:scale-105 active:scale-95 cursor-pointer"
               >
                 Contact Me
               </a>
@@ -155,13 +159,13 @@ export default function Navbar() {
               <button
                 onClick={() => setIsMenuOpen(true)}
                 type="button"
-                className="flex items-center justify-center rounded-full p-3 text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#f3e7dc] dark:hover:bg-[#2a1d15] transition-all cursor-pointer group"
+                className="flex items-center justify-center rounded-full p-2 sm:p-3 text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#f3e7dc] dark:hover:bg-[#2a1d15] transition-all cursor-pointer group"
                 aria-label="Open Fullscreen Menu"
               >
-                <div className="flex flex-col gap-1.5 w-6 items-end">
-                  <span className="h-0.5 w-6 bg-[#1c140e] dark:bg-[#faf6f0] transition-all group-hover:w-6" />
-                  <span className="h-0.5 w-4 bg-[#8b4513] dark:bg-[#b45309] transition-all group-hover:w-6" />
-                  <span className="h-0.5 w-5 bg-[#1c140e] dark:bg-[#faf6f0] transition-all group-hover:w-6" />
+                <div className="flex flex-col gap-1.5 w-5 sm:w-6 items-end">
+                  <span className="h-0.5 w-5 sm:w-6 bg-[#1c140e] dark:bg-[#faf6f0] transition-all group-hover:w-6" />
+                  <span className="h-0.5 w-3.5 sm:w-4 bg-[#8b4513] dark:bg-[#b45309] transition-all group-hover:w-6" />
+                  <span className="h-0.5 w-4.5 sm:w-5 bg-[#1c140e] dark:bg-[#faf6f0] transition-all group-hover:w-6" />
                 </div>
               </button>
             </div>
@@ -171,48 +175,57 @@ export default function Navbar() {
 
       {/* FULLSCREEN AGENCY OVERLAY MENU */}
       {isMenuOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col justify-between bg-[#ffffff] dark:bg-[#120c08] text-[#1c140e] dark:text-[#faf6f0] px-6 sm:px-8 lg:px-12 py-8 sm:py-12 animate-in fade-in duration-300 overflow-y-auto">
-          <div className="mx-auto w-full max-w-7xl flex flex-col justify-between h-full min-h-[90vh]">
-            {/* Top Bar with 2X Logo */}
+        <div className="fixed inset-0 z-50 flex flex-col justify-between bg-[#ffffff] dark:bg-[#120c08] text-[#1c140e] dark:text-[#faf6f0] px-4 sm:px-8 lg:px-12 py-6 sm:py-12 animate-in fade-in duration-300 overflow-y-auto">
+          <div className="mx-auto w-full max-w-7xl flex flex-col justify-between min-h-[90vh]">
+            {/* Top Bar with Logo & Actions */}
             <div className="flex items-center justify-between w-full">
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-4 transition-transform hover:scale-102 p-0 m-0"
+                className="flex items-center gap-2.5 sm:gap-4 transition-transform hover:scale-102 p-0 m-0"
               >
                 <img
                   src="/logo.png"
                   alt="Nuhamin Logo"
-                  className="h-18 sm:h-22 md:h-26 w-auto object-contain drop-shadow-md"
+                  className="h-12 sm:h-20 md:h-24 w-auto object-contain drop-shadow-md"
                 />
-                <span className="flex items-baseline gap-1.5 text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0]">
+                <span className="flex items-baseline gap-1.5 text-xl sm:text-3xl md:text-4xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0]">
                   Nuhamin Gulilat
                   <span className="text-[10px] font-bold tracking-wider text-white bg-[#8b4513] dark:bg-[#b45309] px-1.5 py-0.5 rounded-full leading-none align-baseline">.dev</span>
                 </span>
               </Link>
 
-              <button
-                onClick={() => setIsMenuOpen(false)}
-                type="button"
-                className="p-3 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer group"
-                aria-label="Close menu"
-              >
-                <X className="w-8 h-8 sm:w-11 sm:h-11 text-[#1c140e] dark:text-[#faf6f0] transition-transform group-hover:rotate-90 duration-300" />
-              </button>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setIsCvOpen(true)}
+                  type="button"
+                  className="sm:hidden text-xs font-semibold px-3 py-1.5 rounded-full border border-border bg-muted text-foreground"
+                >
+                  CV
+                </button>
+                <button
+                  onClick={() => setIsMenuOpen(false)}
+                  type="button"
+                  className="p-2 sm:p-3 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors cursor-pointer group"
+                  aria-label="Close menu"
+                >
+                  <X className="w-7 h-7 sm:w-11 sm:h-11 text-[#1c140e] dark:text-[#faf6f0] transition-transform group-hover:rotate-90 duration-300" />
+                </button>
+              </div>
             </div>
 
             {/* Center Links with Large Bold Typography & Arrows */}
-            <div className="w-full my-auto py-8 sm:py-12">
-              <nav className="flex flex-col space-y-3 sm:space-y-4 px-5 lg:px-10">
+            <div className="w-full my-auto py-6 sm:py-12">
+              <nav className="flex flex-col space-y-2 sm:space-y-4 px-2 sm:px-5 lg:px-10">
                 {allPageLinks.map((link) => (
                   <a
                     key={link.name}
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className="group flex items-center gap-4 text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight hover:text-[#8b4513] dark:hover:text-[#b45309] transition-all duration-200"
+                    className="group flex items-center justify-between text-2xl sm:text-4xl lg:text-6xl font-black tracking-tight hover:text-[#8b4513] dark:hover:text-[#b45309] transition-all duration-200 py-1"
                   >
                     <span className="leading-tight">{link.name}</span>
-                    <span className="text-2xl sm:text-4xl lg:text-5xl font-light text-neutral-400 dark:text-neutral-600 transition-transform duration-300 group-hover:translate-x-4 group-hover:text-[#8b4513] dark:group-hover:text-[#b45309]">
+                    <span className="text-xl sm:text-3xl lg:text-5xl font-light text-neutral-400 dark:text-neutral-600 transition-transform duration-300 group-hover:translate-x-3 group-hover:text-[#8b4513] dark:group-hover:text-[#b45309]">
                       →
                     </span>
                   </a>
@@ -221,8 +234,8 @@ export default function Navbar() {
             </div>
 
             {/* Bottom Footer Info */}
-            <div className="w-full pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#786454] dark:text-[#a89587]">
-              <div className="flex items-center gap-6 sm:gap-10">
+            <div className="w-full pt-4 sm:pt-6 border-t border-neutral-200 dark:border-neutral-800 flex flex-wrap items-center justify-between gap-4 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#786454] dark:text-[#a89587]">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-10">
                 <a
                   href="https://linkedin.com/in/nuhamin-gulilat-66635318b"
                   target="_blank"

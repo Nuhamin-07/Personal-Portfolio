@@ -44,24 +44,24 @@ export default function ProjectCard({ project }: ProjectCardProps) {
       </div>
 
       {/* 2. Content Section */}
-      <div className="flex flex-1 flex-col p-6 justify-between">
+      <div className="flex flex-1 flex-col p-4 sm:p-6 justify-between">
         <div>
           {/* Project Title */}
-          <h3 className="text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
+          <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground transition-colors group-hover:text-primary">
             {project.title}
           </h3>
 
           {/* Short Project Description */}
-          <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground line-clamp-3">
+          <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground line-clamp-3">
             {project.description}
           </p>
 
           {/* Technology Tags (Styled as Soft Pills matching reference design) */}
-          <div className="mt-5 flex flex-wrap gap-1.5 sm:gap-2">
+          <div className="mt-4 sm:mt-5 flex flex-wrap gap-1.5 sm:gap-2">
             {project.technologies.map((tech) => (
               <span
                 key={tech}
-                className="inline-flex items-center rounded-full bg-primary/10 border border-primary/15 px-3 py-1 text-xs font-medium text-primary dark:bg-primary/15 dark:text-primary-foreground transition-colors"
+                className="inline-flex items-center rounded-full bg-primary/10 border border-primary/15 px-2.5 py-0.5 sm:px-3 sm:py-1 text-[11px] sm:text-xs font-medium text-primary dark:bg-primary/15 dark:text-primary-foreground transition-colors"
               >
                 {tech}
               </span>
@@ -71,13 +71,13 @@ export default function ProjectCard({ project }: ProjectCardProps) {
 
         {/* 3. Action Buttons (Live Demo & Github) */}
         {(project.liveUrl || project.githubUrl) && (
-          <div className="mt-6 flex flex-wrap items-center gap-3 border-t border-border/60 pt-4">
+          <div className="mt-5 sm:mt-6 flex flex-col xs:flex-row items-center gap-2.5 sm:gap-3 border-t border-border/60 pt-4">
             {project.liveUrl && (
               <a
                 href={project.liveUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs sm:text-sm py-2.5 px-4 shadow-xs transition-all duration-200 active:scale-[0.98] cursor-pointer"
+                className="w-full xs:flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground font-semibold text-xs sm:text-sm py-2.5 px-4 shadow-xs transition-all duration-200 active:scale-[0.98] cursor-pointer min-h-[42px]"
                 aria-label={`View Live Demo of ${project.title}`}
               >
                 <span>Live Demo</span>
@@ -90,7 +90,7 @@ export default function ProjectCard({ project }: ProjectCardProps) {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card hover:bg-muted text-foreground font-semibold text-xs sm:text-sm py-2.5 px-4 transition-all duration-200 hover:border-primary/40 active:scale-[0.98] cursor-pointer"
+                className="w-full xs:flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card hover:bg-muted text-foreground font-semibold text-xs sm:text-sm py-2.5 px-4 transition-all duration-200 hover:border-primary/40 active:scale-[0.98] cursor-pointer min-h-[42px]"
                 aria-label={`View GitHub repository for ${project.title}`}
               >
                 <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
