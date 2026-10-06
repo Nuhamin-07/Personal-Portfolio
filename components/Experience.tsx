@@ -5,6 +5,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { experiences } from "@/data/experiences";
 import Section from "@/components/shared/Section";
+import SectionHeader from "@/components/shared/SectionHeader";
 import SkillIcon from "@/components/shared/SkillIcon";
 import { ArrowUpRight } from "lucide-react";
 
@@ -119,22 +120,15 @@ export default function Experience() {
 
   return (
     <Section id="experience" className="relative pt-12 pb-36 sm:pb-48">
-      {/* ── 1. Section Header ── */}
-      <div className="mb-14 sm:mb-18 max-w-4xl">
-        <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold tracking-widest text-[#8b4513] dark:text-[#c26510] uppercase mb-4">
-          <span className="inline-block w-6 h-[2px] bg-[#8b4513] dark:bg-[#c26510]" />
-          <span>[ 03 / CAREER & TRACK RECORD ]</span>
-        </div>
-
-        <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0] leading-[1.05]">
-          Professional <br className="hidden sm:inline" />
-          <span className="text-[#8b4513] dark:text-[#c26510]">Experience.</span>
-        </h2>
-
-        <p className="mt-4 text-base sm:text-lg text-[#7c6455] dark:text-[#a89587] max-w-2xl font-medium leading-relaxed">
-          Transforming complex business requirements into high-performance, elegant software systems and scalable enterprise architectures.
-        </p>
-      </div>
+      {/* ── 1. Reusable Editorial Section Header ── */}
+      <SectionHeader
+        tag="[ 03 / CAREER & TRACK RECORD ]"
+        title="Professional"
+        titleSecondLine="Experience."
+        stickerText="FROM 2021 — NOW"
+        countBadge="04 Roles"
+        description="Transforming complex business requirements into high-performance, elegant software systems and scalable enterprise architectures."
+      />
 
       {/* ── 2. 3D Perspective Card Deck Container ── */}
       <div

@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useRef } from "react";
 import Section from "@/components/shared/Section";
+import SectionHeader from "@/components/shared/SectionHeader";
 import ProjectCard from "@/components/ProjectCard";
 import { projects } from "@/data/projects";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -54,18 +55,18 @@ export default function Projects() {
 
   return (
     <Section id="projects">
-      {/* 1. Centered Section Header inspired by reference design */}
-      <div className="mb-10 text-center max-w-3xl mx-auto px-4">
-        <h2 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-          Featured Projects
-        </h2>
+      {/* 1. Reusable Editorial Section Header */}
+      <SectionHeader
+        tag="[ 02 / SELECTED WORKS ]"
+        title="Selected"
+        titleSecondLine="works."
+        stickerText="FROM 2021 — NOW"
+        countBadge={`${projects.length} Works`}
+        description="A curated selection of enterprise systems, student portals, healthcare applications, and multi-tenant platforms."
+      />
 
-        <p className="mt-3.5 text-base text-muted-foreground sm:text-lg leading-relaxed">
-          A selection of my recent work showcasing full-stack web applications, enterprise systems, and clinical solutions.
-        </p>
-
-        {/* 2. Centered Category Filter Tabs */}
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+      {/* 2. Category Filter Tabs */}
+      <div className="mb-10 flex flex-wrap items-center gap-2 sm:gap-2.5">
           {categories.map((cat) => {
             const isActive = selectedCategory === cat;
             return (
@@ -84,7 +85,6 @@ export default function Projects() {
             );
           })}
         </div>
-      </div>
 
       {/* 3. Projects Card Grid (Desktop 3-column, Tablet 2-column, Mobile 1-column) */}
       <div ref={gridRef} className="scroll-mt-28">

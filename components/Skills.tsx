@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Section from "@/components/shared/Section";
+import SectionHeader from "@/components/shared/SectionHeader";
 import SkillIcon from "@/components/shared/SkillIcon";
 import { skillCategories, DetailedSkill } from "@/data/skills";
 import { Search, X, Sparkles, ChevronRight, Award } from "lucide-react";
@@ -59,16 +60,15 @@ export default function Skills() {
 
   return (
     <Section id="skills">
-      {/* 1. Main Header - Matched directly to reference design */}
-      <div className="text-center max-w-3xl mx-auto px-4">
-        <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-foreground">
-          Skills
-        </h2>
-
-        <p className="mt-3.5 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-xl mx-auto">
-          Here are some of my core skills and technologies on which I have been working for the past 4 years.
-        </p>
-      </div>
+      {/* 1. Reusable Editorial Section Header */}
+      <SectionHeader
+        tag="[ 04 / TECH & CAPABILITIES ]"
+        title="Skills &"
+        titleSecondLine="tools."
+        stickerText="4+ YEARS EXP"
+        countBadge="30+ Tech"
+        description="Core technical competencies and tools applied across frontend architecture, backend systems, and automated testing."
+      />
 
       {/* 2. Controls: Search Bar & Quick Category Filters */}
       <div className="mt-8 max-w-4xl mx-auto px-4 space-y-4">
