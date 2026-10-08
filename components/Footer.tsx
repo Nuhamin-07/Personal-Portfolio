@@ -272,6 +272,7 @@ export default function Footer() {
                 { name: "Works", href: "#projects" },
                 { name: "Experience", href: "#experience" },
                 { name: "Skills", href: "#skills" },
+                { name: "Playground", href: "#playground" },
                 { name: "About", href: "#about" },
               ].map((item) => (
                 <li key={item.name}>
