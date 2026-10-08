@@ -6,7 +6,7 @@ import { ArrowUp, Copy, Check, Mail, Phone, MessageCircleCheck } from "lucide-re
 export default function ContactCTA() {
   const [copied, setCopied] = useState<string | null>(null);
   const email = "nuhamin.gulilat.7@gmail.com";
-  const phone = "+251 977 40 40 46";
+  const phone = "+251 947 93 95 07";
   const currentYear = new Date().getFullYear();
 
   const handleCopy = (text: string, label: string) => {

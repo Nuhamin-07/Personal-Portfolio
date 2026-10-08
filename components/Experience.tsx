@@ -27,7 +27,7 @@ export default function Experience() {
 
           gsap.to(card, {
             scale: 0.94,
-            opacity: 0.75,
+            opacity: 0.92,
             transformOrigin: "center top",
             ease: "none",
             scrollTrigger: {
