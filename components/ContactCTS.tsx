@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { ArrowUp, Copy, Check, Mail, Phone, MessageSquare } from "lucide-react";
+import { ArrowUp, Copy, Check, Mail, Phone, MessageCircleCheck } from "lucide-react";
 
 export default function ContactCTA() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -92,7 +92,7 @@ export default function ContactCTA() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-[#1c140e]/75 dark:text-[#faf6f0]/75 hover:text-[#8b4513] dark:hover:text-[#d97706] hover:underline"
             >
-              <MessageSquare className="w-4 h-4" />
+              <MessageCircleCheck className="w-4 h-4" />
               <span>Telegram: @Nuhamin_07</span>
             </a>
           </div>
