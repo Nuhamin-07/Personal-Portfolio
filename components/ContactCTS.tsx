@@ -1,72 +1,142 @@
 "use client";
 
-import { useState } from "react";
-import Section from "@/components/shared/Section";
+import React, { useState } from "react";
+import { ArrowUp, Copy, Check, Mail, Phone, MessageSquare } from "lucide-react";
 
 export default function ContactCTA() {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState<string | null>(null);
   const email = "nuhamin.gulilat.7@gmail.com";
+  const phone = "+251 977 40 40 46";
+  const currentYear = new Date().getFullYear();
 
-  const copyEmail = () => {
-    navigator.clipboard.writeText(email);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2500);
+  const handleCopy = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(label);
+    setTimeout(() => setCopied(null), 2200);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
-    <Section id="contact">
-      <div className="relative overflow-hidden rounded-3xl bg-card border border-border px-4 sm:px-8 md:px-12 py-10 sm:py-16 md:py-20 text-center text-foreground shadow-xl transition-colors">
-        {/* Ambient Background Glow */}
-        <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
-
-        <div className="relative z-10 max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-            <span>Get In Touch</span>
+    <section
+      id="contact"
+      className="w-full relative py-16 sm:py-24 lg:py-32 px-6 sm:px-12 lg:px-20 text-[#1c140e] dark:text-[#faf6f0] font-sans overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto flex flex-col justify-between min-h-[65vh] sm:min-h-[75vh]">
+        {/* ── 1. Top Row: Copyright & Back To Top ── */}
+        <div className="flex items-center justify-between w-full">
+          <div className="text-sm sm:text-base font-semibold tracking-tight text-[#1c140e]/60 dark:text-[#faf6f0]/60">
+            © {currentYear}
           </div>
 
-          <h2 className="mt-4 text-2xl xs:text-3xl font-extrabold tracking-tight sm:text-4xl md:text-5xl text-foreground leading-tight">
-            Let&apos;s build something exceptional together.
-          </h2>
+          <button
+            onClick={scrollToTop}
+            type="button"
+            className="group inline-flex items-center gap-3 cursor-pointer text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] transition-opacity hover:opacity-80"
+          >
+            <span className="hidden xs:inline tracking-wider">BACK TO TOP</span>
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#1c140e] dark:bg-[#faf6f0] text-white dark:text-[#120c08] flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-1 shadow-sm">
+              <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
+            </div>
+          </button>
+        </div>
 
-          <p className="mx-auto mt-4 max-w-2xl text-xs sm:text-base text-muted-foreground sm:text-lg leading-relaxed">
-            I am currently open to full-time remote Full-Stack Developer &amp; Frontend Engineer roles, technical collaborations, and enterprise web projects. Operating on UTC+3 with flexible overlap for US &amp; EU timezones.
-          </p>
+        {/* ── 2. Middle Row: Editorial Giant Headline & Direct Contacts ── */}
+        <div className="my-14 sm:my-20 lg:my-28 flex flex-col items-start w-full">
+          <span className="text-xs sm:text-sm md:text-base font-bold tracking-[0.2em] uppercase text-[#1c140e]/70 dark:text-[#faf6f0]/70 mb-2 sm:mb-4">
+            HAVE A PROJECT IN MIND?
+          </span>
 
-          {/* Copyable Email Badge */}
-          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 rounded-xl border border-border bg-muted/60 px-3 sm:px-4 py-2 font-mono text-xs sm:text-sm font-medium text-primary backdrop-blur-sm shadow-sm max-w-full">
-            <span className="truncate max-w-[220px] sm:max-w-none">✉️ {email}</span>
+          {/* Giant Editorial LET'S TALK Headline */}
+          <a
+            href={`mailto:${email}`}
+            className="group block w-full select-none"
+          >
+            <h2 className="text-6xl xs:text-8xl sm:text-[10rem] md:text-[13rem] lg:text-[15rem] font-black tracking-tighter leading-[0.85] text-neutral-200 dark:text-neutral-800 group-hover:text-[#8b4513] dark:group-hover:text-[#d97706] transition-colors duration-300 uppercase">
+              LET&apos;S TALK
+            </h2>
+          </a>
+
+          {/* Quick Contact & Copy Bar */}
+          <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-medium">
             <button
-              onClick={copyEmail}
+              onClick={() => handleCopy(email, "email")}
               type="button"
-              className="rounded-lg bg-primary/10 px-2.5 py-1 text-xs font-sans font-semibold text-primary transition-all hover:bg-primary hover:text-white cursor-pointer shrink-0"
+              className="inline-flex items-center gap-2 text-[#8b4513] dark:text-[#d97706] hover:underline cursor-pointer font-bold"
             >
-              {copied ? "✓ Copied!" : "Copy"}
+              <Mail className="w-4 h-4" />
+              <span>{copied === "email" ? "✓ Email Copied!" : email}</span>
             </button>
-          </div>
 
-          {/* Action Buttons */}
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:gap-4 sm:flex-row w-full">
-            <a
-              href={`mailto:${email}`}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-lg shadow-primary/30 transition-all hover:bg-primary/90 hover:scale-105 active:scale-95"
+            <span className="text-[#1c140e]/30 dark:text-[#faf6f0]/30">•</span>
+
+            <button
+              onClick={() => handleCopy(phone, "phone")}
+              type="button"
+              className="inline-flex items-center gap-2 text-[#1c140e]/75 dark:text-[#faf6f0]/75 hover:text-[#8b4513] dark:hover:text-[#d97706] hover:underline cursor-pointer"
             >
-              <svg className="h-4 w-4 fill-none stroke-current" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-              Send Direct Email
+              <Phone className="w-4 h-4" />
+              <span>{copied === "phone" ? "✓ Phone Copied!" : phone}</span>
+            </button>
+
+            <span className="text-[#1c140e]/30 dark:text-[#faf6f0]/30 hidden sm:inline">•</span>
+
+            <a
+              href="https://t.me/Nuhamin_07"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[#1c140e]/75 dark:text-[#faf6f0]/75 hover:text-[#8b4513] dark:hover:text-[#d97706] hover:underline"
+            >
+              <MessageSquare className="w-4 h-4" />
+              <span>Telegram: @Nuhamin_07</span>
+            </a>
+          </div>
+        </div>
+
+        {/* ── 3. Bottom Row: Rounded Pill Buttons & Studio Credits ── */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pt-8 border-t border-[#1c140e]/10 dark:border-white/10 w-full">
+          {/* Left: Capsule Pill Buttons */}
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+            <a
+              href="https://github.com/Nuhamin-07"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-7 sm:px-9 py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
+            >
+              GITHUB
             </a>
 
             <a
               href="https://linkedin.com/in/nuhamin-gulilat-66635318b"
               target="_blank"
-              rel="noreferrer"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-7 py-3.5 text-sm font-semibold text-foreground transition-all hover:bg-muted active:scale-95"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-7 sm:px-9 py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
             >
-              Connect on LinkedIn ↗
+              LINKEDIN
             </a>
+
+            <a
+              href="https://t.me/Nuhamin_07"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center px-7 sm:px-9 py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
+            >
+              TWITTER / TELEGRAM
+            </a>
+          </div>
+
+          {/* Right: Studio Credits */}
+          <div className="text-left md:text-right text-xs sm:text-sm font-medium text-[#1c140e]/70 dark:text-[#faf6f0]/70 leading-relaxed">
+            <div>Design &amp; Development by Nuhamin Gulilat</div>
+            <div>Full-Stack Developer &bull; Available for Global Roles</div>
           </div>
         </div>
       </div>
-    </Section>
+    </section>
   );
 }
