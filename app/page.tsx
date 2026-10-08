@@ -7,6 +7,7 @@ import ResumeSection from "@/components/ResumeSection";
 import Skills from "@/components/Skills";
 import RemoteReadiness from "@/components/RemoteReadiness";
 import Certifications from "@/components/Certifications";
+import MidnightLabSection from "@/components/MidnightLabSection";
 import About from "@/components/About";
 import ContactCTA from "@/components/ContactCTS";
 import Footer from "@/components/Footer";
@@ -25,6 +26,7 @@ export default function Home() {
         <Skills />
         {/* <RemoteReadiness /> */}
         <Certifications />
+        <MidnightLabSection />
 
         <ContactCTA />
       </main>

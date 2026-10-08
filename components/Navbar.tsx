@@ -20,6 +20,7 @@ const allPageLinks = [
   { name: "EXPERIENCE", href: "#experience" },
   { name: "SKILLS", href: "#skills" },
   { name: "CERTIFICATIONS", href: "#certifications" },
+  { name: "PLAYGROUND 💡", href: "#playground" },
   { name: "CONTACT", href: "#contact" },
 ];
 
