@@ -23,8 +23,8 @@ const STEP = 1 / 120;
 const BULB: [number, number] = [0, 74];
 const BULB_R = 16;
 const PEBBLE_R = 7;
-const MAX_PULL = 140;
-const LAUNCH = 12.5;
+const MAX_PULL = 150;
+const LAUNCH = 14.5;
 const LIGHT_SCALE = 0.25;
 
 interface Pebble {
@@ -130,16 +130,6 @@ export default function SlingshotLamp() {
     const c = Math.cos(lamp.theta);
     const s = Math.sin(lamp.theta);
     return { x: nx * c + ny * s, y: -nx * s + ny * c };
-  }, []);
-
-  const knockSwitch = useCallback((nx: number, ny: number) => {
-    if (!switchRef.current) return;
-    switchRef.current.style.setProperty("--kx", `${-nx * 6}px`);
-    switchRef.current.style.setProperty("--ky", `${-ny * 6}px`);
-    switchRef.current.style.setProperty("--kr", `${(Math.random() - 0.5) * 6}deg`);
-    switchRef.current.classList.remove("knock");
-    void switchRef.current.offsetWidth;
-    switchRef.current.classList.add("knock");
   }, []);
 
   const pop = useCallback((vx = 0, vy = 0) => {
@@ -313,7 +303,7 @@ export default function SlingshotLamp() {
     handleResize();
     window.addEventListener("resize", handleResize);
 
-    // Collision Logic
+    // Collision Logic: Switch is solid and does not move
     const collideSwitch = (p: Pebble) => {
       const s = stateRef.current;
       if (p.hitT > 0 || !s.switchRect) return;
@@ -344,7 +334,7 @@ export default function SlingshotLamp() {
       p.y = cy + ny * (r + 1);
       p.hitT = 0.1;
       lampAudio.play("tap", -vn / 2000);
-      knockSwitch(nx, ny);
+      // Clean switch toggle without shifting switch position
       setSwitchState(!s.light.on);
     };
 
@@ -581,7 +571,8 @@ export default function SlingshotLamp() {
       dctx.setTransform(1, 0, 0, 1, 0, 0);
       dctx.globalCompositeOperation = "source-over";
       dctx.clearRect(0, 0, dark.width, dark.height);
-      dctx.fillStyle = `rgba(5,6,7,${0.975 - I * 0.1})`;
+      // Balanced atmospheric dimness when light is OFF (visible but authentically dark)
+      dctx.fillStyle = `rgba(5,6,8,${0.91 - I * 0.09})`;
       dctx.fillRect(0, 0, dark.width, dark.height);
 
       if (I > 0.002) {
@@ -806,11 +797,11 @@ export default function SlingshotLamp() {
         const vx = (s.sling.rest.x - p.x) * LAUNCH;
         const vy = (s.sling.rest.y - p.y) * LAUNCH;
         ctx.fillStyle = "#ece6da";
-        for (let i = 1; i <= 9; i++) {
-          const t = i * 0.035;
-          ctx.globalAlpha = 0.5 * (1 - i / 10);
+        for (let i = 1; i <= 12; i++) {
+          const t = i * 0.032;
+          ctx.globalAlpha = 0.6 * (1 - i / 13);
           ctx.beginPath();
-          ctx.arc(p.x + vx * t, p.y + vy * t + 0.5 * PEBBLE_G * t * t, 2, 0, TAU);
+          ctx.arc(p.x + vx * t, p.y + vy * t + 0.5 * PEBBLE_G * t * t, 2.2, 0, TAU);
           ctx.fill();
         }
         ctx.globalAlpha = 1;
@@ -919,7 +910,7 @@ export default function SlingshotLamp() {
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(stateRef.current.animId);
     };
-  }, [dirToWorld, kickLamp, lampOrigin, knockSwitch, pop, setSwitchState, toLocal, toWorld]);
+  }, [dirToWorld, kickLamp, lampOrigin, pop, setSwitchState, toLocal, toWorld]);
 
   // Pointer Event Handlers
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -971,7 +962,7 @@ export default function SlingshotLamp() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-screen min-h-[640px] max-h-[1080px] bg-[#050607] text-[#ece6da] overflow-hidden select-none"
+      className="relative w-full h-full bg-[#050607] text-[#ece6da] overflow-hidden select-none"
     >
       {/* Blueprint Background Grid */}
       <div
@@ -988,22 +979,15 @@ export default function SlingshotLamp() {
 
       {/* Main Narrative Headline Stage (Behind Lamp & Light Cone) */}
       <div className="absolute inset-0 flex flex-col items-center justify-end pb-[13vh] px-4 text-center pointer-events-none z-10">
-        <span className="font-mono text-xs tracking-[0.2em] text-[#ece6da]/55 uppercase mb-5 select-none">
-          03:14 AM
+        <span className="font-mono text-[11px] sm:text-xs tracking-[0.24em] text-[#ece6da]/55 uppercase mb-3.5 sm:mb-4 select-none">
+          03:14 AM · CREATIVE ENGINEERING
         </span>
-        <h2 className="font-black tracking-[-0.035em] text-[#ece6da] leading-[0.98] select-none text-[clamp(40px,7.5vw,96px)]">
-          Nobody touch <br />
-          the <em className="not-italic text-[#f3c98f]">lamp.</em>
+        <h2 className="font-black tracking-[-0.035em] text-[#ece6da] leading-[0.98] select-none text-[clamp(38px,7.5vw,94px)]">
+          Bringing ideas <br />
+          to <em className="not-italic text-[#f3c98f]">light.</em>
         </h2>
-        <p className="mt-5 text-[15px] sm:text-[17px] leading-relaxed text-[#ece6da]/60 max-w-[56ch] font-medium select-none">
-          <span className="hidden sm:inline">
-            Use the switch to turn the bulb on and off.
-            <br />
-            Use the slingshot to hit the shade, the bulb or the switch.
-          </span>
-          <span className="sm:hidden">
-            Flip the switch. Pull back the slingshot to hit the shade, bulb or switch. Drag the shade to swing it.
-          </span>
+        <p className="mt-3.5 sm:mt-4 text-[14px] sm:text-[16px] leading-relaxed text-[#ece6da]/65 max-w-[50ch] font-medium select-none">
+          Crafting interactive digital experiences through creative code, real-time physics, and relentless curiosity.
         </p>
       </div>
 
@@ -1023,30 +1007,32 @@ export default function SlingshotLamp() {
         <div className="absolute top-5 left-5 sm:top-6 sm:left-6 pointer-events-auto leading-[1.7] tracking-[0.04em] text-[11px] sm:text-xs">
           <a
             href="#playground"
-            className="text-[#ece6da]/40 hover:text-[#ece6da] transition-colors"
+            className="text-[#ece6da]/45 hover:text-[#ece6da] transition-colors"
           >
-            ← interactive-lab
+            ← experimental-lab
           </a>
           <br />
-          slingshot-lamp ·{" "}
-          <b className="font-normal text-[#ece6da]/70">
-            {isBroken ? (isLightOn ? "blown (on)" : "blown") : isLightOn ? "on" : "off"}
+          system ·{" "}
+          <b className="font-normal text-[#ece6da]/75">
+            {isBroken ? (isLightOn ? "shattered (on)" : "shattered") : isLightOn ? "illuminated" : "standby"}
           </b>
           <br />
-          shots <b className="font-normal text-[#ece6da]/70">{shotsCount}</b> · bulbs{" "}
-          <b className="font-normal text-[#ece6da]/70">{bulbsCount}</b>
+          interactions <b className="font-normal text-[#ece6da]/75">{shotsCount}</b> · iterations{" "}
+          <b className="font-normal text-[#ece6da]/75">{bulbsCount}</b>
         </div>
 
-        {/* Top-Right: Sound Toggle Button */}
-        <button
-          onClick={toggleSound}
-          type="button"
-          className="absolute top-4 right-4 sm:top-5 sm:right-5 pointer-events-auto bg-transparent border border-white/10 hover:border-white/25 text-[#ece6da]/40 hover:text-[#ece6da] rounded-full px-3 py-1.5 font-mono text-[11px] sm:text-xs transition-colors cursor-pointer"
-        >
-          sound: {isMuted ? "off" : "on"}
-        </button>
+        {/* Top-Right: Sound Toggle */}
+        <div className="absolute top-4 right-4 sm:top-5 sm:right-6 pointer-events-auto">
+          <button
+            onClick={toggleSound}
+            type="button"
+            className="bg-transparent border border-white/10 hover:border-white/25 text-[#ece6da]/40 hover:text-[#ece6da] rounded-full px-3 py-1.5 font-mono text-[11px] sm:text-xs transition-colors cursor-pointer"
+          >
+            sound: {isMuted ? "off" : "on"}
+          </button>
+        </div>
 
-        {/* 3D Skeuomorphic Wall Switch */}
+        {/* 3D Skeuomorphic Wall Switch — Rock-solid stable in place */}
         <div
           ref={switchRef}
           onClick={() => {
@@ -1063,7 +1049,7 @@ export default function SlingshotLamp() {
               setSwitchState(!isLightOn);
             }
           }}
-          className="switch-wall pointer-events-auto absolute right-4 sm:right-[max(24px,8vw)] top-1/2 -translate-y-1/2 w-[74px] h-[120px] rounded-[11px] cursor-pointer select-none outline-none max-sm:scale-80 max-sm:origin-right"
+          className="pointer-events-auto absolute right-4 sm:right-[max(24px,8vw)] top-1/2 -translate-y-1/2 w-[74px] h-[120px] rounded-[11px] cursor-pointer select-none outline-none max-sm:scale-80 max-sm:origin-right transition-colors"
           style={{
             background: "linear-gradient(160deg, #26282b, #151618 60%, #101112)",
             boxShadow: `
@@ -1138,31 +1124,17 @@ export default function SlingshotLamp() {
           <button
             onClick={replaceBulb}
             type="button"
-            className="pointer-events-auto absolute left-1/2 bottom-[52px] -translate-x-1/2 bg-[#ece6da] text-[#111] rounded-full px-[18px] py-[11px] font-mono font-medium text-[13px] shadow-[0_8px_30px_rgba(0,0,0,0.6)] hover:bg-white hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer"
+            className="pointer-events-auto absolute left-1/2 bottom-[52px] -translate-x-1/2 bg-[#ece6da] text-[#111] rounded-full px-5 py-2.5 font-mono font-bold text-xs uppercase tracking-wider shadow-[0_8px_30px_rgba(0,0,0,0.6)] hover:bg-white hover:scale-105 active:scale-95 transition-all animate-bounce cursor-pointer"
           >
-            replace bulb
+            ✦ Relight & Iterate
           </button>
         )}
 
         {/* Bottom Hint */}
-        <div className="absolute left-0 right-0 bottom-[22px] text-center pointer-events-none px-4 text-[11px] sm:text-xs text-[#ece6da]/35">
-          flip the switch · pull the pebble back and let go · grab the shade to swing it
+        <div className="absolute left-0 right-0 bottom-[22px] text-center pointer-events-none px-4 text-[10.5px] sm:text-xs text-[#ece6da]/40 tracking-wider">
+          2D Canvas Physics · Real-Time Audio Synthesis · Interactive Prototype
         </div>
       </div>
-
-      <style>{`
-        .knock {
-          animation: switchKnock 0.32s cubic-bezier(0.3, 0.7, 0.4, 1);
-        }
-        @keyframes switchKnock {
-          0% {
-            transform: translateY(-50%) translate(var(--kx, 0), var(--ky, 0)) rotate(var(--kr, 0deg));
-          }
-          100% {
-            transform: translateY(-50%);
-          }
-        }
-      `}</style>
     </div>
   );
 }
