@@ -4,6 +4,7 @@ export interface Certification {
     icon: string;
     description: string;
     topics: string[];
+    image: string;
 }
 
 export const certifications: Certification[] = [
@@ -14,6 +15,7 @@ export const certifications: Certification[] = [
         description:
             "Comprehensive full-stack engineering path covering React, Next.js, Node.js, Express, REST APIs, database design, authentication, and production web app deployment.",
         topics: ["React", "Node.js", "Express", "REST APIs"],
+        image: "/certificates/fullstack-scrimba.jpg"
     },
     {
         title: "Frontend Developer Career Path",
@@ -22,6 +24,7 @@ export const certifications: Certification[] = [
         description:
             "Advanced frontend development curriculum focusing on modern JavaScript (ES6+), React state management, responsive UI design, performance optimization, and accessibility.",
         topics: ["React", "JavaScript ES6+", "UI/UX", "CSS3"],
+        image: "/certificates/frontend-scrimba.jpg"
     },
     {
         title: "Microsoft Power Up Program",
@@ -30,6 +33,7 @@ export const certifications: Certification[] = [
         description:
             "Specialized enterprise training on Microsoft Power Platform, building custom business portals in Power Pages, Canvas & Model-Driven Apps, Dataverse data modeling, and Power Automate workflows.",
         topics: ["Power Pages", "Dataverse", "Power Automate", "Power Apps"],
+        image: "/certificates/powerapp-credly.jpg"
     },
     {
         title: "Learn React",
@@ -38,6 +42,7 @@ export const certifications: Certification[] = [
         description:
             "In-depth interactive certification covering React components, custom hooks, context API, state management patterns, side effects, and modern single-page web app architecture.",
         topics: ["React Hooks", "State Management", "JSX", "SPAs"],
+        image: "/certificates/react-scrimba.jpg"
     },
     {
         title: "Responsive Web Design",
@@ -46,6 +51,7 @@ export const certifications: Certification[] = [
         description:
             "Rigorous developer certification in modern HTML5, CSS3, Flexbox, CSS Grid layouts, media queries, accessibility standards (WCAG AA), and fluid cross-device UI design.",
         topics: ["HTML5", "CSS3", "Flexbox", "WCAG a11y"],
+        image: "/certificates/web-freecodecamp.jpg"
     },
     {
         title: "JavaScript Algorithms & Data Structures",
@@ -54,6 +60,7 @@ export const certifications: Certification[] = [
         description:
             "Fundamental software engineering training in JavaScript core mechanics, algorithmic problem solving, object-oriented programming (OOP), functional programming, and data structures.",
         topics: ["Algorithms", "Data Structures", "ES6+", "OOP"],
+        image: "/certificates/js-freecodecamp.jpg"
     },
 ];
 
