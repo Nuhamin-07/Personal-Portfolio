@@ -11,7 +11,7 @@ class LampAudioSynthesizer {
   private getAudioContext(): AudioContext | null {
     if (this.ctx) {
       if (this.ctx.state === "suspended") {
-        this.ctx.resume().catch(() => {});
+        this.ctx.resume().catch(() => { });
       }
       return this.ctx;
     }
@@ -187,13 +187,13 @@ class LampAudioSynthesizer {
 
   public resume() {
     if (this.ctx && this.ctx.state === "suspended") {
-      this.ctx.resume().catch(() => {});
+      this.ctx.resume().catch(() => { });
     }
   }
 
   public destroy() {
     if (this.ctx) {
-      this.ctx.close().catch(() => {});
+      this.ctx.close().catch(() => { });
       this.ctx = null;
     }
   }

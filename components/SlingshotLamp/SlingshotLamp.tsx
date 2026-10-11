@@ -11,10 +11,10 @@ const mix = (
   c2: [number, number, number],
   t: number
 ): [number, number, number] => [
-  Math.round(lerp(c1[0], c2[0], t)),
-  Math.round(lerp(c1[1], c2[1], t)),
-  Math.round(lerp(c1[2], c2[2], t)),
-];
+    Math.round(lerp(c1[0], c2[0], t)),
+    Math.round(lerp(c1[1], c2[1], t)),
+    Math.round(lerp(c1[2], c2[2], t)),
+  ];
 const rgba = (c: [number, number, number], a: number) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
 
 const G = 2600;
@@ -1097,11 +1097,10 @@ export default function SlingshotLamp() {
 
           {/* Glowing Amber Pilot LED */}
           <span
-            className={`absolute right-[9px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full transition-all duration-200 ${
-              isLightOn
+            className={`absolute right-[9px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full transition-all duration-200 ${isLightOn
                 ? "bg-[#ffb45a] shadow-[0_0_6px_1px_rgba(255,170,80,0.8)]"
                 : "bg-[#3a2a1a]"
-            }`}
+              }`}
           />
 
           <span className="absolute bottom-5 left-0 right-0 text-center font-mono text-[8px] tracking-[0.18em] text-white/25">
