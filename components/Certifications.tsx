@@ -272,7 +272,7 @@ export default function Certifications() {
                                                 <span className={styles.skillsValidatedLabel}>
                                                     SKILLS VALIDATED
                                                 </span>
-                                                {cert.cardSkills.slice(0, 2).map((skill, idx) => (
+                                                {cert.cardSkills.map((skill, idx) => (
                                                     <span key={idx} className={styles.branchPill}>
                                                         {skill}
                                                     </span>

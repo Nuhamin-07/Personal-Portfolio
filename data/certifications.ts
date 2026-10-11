@@ -12,11 +12,9 @@ export interface Certification {
     description: string;
     cardSkills: string[];
     validatedSkills: string[];
-    topics: string[];
     keyConcepts: string[];
     image: string;
-    completionDate?: string;
-    credentialUrl?: string;
+    completionDate?: string
 }
 
 export const certifications: Certification[] = [
@@ -30,25 +28,25 @@ export const certifications: Certification[] = [
         issuedDate: "Oct 2024",
         icon: "🛡️",
         description:
-            "Validated proficiency in enterprise cloud architecture, building secure business solutions with Power Pages, Canvas & Model-Driven Apps, relational Dataverse modeling, and automated cloud workflows.",
-        cardSkills: ["CLOUD COMPUTING", "SYSTEMS DESIGN"],
+            "Completed the Microsoft Power Up program, gaining practical knowledge of Canvas and Model-Driven Power Apps, Microsoft Dataverse, Power Automate, and Power BI. Applied these concepts in a hands-on project integrating application development, data management, workflow automation, and business intelligence.",
+        cardSkills: ["Power Apps", "Data Management", "Workflow Automation", "Business Intelligence"],
         validatedSkills: [
-            "Cloud Computing",
-            "Systems Design",
-            "Dataverse",
-            "Power Pages",
-            "Power Automate"
+            "Canvas Apps",
+            "Model-Driven Apps",
+            "Microsoft Dataverse",
+            "Power Automate",
+            "Power BI"
         ],
-        topics: ["Power Pages", "Dataverse", "Power Automate", "Power Apps", "Power BI"],
         keyConcepts: [
-            "Enterprise Dataverse Relational Data Modeling",
-            "Power Pages Portal Customization & Liquid Templates",
-            "Automated Business Workflows with Power Automate",
-            "Role-Based Access Control & Security Governance"
+            "Low-Code Application Development",
+            "Canvas and Model-Driven App Design",
+            "Dataverse Data Modeling",
+            "Workflow and Business Process Automation",
+            "Business Intelligence and Data Visualization",
+            "Integrated Business Solution Development"
         ],
         image: "/certificates/powerapp-credly.jpg",
-        completionDate: "2024",
-        credentialUrl: "https://www.credly.com/org/microsoft"
+        completionDate: "2024"
     },
     {
         id: "fullstack-scrimba",
@@ -57,29 +55,42 @@ export const certifications: Certification[] = [
         category: "fullstack",
         categories: ["fullstack"],
         categoryLabel: "Full-Stack",
-        issuedDate: "MAY 2024",
+        issuedDate: "July 2026",
         icon: "🚀",
         description:
-            "Validated proficiency in modern full-stack web engineering, server-side rendering, RESTful APIs, relational databases, state elevation, and cloud production deployment.",
-        cardSkills: ["CLOUD COMPUTING", "SYSTEMS DESIGN"],
+            "Completed Scrimba’s Full-Stack Developer Path, building skills in frontend and backend development, databases, APIs, and AI engineering. Strengthened my practical experience by building solo projects and completing numerous coding challenges, applying modern technologies to develop full-stack web applications.",
+        cardSkills: ["Frontend Development", "Backend Development", "Database", "AI Development"],
         validatedSkills: [
-            "React",
-            "Redux",
+            "HTML5",
+            "CSS3",
+            "JavaScript ES6",
+            "React.js",
+            "TypeScript",
             "Next.js",
-            "Vercel",
-            "Auto Scaling"
+            "Responsive Web Design",
+            "Node.js",
+            "Express.js",
+            "REST APIs",
+            "Database Design",
+            "Database Integration",
+            "Data Management",
+            "AI Engineering"
         ],
 
-        topics: ["React", "Next.js", "Node.js", "Express", "REST APIs", "PostgreSQL"],
         keyConcepts: [
-            "Full-Stack Web Architecture & Server-Side Rendering",
-            "RESTful & GraphQL API Design with Node & Express",
-            "Relational Database Modeling & Schema Management",
-            "JWT Authentication, Security & Production Deployment"
+            "Semantic HTML and Modern CSS",
+            "Responsive Web Design and UI Principles",
+            "JavaScript Programming and Asynchronous Operations",
+            "API Integration and Data Fetching",
+            "Component-Based Development with React",
+            "Type-Safe Development with TypeScript",
+            "Full-Stack Web Development with Next.js",
+            "Server-Side Development with Node.js and Express.js",
+            "Database Fundamentals and Data Persistence",
+            "AI Engineering Fundamentals"
         ],
         image: "/certificates/fullstack-scrimba.jpg",
-        completionDate: "2024",
-        credentialUrl: "https://scrimba.com/certificate/u9g7gZcB/gfullstack"
+        completionDate: "2026"
     },
     {
         id: "frontend-scrimba",
@@ -88,29 +99,39 @@ export const certifications: Certification[] = [
         category: "frontend",
         categories: ["frontend"],
         categoryLabel: "Frontend",
-        issuedDate: "JAN 2024",
+        issuedDate: "July 2025",
         icon: "⚡",
         description:
-            "Validated proficiency in advanced frontend architecture, responsive layout engineering, component design patterns, modern asynchronous JavaScript, and accessibility standards.",
-        cardSkills: ["FRONTEND DEV", "SYSTEMS DESIGN"],
+            "Completed Scrimba’s Frontend Developer Career Path, developing practical skills in HTML, CSS, JavaScript, React, responsive design, and API integration. Built interactive web projects and completed numerous coding challenges, strengthening my ability to create responsive, user-friendly, and dynamic frontend applications.",
+        cardSkills: ["Core Web Development", "Frontend Frameworks and Libraries", "APIs and Asynchronous JavaScript", "UI Development"],
         validatedSkills: [
-            "React",
-            "JavaScript",
-            "UI/UX",
+            "HTML5",
             "CSS3",
-            "Tailwind CSS"
+            "JavaScript",
+            "Responsive Web Design",
+            "React.js",
+            "Component-Based Development",
+            "State Management",
+            "REST API Integration",
+            "Fetch API",
+            "UI Design Principles",
+            "DOM Manipulation",
+            "Web Accessibility"
         ],
 
-        topics: ["React", "JavaScript", "UI/UX", "CSS3", "Tailwind CSS"],
         keyConcepts: [
-            "Component-Driven UI Architecture with React",
-            "Asynchronous JavaScript, Fetch API & Async/Await",
-            "Responsive Design & Fluid Typography Systems",
-            "Web Performance Optimization & WCAG Accessibility"
+            "Semantic HTML and Modern CSS",
+            "Responsive and Mobile-First Web Design",
+            "JavaScript Fundamentals and DOM Manipulation",
+            "Interactive User Interface Development",
+            "React Components, Props, and State",
+            "React Hooks and State Management",
+            "REST API Integration and Data Fetching",
+            "Asynchronous JavaScript and Promises",
+            "User-Centered UI Design and Accessibility"
         ],
         image: "/certificates/frontend-scrimba.jpg",
-        completionDate: "2024",
-        credentialUrl: "https://scrimba.com/certificate/u9g7gZcB/gfrontend"
+        completionDate: "2025"
     },
     {
         id: "react-scrimba",
@@ -119,29 +140,35 @@ export const certifications: Certification[] = [
         category: "frontend",
         categories: ["frontend"],
         categoryLabel: "Frontend",
-        issuedDate: "AUG 2023",
+        issuedDate: "AUG 2024",
         icon: "⚛️",
         description:
-            "Validated proficiency in declarative React architecture, custom hook abstraction, state elevation, single-page application lifecycle, and context-driven data flow.",
-        cardSkills: ["REACT HOOKS", "STATE MANAGEMENT"],
+            "Completed Scrimba’s Learn React course, gaining hands-on experience with reusable components, data-driven rendering, state management, and side effects. Practiced building interactive user interfaces and applying core React concepts through coding exercises and practical challenges.",
+        cardSkills: ["React Hooks", "State Management", "Reusable Components", "Event Handling"],
         validatedSkills: [
-            "React",
+            "React.js",
+            "JSX",
             "React Hooks",
             "State Management",
-            "JSX",
-            "Context API"
+            "Context API",
+            "Event Handling",
+            "Dynamic UI Development",
+            "React Router"
         ],
 
-        topics: ["React Hooks", "State Management", "JSX", "SPAs", "Context API"],
         keyConcepts: [
-            "Declarative Component Lifecycle & Virtual DOM",
-            "Custom Hook Encapsulation & Reusability",
-            "Global State Elevation with React Context",
-            "Side Effect Synchronization & Memory Management"
+            "Static Pages with React Components",
+            "JSX and Component Composition",
+            "Props and Reusable UI Components",
+            "Data-Driven React Rendering",
+            "Lists and Dynamic Content",
+            "State Management with useState",
+            "Event Handling and Interactive UI",
+            "Side Effects in React",
+            "useEffect Hook Fundamentals"
         ],
         image: "/certificates/react-scrimba.jpg",
-        completionDate: "2023",
-        credentialUrl: "https://scrimba.com/learn/learnreact"
+        completionDate: "2024"
     },
     {
         id: "js-freecodecamp",
@@ -150,7 +177,7 @@ export const certifications: Certification[] = [
         category: "frontend",
         categories: ["frontend"],
         categoryLabel: "Frontend",
-        issuedDate: "MAY 2023",
+        issuedDate: "Oct 2023",
         icon: "🧠",
         description:
             "Validated proficiency in fundamental computer science algorithms, complex data structures, algorithmic problem solving, functional programming, and object-oriented architecture.",
@@ -163,7 +190,6 @@ export const certifications: Certification[] = [
             "Functional JS"
         ],
 
-        topics: ["Algorithms", "Data Structures", "ES6+", "OOP", "Functional JS"],
         keyConcepts: [
             "Algorithm Design, Time & Space Complexity",
             "Arrays, Objects, Maps, Sets & Recursive Algorithms",
@@ -171,8 +197,7 @@ export const certifications: Certification[] = [
             "ES6+ Features, Closures & Prototype Inheritance"
         ],
         image: "/certificates/js-freecodecamp.jpg",
-        completionDate: "2023",
-        credentialUrl: "https://www.freecodecamp.org/certification/fcc/javascript-algorithms-and-data-structures"
+        completionDate: "2023"
     },
     {
         id: "web-freecodecamp",
@@ -181,7 +206,7 @@ export const certifications: Certification[] = [
         category: "frontend",
         categories: ["frontend"],
         categoryLabel: "Frontend",
-        issuedDate: "JAN 2023",
+        issuedDate: "Apr 2022",
         icon: "📱",
         description:
             "Validated proficiency in modern responsive web standards, mobile-first design systems, CSS Grid and Flexbox layouts, semantic markup, and WCAG accessibility conformance.",
@@ -193,7 +218,6 @@ export const certifications: Certification[] = [
             "CSS Grid",
             "WCAG a11y"
         ],
-        topics: ["HTML5", "CSS3", "Flexbox", "CSS Grid", "WCAG a11y"],
         keyConcepts: [
             "Mobile-First Responsive Layout Strategy",
             "Advanced 2D Layout Systems with Flexbox & Grid",
@@ -201,6 +225,6 @@ export const certifications: Certification[] = [
             "Cross-Browser Rendering & Media Query Breakpoints"
         ],
         image: "/certificates/web-freecodecamp.jpg",
-        completionDate: "2023",
+        completionDate: "2022",
     }
 ];
