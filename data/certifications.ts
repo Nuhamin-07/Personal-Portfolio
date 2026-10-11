@@ -1,10 +1,5 @@
 export type CategoryId = "all" | "fullstack" | "frontend";
 
-export interface ConceptModule {
-    module: string;
-    topic: string;
-}
-
 export interface Certification {
     id: string;
     title: string;
@@ -13,13 +8,10 @@ export interface Certification {
     categories: ("fullstack" | "frontend")[];
     categoryLabel: string;
     issuedDate: string;
-    quarter: string;
-    status: string;
     icon: string;
     description: string;
     cardSkills: string[];
     validatedSkills: string[];
-    keyConceptModules: ConceptModule[];
     topics: string[];
     keyConcepts: string[];
     image: string;
@@ -35,9 +27,7 @@ export const certifications: Certification[] = [
         category: "fullstack",
         categories: ["fullstack"],
         categoryLabel: "Full-Stack",
-        issuedDate: "JUL 2024",
-        quarter: "Q3 2024",
-        status: "CURRENT",
+        issuedDate: "Oct 2024",
         icon: "🛡️",
         description:
             "Validated proficiency in enterprise cloud architecture, building secure business solutions with Power Pages, Canvas & Model-Driven Apps, relational Dataverse modeling, and automated cloud workflows.",
@@ -49,12 +39,7 @@ export const certifications: Certification[] = [
             "Power Pages",
             "Power Automate"
         ],
-        keyConceptModules: [
-            { module: "Module 1: Enterprise Dataverse", topic: "Cloud Architecture" },
-            { module: "Module 2: Power Pages Portals", topic: "Systems Security" },
-            { module: "Module 3: Automated Cloud Workflows", topic: "Systems Integration" }
-        ],
-        topics: ["Power Pages", "Dataverse", "Power Automate", "Power Apps"],
+        topics: ["Power Pages", "Dataverse", "Power Automate", "Power Apps", "Power BI"],
         keyConcepts: [
             "Enterprise Dataverse Relational Data Modeling",
             "Power Pages Portal Customization & Liquid Templates",
@@ -73,8 +58,6 @@ export const certifications: Certification[] = [
         categories: ["fullstack"],
         categoryLabel: "Full-Stack",
         issuedDate: "MAY 2024",
-        quarter: "Q2 2024",
-        status: "CURRENT",
         icon: "🚀",
         description:
             "Validated proficiency in modern full-stack web engineering, server-side rendering, RESTful APIs, relational databases, state elevation, and cloud production deployment.",
@@ -86,11 +69,7 @@ export const certifications: Certification[] = [
             "Vercel",
             "Auto Scaling"
         ],
-        keyConceptModules: [
-            { module: "Module 1: Full-Stack React & Next.js", topic: "SSR & Web Apps" },
-            { module: "Module 2: RESTful Express & Node APIs", topic: "Backend Architecture" },
-            { module: "Module 3: PostgreSQL Schema Modeling", topic: "Database Design" }
-        ],
+
         topics: ["React", "Next.js", "Node.js", "Express", "REST APIs", "PostgreSQL"],
         keyConcepts: [
             "Full-Stack Web Architecture & Server-Side Rendering",
@@ -110,8 +89,6 @@ export const certifications: Certification[] = [
         categories: ["frontend"],
         categoryLabel: "Frontend",
         issuedDate: "JAN 2024",
-        quarter: "Q1 2024",
-        status: "CURRENT",
         icon: "⚡",
         description:
             "Validated proficiency in advanced frontend architecture, responsive layout engineering, component design patterns, modern asynchronous JavaScript, and accessibility standards.",
@@ -123,11 +100,7 @@ export const certifications: Certification[] = [
             "CSS3",
             "Tailwind CSS"
         ],
-        keyConceptModules: [
-            { module: "Module 1: Component UI Architecture", topic: "React Components" },
-            { module: "Module 2: Asynchronous JS & Web APIs", topic: "Asynchronous JS" },
-            { module: "Module 3: Fluid Responsive Systems", topic: "Tailwind & CSS" }
-        ],
+
         topics: ["React", "JavaScript", "UI/UX", "CSS3", "Tailwind CSS"],
         keyConcepts: [
             "Component-Driven UI Architecture with React",
@@ -147,8 +120,6 @@ export const certifications: Certification[] = [
         categories: ["frontend"],
         categoryLabel: "Frontend",
         issuedDate: "AUG 2023",
-        quarter: "Q3 2023",
-        status: "CURRENT",
         icon: "⚛️",
         description:
             "Validated proficiency in declarative React architecture, custom hook abstraction, state elevation, single-page application lifecycle, and context-driven data flow.",
@@ -160,11 +131,7 @@ export const certifications: Certification[] = [
             "JSX",
             "Context API"
         ],
-        keyConceptModules: [
-            { module: "Module 1: Declarative Component DOM", topic: "React Fundamentals" },
-            { module: "Module 2: Custom Hooks & Side Effects", topic: "State & Hooks" },
-            { module: "Module 3: Context API Global State", topic: "Context Architecture" }
-        ],
+
         topics: ["React Hooks", "State Management", "JSX", "SPAs", "Context API"],
         keyConcepts: [
             "Declarative Component Lifecycle & Virtual DOM",
@@ -184,8 +151,6 @@ export const certifications: Certification[] = [
         categories: ["frontend"],
         categoryLabel: "Frontend",
         issuedDate: "MAY 2023",
-        quarter: "Q2 2023",
-        status: "CURRENT",
         icon: "🧠",
         description:
             "Validated proficiency in fundamental computer science algorithms, complex data structures, algorithmic problem solving, functional programming, and object-oriented architecture.",
@@ -197,11 +162,7 @@ export const certifications: Certification[] = [
             "OOP",
             "Functional JS"
         ],
-        keyConceptModules: [
-            { module: "Module 1: Computational Complexity & Big-O", topic: "Algorithm Design" },
-            { module: "Module 2: Hash Tables, Maps & Trees", topic: "Data Structures" },
-            { module: "Module 3: Functional Methods & Immutability", topic: "Functional JS" }
-        ],
+
         topics: ["Algorithms", "Data Structures", "ES6+", "OOP", "Functional JS"],
         keyConcepts: [
             "Algorithm Design, Time & Space Complexity",
@@ -221,8 +182,6 @@ export const certifications: Certification[] = [
         categories: ["frontend"],
         categoryLabel: "Frontend",
         issuedDate: "JAN 2023",
-        quarter: "Q1 2023",
-        status: "CURRENT",
         icon: "📱",
         description:
             "Validated proficiency in modern responsive web standards, mobile-first design systems, CSS Grid and Flexbox layouts, semantic markup, and WCAG accessibility conformance.",
@@ -234,11 +193,6 @@ export const certifications: Certification[] = [
             "CSS Grid",
             "WCAG a11y"
         ],
-        keyConceptModules: [
-            { module: "Module 1: Mobile-First Responsive Layouts", topic: "Responsive CSS" },
-            { module: "Module 2: 2D Grid & Flexible Box Models", topic: "CSS Grid & Flex" },
-            { module: "Module 3: Semantic Standards & ARIA", topic: "Accessibility" }
-        ],
         topics: ["HTML5", "CSS3", "Flexbox", "CSS Grid", "WCAG a11y"],
         keyConcepts: [
             "Mobile-First Responsive Layout Strategy",
@@ -248,6 +202,5 @@ export const certifications: Certification[] = [
         ],
         image: "/certificates/web-freecodecamp.jpg",
         completionDate: "2023",
-        credentialUrl: "https://www.freecodecamp.org/certification/fcc/responsive-web-design"
     }
 ];
