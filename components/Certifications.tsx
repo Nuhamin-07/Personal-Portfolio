@@ -2,13 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { Folder, FolderOpen, X, Maximize2 } from "lucide-react";
-import { certifications, type Certification } from "@/data/certifications";
+import { certifications, type Certification, type CategoryId } from "@/data/certifications";
 import styles from "./Certifications.module.css";
 
-type CategoryFilter = "ALL" | "CLOUD ARCHITECTURE" | "FRONTEND DEV" | "BACKEND DEV";
-
 export default function Certifications() {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryFilter>("ALL");
+  const [selectedCategory, setSelectedCategory] = useState<CategoryId>("all");
   const [activeCertificate, setActiveCertificate] = useState<Certification>(
     certifications[0] || null
   );
@@ -17,9 +15,22 @@ export default function Certifications() {
 
   // Filter certificates according to selected category
   const filteredCertifications = certifications.filter((cert) => {
-    if (selectedCategory === "ALL") return true;
+    if (selectedCategory === "all") return true;
+    if (cert.categories && cert.categories.includes(selectedCategory)) return true;
     return cert.category === selectedCategory;
   });
+
+  // Keep active certificate in sync with filtered list when category changes
+  useEffect(() => {
+    if (filteredCertifications.length > 0) {
+      const isCurrentInFiltered = filteredCertifications.some(
+        (c) => c.id === activeCertificate?.id
+      );
+      if (!isCurrentInFiltered) {
+        setActiveCertificate(filteredCertifications[0]);
+      }
+    }
+  }, [selectedCategory, filteredCertifications, activeCertificate?.id]);
 
   // Handle keyboard Escape key to close modals
   useEffect(() => {
@@ -53,30 +64,26 @@ export default function Certifications() {
     }
   };
 
-  // Assign distinct color palette to skill pills to match the reference image
+  // Assign distinct warm color palette to skill pills to match the portfolio accent
   const getSkillPillClass = (skill: string, index: number) => {
     const lower = skill.toLowerCase();
-    if (lower.includes("react") || lower.includes("html") || lower.includes("cloud")) {
-      return styles.skillPillTeal;
-    }
-    if (lower.includes("redux") || lower.includes("css") || lower.includes("systems")) {
-      return styles.skillPillPurple;
-    }
-    if (lower.includes("next") || lower.includes("flex") || lower.includes("dataverse")) {
+    if (lower.includes("react") || lower.includes("cloud") || lower.includes("power")) {
       return styles.skillPillAmber;
     }
-    if (lower.includes("vercel") || lower.includes("grid") || lower.includes("automate")) {
-      return styles.skillPillSlate;
+    if (lower.includes("redux") || lower.includes("systems") || lower.includes("design")) {
+      return styles.skillPillTerracotta;
     }
-    if (lower.includes("auto") || lower.includes("scaling") || lower.includes("algo")) {
-      return styles.skillPillSky;
+    if (lower.includes("next") || lower.includes("dataverse") || lower.includes("algorithm")) {
+      return styles.skillPillWarmBrown;
+    }
+    if (lower.includes("vercel") || lower.includes("automate") || lower.includes("grid")) {
+      return styles.skillPillEspresso;
     }
     const colorClasses = [
-      styles.skillPillTeal,
-      styles.skillPillPurple,
       styles.skillPillAmber,
-      styles.skillPillSlate,
-      styles.skillPillSky,
+      styles.skillPillTerracotta,
+      styles.skillPillWarmBrown,
+      styles.skillPillEspresso,
     ];
     return colorClasses[index % colorClasses.length];
   };
@@ -113,64 +120,55 @@ export default function Certifications() {
           <aside className={styles.sidebarCol} aria-label="Certificate categories">
             <span className={styles.sidebarHeader}>CERTIFICATE CATEGORIES</span>
 
-            <nav className={styles.categoryTree}>
+            <nav className={styles.categoryTree} aria-label="Certificate categories">
               <button
                 type="button"
                 className={`${styles.treeItem} ${
-                  selectedCategory === "CLOUD ARCHITECTURE" ? styles.treeItemActive : ""
+                  selectedCategory === "all" ? styles.treeItemActive : ""
                 }`}
-                onClick={() =>
-                  setSelectedCategory(
-                    selectedCategory === "CLOUD ARCHITECTURE" ? "ALL" : "CLOUD ARCHITECTURE"
-                  )
-                }
+                onClick={() => setSelectedCategory("all")}
+                aria-pressed={selectedCategory === "all"}
               >
-                {selectedCategory === "CLOUD ARCHITECTURE" ? (
-                  <FolderOpen size={16} className="text-sky-400" />
+                {selectedCategory === "all" ? (
+                  <FolderOpen size={16} style={{ color: "var(--accent)" }} />
                 ) : (
                   <Folder size={16} />
                 )}
-                <span>CLOUD ARCHITECTURE</span>
+                <span>All</span>
               </button>
 
               <button
                 type="button"
                 className={`${styles.treeItem} ${
-                  selectedCategory === "FRONTEND DEV" ? styles.treeItemActive : ""
+                  selectedCategory === "fullstack" ? styles.treeItemActive : ""
                 }`}
-                onClick={() =>
-                  setSelectedCategory(
-                    selectedCategory === "FRONTEND DEV" ? "ALL" : "FRONTEND DEV"
-                  )
-                }
+                onClick={() => setSelectedCategory("fullstack")}
+                aria-pressed={selectedCategory === "fullstack"}
               >
                 <span className={styles.treeConnector}>├──</span>
-                {selectedCategory === "FRONTEND DEV" ? (
-                  <FolderOpen size={16} className="text-sky-400" />
+                {selectedCategory === "fullstack" ? (
+                  <FolderOpen size={16} style={{ color: "var(--accent)" }} />
                 ) : (
                   <Folder size={16} />
                 )}
-                <span>FRONTEND DEV</span>
+                <span>Full-Stack</span>
               </button>
 
               <button
                 type="button"
                 className={`${styles.treeItem} ${
-                  selectedCategory === "BACKEND DEV" ? styles.treeItemActive : ""
+                  selectedCategory === "frontend" ? styles.treeItemActive : ""
                 }`}
-                onClick={() =>
-                  setSelectedCategory(
-                    selectedCategory === "BACKEND DEV" ? "ALL" : "BACKEND DEV"
-                  )
-                }
+                onClick={() => setSelectedCategory("frontend")}
+                aria-pressed={selectedCategory === "frontend"}
               >
                 <span className={styles.treeConnector}>└──</span>
-                {selectedCategory === "BACKEND DEV" ? (
-                  <FolderOpen size={16} className="text-sky-400" />
+                {selectedCategory === "frontend" ? (
+                  <FolderOpen size={16} style={{ color: "var(--accent)" }} />
                 ) : (
                   <Folder size={16} />
                 )}
-                <span>BACKEND DEV</span>
+                <span>Frontend</span>
               </button>
             </nav>
 
@@ -184,20 +182,20 @@ export default function Certifications() {
             >
               <path
                 d="M10 20 H60 V80 H120 V140"
-                stroke="#38bdf8"
+                stroke="var(--accent)"
                 strokeWidth="1.5"
                 strokeDasharray="4 4"
               />
-              <circle cx="10" cy="20" r="3" fill="#38bdf8" />
-              <circle cx="60" cy="80" r="3" fill="#38bdf8" />
-              <circle cx="120" cy="140" r="3" fill="#38bdf8" />
+              <circle cx="10" cy="20" r="3" fill="var(--accent)" />
+              <circle cx="60" cy="80" r="3" fill="var(--accent)" />
+              <circle cx="120" cy="140" r="3" fill="var(--accent)" />
               <path
                 d="M40 10 V40 H90 V110 H140"
-                stroke="#0284c7"
+                stroke="var(--accent)"
                 strokeWidth="1"
-                opacity="0.6"
+                opacity="0.5"
               />
-              <circle cx="90" cy="110" r="2.5" fill="#0284c7" />
+              <circle cx="90" cy="110" r="2.5" fill="var(--accent)" />
             </svg>
           </aside>
 
@@ -243,15 +241,13 @@ export default function Certifications() {
 
                         <div className={styles.certIssued}>
                           ISSUED: {cert.issuedDate}
+                          <span className={styles.mobileQuarterBadge}>
+                            {cert.quarter}
+                          </span>
                         </div>
 
                         <div className={styles.certInstitution}>
                           ISSUING INSTITUTION: {cert.issuer}
-                        </div>
-
-                        <div className={styles.certStatus}>
-                          <span className={styles.statusDot} />
-                          STATUS: {cert.status}
                         </div>
                       </div>
                     </div>
@@ -340,7 +336,7 @@ export default function Certifications() {
                       {activeCertificate.title}
                     </div>
                     <div className={styles.certMetaIssuer}>
-                      {activeCertificate.issuer} • {activeCertificate.issuedDate}
+                      {activeCertificate.issuer} • {activeCertificate.issuedDate} • {activeCertificate.categoryLabel}
                     </div>
                   </div>
                 </div>
@@ -450,7 +446,7 @@ export default function Certifications() {
                   {activeCertificate.title}
                 </div>
                 <div className={styles.certMetaIssuer}>
-                  {activeCertificate.issuer} • {activeCertificate.issuedDate}
+                  {activeCertificate.issuer} • {activeCertificate.issuedDate} • {activeCertificate.categoryLabel}
                 </div>
               </div>
             </div>

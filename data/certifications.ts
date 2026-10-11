@@ -1,3 +1,5 @@
+export type CategoryId = "all" | "fullstack" | "frontend";
+
 export interface ConceptModule {
     module: string;
     topic: string;
@@ -7,7 +9,9 @@ export interface Certification {
     id: string;
     title: string;
     issuer: string;
-    category: "CLOUD ARCHITECTURE" | "FRONTEND DEV" | "BACKEND DEV";
+    category: "fullstack" | "frontend";
+    categories: ("fullstack" | "frontend")[];
+    categoryLabel: string;
     issuedDate: string;
     quarter: string;
     status: string;
@@ -28,7 +32,9 @@ export const certifications: Certification[] = [
         id: "powerapp-credly",
         title: "Microsoft Power Up Program",
         issuer: "Microsoft",
-        category: "CLOUD ARCHITECTURE",
+        category: "fullstack",
+        categories: ["fullstack"],
+        categoryLabel: "Full-Stack",
         issuedDate: "JUL 2024",
         quarter: "Q3 2024",
         status: "CURRENT",
@@ -63,7 +69,9 @@ export const certifications: Certification[] = [
         id: "fullstack-scrimba",
         title: "Full Stack Developer Career Path",
         issuer: "Scrimba",
-        category: "BACKEND DEV",
+        category: "fullstack",
+        categories: ["fullstack"],
+        categoryLabel: "Full-Stack",
         issuedDate: "MAY 2024",
         quarter: "Q2 2024",
         status: "CURRENT",
@@ -98,7 +106,9 @@ export const certifications: Certification[] = [
         id: "frontend-scrimba",
         title: "Frontend Developer Career Path",
         issuer: "Scrimba",
-        category: "FRONTEND DEV",
+        category: "frontend",
+        categories: ["frontend"],
+        categoryLabel: "Frontend",
         issuedDate: "JAN 2024",
         quarter: "Q1 2024",
         status: "CURRENT",
@@ -133,7 +143,9 @@ export const certifications: Certification[] = [
         id: "react-scrimba",
         title: "Learn React",
         issuer: "Scrimba",
-        category: "FRONTEND DEV",
+        category: "frontend",
+        categories: ["frontend"],
+        categoryLabel: "Frontend",
         issuedDate: "AUG 2023",
         quarter: "Q3 2023",
         status: "CURRENT",
@@ -168,7 +180,9 @@ export const certifications: Certification[] = [
         id: "js-freecodecamp",
         title: "JavaScript Algorithms & Data Structures",
         issuer: "freeCodeCamp",
-        category: "FRONTEND DEV",
+        category: "frontend",
+        categories: ["frontend"],
+        categoryLabel: "Frontend",
         issuedDate: "MAY 2023",
         quarter: "Q2 2023",
         status: "CURRENT",
@@ -203,7 +217,9 @@ export const certifications: Certification[] = [
         id: "web-freecodecamp",
         title: "Responsive Web Design",
         issuer: "freeCodeCamp",
-        category: "FRONTEND DEV",
+        category: "frontend",
+        categories: ["frontend"],
+        categoryLabel: "Frontend",
         issuedDate: "JAN 2023",
         quarter: "Q1 2023",
         status: "CURRENT",
