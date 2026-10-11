@@ -198,12 +198,12 @@ export default function Projects() {
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start w-full min-w-0">
           {/* ── Left / Center Area: 3D Layered Cards Deck ── */}
           <div
-            className={`${isDrawerOpen ? "lg:col-span-7 xl:col-span-8" : "lg:col-span-12"
-              } w-full min-w-0 flex flex-col justify-between transition-all duration-300`}
+            className={`${isDrawerOpen ? "lg:col-span-8 xl:col-span-8" : "lg:col-span-12"
+              } w-full min-w-0 flex flex-col justify-between transition-all duration-300 relative z-10`}
           >
             {/* Card Stage Container */}
-            <div className="relative w-full max-w-full min-w-0 min-h-[420px] sm:min-h-[460px] flex items-center justify-start sm:justify-center lg:justify-start lg:perspective-[1400px]">
-              {/* ── Background Card 2 (Deepest Layer, strictly constrained within bounds) ── */}
+            <div className="relative w-full max-w-full min-w-0 min-h-[480px] sm:min-h-[510px] lg:min-h-[530px] flex items-center justify-start lg:perspective-[1400px]">
+              {/* ── Background Card 2 (Layer 3 — Deepest Layer, z-10) ── */}
               {backgroundCard2 && (
                 <div
                   onClick={() =>
@@ -211,54 +211,45 @@ export default function Projects() {
                       (safeActiveIndex + 2) % filteredProjects.length
                     )
                   }
-                  className="hidden xl:block absolute right-4 top-6 w-[340px] max-w-full cursor-pointer rounded-2xl border border-[#8b4513]/20 dark:border-[#b45309]/25 bg-white/70 dark:bg-[#1a120c]/75 backdrop-blur-md p-4 shadow-xl transition-all duration-500 ease-out hover:opacity-80 [transform:translate3d(-10px,-10px,-160px)_rotateY(-15deg)_scale(0.78)] opacity-40 select-none z-10"
+                  className="hidden md:block absolute top-6 lg:top-7 left-[285px] md:left-[390px] lg:left-[450px] xl:left-[565px] w-[320px] md:w-[350px] lg:w-[370px] xl:w-[420px] max-w-none cursor-pointer rounded-2xl border border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/85 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 shadow-2xl transition-all duration-500 ease-out hover:opacity-100 hover:scale-[0.89] [transform:translate3d(0,-12px,-140px)_rotateY(-12deg)_scale(0.85)] opacity-80 dark:opacity-85 select-none z-10"
                   title={`Click to view ${backgroundCard2.title}`}
                 >
-                  <div className="flex items-center justify-between border-b border-[#8b4513]/15 dark:border-[#b45309]/20 pb-2 mb-2">
-                    <span className="font-mono text-[10px] font-bold text-[#8b4513] dark:text-[#e09045] uppercase truncate">
-                      03_{backgroundCard2.title.replace(/\s+/g, "_")}
+                  {/* Clean Monospace Header Bar */}
+                  <div className="flex items-center justify-between border-b border-[#8b4513]/15 dark:border-[#b45309]/20 pb-2 mb-2.5">
+                    <span className="font-mono text-xs font-bold text-[#8b4513] dark:text-[#e09045] uppercase tracking-wider truncate">
+                      {String(((safeActiveIndex + 2) % filteredProjects.length) + 1).padStart(2, "0")}_{backgroundCard2.title.replace(/[\s-]+/g, "_").toUpperCase()}
                     </span>
                   </div>
-                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg bg-slate-950">
+
+                  {/* High-Resolution Screenshot Frame */}
+                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-[#8b4513]/20 dark:border-[#b45309]/25 bg-slate-950 shadow-inner">
                     <Image
                       src={backgroundCard2.image}
                       alt={backgroundCard2.title}
                       fill
-                      className="object-cover opacity-60"
+                      className="object-cover opacity-85"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                   </div>
-                </div>
-              )}
 
-              {/* ── Background Card 1 (Middle Layer, strictly constrained within bounds) ── */}
-              {backgroundCard1 && (
-                <div
-                  onClick={() =>
-                    handleSelectProject(
-                      (safeActiveIndex + 1) % filteredProjects.length
-                    )
-                  }
-                  className="hidden sm:block absolute right-2 lg:right-6 top-3 sm:w-[360px] lg:w-[400px] max-w-full cursor-pointer rounded-2xl border border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/85 dark:bg-[#1c130d]/85 backdrop-blur-md p-4 shadow-xl transition-all duration-500 ease-out hover:opacity-90 [transform:translate3d(-5px,-5px,-80px)_rotateY(-10deg)_scale(0.88)] opacity-65 select-none z-15"
-                  title={`Click to view ${backgroundCard1.title}`}
-                >
-                  <div className="flex items-center justify-between border-b border-[#8b4513]/20 dark:border-[#b45309]/25 pb-2 mb-2">
-                    <span className="font-mono text-xs font-bold text-[#8b4513] dark:text-[#e09045] uppercase truncate">
-                      02_{backgroundCard1.title.replace(/\s+/g, "_")}
-                    </span>
+                  {/* 3 Metadata Lines (Role + 2 Highlights Matching Card 1) */}
+                  <div className="mt-3 space-y-1 font-mono text-[11px] sm:text-xs text-slate-700 dark:text-slate-300 min-w-0">
+                    <p className="font-bold text-[#8b4513] dark:text-[#c26510] truncate">
+                      Role: Full-Stack Developer
+                    </p>
+                    {backgroundCard2.highlights.slice(0, 2).map((highlight, idx) => (
+                      <p key={idx} className="line-clamp-1 text-slate-600 dark:text-slate-400">
+                        • {highlight}
+                      </p>
+                    ))}
                   </div>
-                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-lg bg-slate-950">
-                    <Image
-                      src={backgroundCard1.image}
-                      alt={backgroundCard1.title}
-                      fill
-                      className="object-cover opacity-70"
-                    />
-                  </div>
-                  <div className="mt-3 flex flex-wrap gap-1">
-                    {backgroundCard1.technologies.slice(0, 3).map((t) => (
+
+                  {/* Outlined Tech Pill Badges */}
+                  <div className="mt-3.5 flex flex-wrap gap-1.5 pt-2.5 border-t border-[#8b4513]/15 dark:border-[#b45309]/20">
+                    {backgroundCard2.technologies.slice(0, 3).map((t) => (
                       <span
                         key={t}
-                        className="rounded-full border border-[#8b4513]/25 dark:border-[#b45309]/35 px-2 py-0.5 font-mono text-[9px] font-bold text-[#8b4513] dark:text-[#e09045] uppercase"
+                        className="rounded-full border border-[#8b4513]/25 dark:border-[#b45309]/35 bg-[#8b4513]/8 dark:bg-[#b45309]/20 px-2.5 py-0.5 font-mono text-[10px] font-bold text-[#8b4513] dark:text-[#e09045] uppercase tracking-wider"
                       >
                         {t}
                       </span>
@@ -267,8 +258,63 @@ export default function Projects() {
                 </div>
               )}
 
-              {/* ── FRONT ACTIVE CARD (Primary Focus with Portfolio Brand Accent) ── */}
-              <div className="relative w-full max-w-full sm:max-w-[480px] lg:max-w-[500px] rounded-2xl border-2 border-[#8b4513] dark:border-[#b45309] shadow-[0_0_30px_rgba(139,69,19,0.18),inset_0_0_15px_rgba(139,69,19,0.05)] dark:shadow-[0_0_35px_rgba(180,83,9,0.28),inset_0_0_15px_rgba(180,83,9,0.08)] bg-white/95 dark:bg-[#1c130d]/95 backdrop-blur-xl p-4 sm:p-5 transition-all duration-300 z-20 min-w-0">
+              {/* ── Background Card 1 (Layer 2 — Middle Layer, z-20) ── */}
+              {backgroundCard1 && (
+                <div
+                  onClick={() =>
+                    handleSelectProject(
+                      (safeActiveIndex + 1) % filteredProjects.length
+                    )
+                  }
+                  className="hidden sm:block absolute top-3 lg:top-4 left-[155px] md:left-[215px] lg:left-[225px] xl:left-[280px] w-[330px] md:w-[370px] lg:w-[380px] xl:w-[430px] max-w-none cursor-pointer rounded-2xl border border-[#8b4513]/35 dark:border-[#b45309]/40 bg-white/90 dark:bg-[#1c130d]/92 backdrop-blur-md p-4 sm:p-5 shadow-xl transition-all duration-500 ease-out hover:opacity-100 hover:scale-[0.96] [transform:translate3d(0,-6px,-70px)_rotateY(-9deg)_scale(0.92)] opacity-88 dark:opacity-92 select-none z-20"
+                  title={`Click to view ${backgroundCard1.title}`}
+                >
+                  {/* Clean Monospace Header Bar */}
+                  <div className="flex items-center justify-between border-b border-[#8b4513]/20 dark:border-[#b45309]/25 pb-2 mb-2.5">
+                    <span className="font-mono text-xs font-bold text-[#8b4513] dark:text-[#e09045] uppercase tracking-wider truncate">
+                      {String(((safeActiveIndex + 1) % filteredProjects.length) + 1).padStart(2, "0")}_{backgroundCard1.title.replace(/[\s-]+/g, "_").toUpperCase()}
+                    </span>
+                  </div>
+
+                  {/* High-Resolution Screenshot Frame */}
+                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-[#8b4513]/20 dark:border-[#b45309]/25 bg-slate-950 shadow-inner">
+                    <Image
+                      src={backgroundCard1.image}
+                      alt={backgroundCard1.title}
+                      fill
+                      className="object-cover opacity-85"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                  </div>
+
+                  {/* 3 Metadata Lines (Role + 2 Highlights Matching Card 1) */}
+                  <div className="mt-3 space-y-1 font-mono text-[11px] sm:text-xs text-slate-700 dark:text-slate-300 min-w-0">
+                    <p className="font-bold text-[#8b4513] dark:text-[#c26510] truncate">
+                      Role: Full-Stack Developer
+                    </p>
+                    {backgroundCard1.highlights.slice(0, 2).map((highlight, idx) => (
+                      <p key={idx} className="line-clamp-1 text-slate-600 dark:text-slate-400">
+                        • {highlight}
+                      </p>
+                    ))}
+                  </div>
+
+                  {/* Outlined Tech Pill Badges */}
+                  <div className="mt-3.5 flex flex-wrap gap-1.5 pt-2.5 border-t border-[#8b4513]/15 dark:border-[#b45309]/20">
+                    {backgroundCard1.technologies.slice(0, 3).map((t) => (
+                      <span
+                        key={t}
+                        className="rounded-full border border-[#8b4513]/25 dark:border-[#b45309]/35 bg-[#8b4513]/8 dark:bg-[#b45309]/20 px-2.5 py-0.5 font-mono text-[10px] font-bold text-[#8b4513] dark:text-[#e09045] uppercase tracking-wider"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* ── FRONT ACTIVE CARD (Layer 1 — Foreground, z-30) ── */}
+              <div className="relative w-full max-w-full sm:max-w-[420px] md:max-w-[430px] lg:max-w-[400px] xl:max-w-[460px] rounded-2xl border-2 border-[#8b4513] dark:border-[#b45309] shadow-[0_0_30px_rgba(139,69,19,0.22),inset_0_0_15px_rgba(139,69,19,0.06)] dark:shadow-[0_0_35px_rgba(180,83,9,0.32),inset_0_0_15px_rgba(180,83,9,0.08)] bg-white/95 dark:bg-[#1c130d]/95 backdrop-blur-xl p-4 sm:p-5 transition-all duration-300 z-30 min-w-0 [transform:perspective(1200px)_rotateY(4deg)]">
                 {/* Card Header Strip with Signal Pulse */}
                 <div className="flex items-center justify-between border-b border-[#8b4513]/20 dark:border-[#b45309]/25 pb-2.5 mb-3 min-w-0">
                   <span className="font-mono text-xs sm:text-sm font-bold tracking-wider text-[#8b4513] dark:text-[#e09045] uppercase truncate max-w-[85%]">
@@ -429,7 +475,7 @@ export default function Projects() {
 
           {/* ── Right Floating Side Panel: "DETAILS DRAWER" ── */}
           {isDrawerOpen && (
-            <div className="lg:col-span-5 xl:col-span-4 w-full min-w-0 rounded-2xl border border-[#8b4513]/25 dark:border-[#b45309]/35 bg-white/95 dark:bg-[#1c130d]/95 backdrop-blur-xl p-5 sm:p-6 shadow-2xl dark:shadow-[0_0_35px_rgba(0,0,0,0.6)] flex flex-col justify-between animate-in fade-in duration-300">
+            <div className="lg:col-span-4 xl:col-span-4 w-full min-w-0 rounded-2xl border border-[#8b4513]/25 dark:border-[#b45309]/35 bg-white/95 dark:bg-[#1c130d]/95 backdrop-blur-xl p-5 sm:p-6 shadow-2xl dark:shadow-[0_0_35px_rgba(0,0,0,0.6)] flex flex-col justify-between animate-in fade-in duration-300 relative z-25">
               <div>
                 {/* Drawer Header with Close Button */}
                 <div className="flex items-center justify-between border-b border-[#8b4513]/20 dark:border-[#b45309]/25 pb-3 mb-4">
