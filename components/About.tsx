@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import SectionHeader from "@/components/shared/SectionHeader";
 
 const ABOUT_TEXT =
   "I'm a developer passionate about building seamless, high-performance digital experiences. With expertise in modern web technologies, clean code, and user-centric design, I create scalable solutions that bring ideas to life, whether front-end interfaces, backend systems, or full-stack development.";
@@ -65,21 +66,23 @@ export default function About() {
         ref={containerRef}
         className="w-full max-w-6xl mx-auto px-5 sm:px-8 lg:px-12 flex flex-col justify-between"
       >
-        {/* ── 1. Top Section: Clean 2-Column Layout (Matching Reference Screenshot) ── */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-start pt-4 sm:pt-8">
-          {/* Left: ABOUT ME Title */}
-          <div className="lg:col-span-4">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0] uppercase font-sans">
-              ABOUT ME
-            </h2>
-          </div>
+        {/* ── 1. Reusable Editorial Section Header ── */}
+        <SectionHeader
+          tag="[ 01 / BACKGROUND & BIO ]"
+          title="About"
+          titleSecondLine="me."
+          stickerText="SOFTWARE ENGINEER"
+          countBadge="04+ Yrs"
+          description="Passionate full-stack developer dedicated to building seamless, high-performance digital experiences and scalable enterprise solutions."
+          className="mb-8 sm:mb-12 lg:mb-16"
+        />
 
-          {/* Right: Narrative with Pinned Scroll-Driven Reading Highlight */}
-          <div
-            ref={textContainerRef}
-            className="lg:col-span-8 font-sans text-base sm:text-lg lg:text-[1.28rem] leading-[1.8] font-medium select-text"
-          >
-            <p className="flex flex-wrap gap-x-2 gap-y-2">
+        {/* ── Narrative with Pinned Scroll-Driven Reading Highlight ── */}
+        <div
+          ref={textContainerRef}
+          className="w-full font-sans text-base sm:text-lg lg:text-[1.28rem] leading-[1.8] font-medium select-text max-w-5xl"
+        >
+          <p className="flex flex-wrap gap-x-2 gap-y-2">
               {words.map((word, i) => {
                 const clean = word.toLowerCase().replace(/[^a-z0-9-]/g, "");
                 const isKeyWord = [
@@ -111,7 +114,6 @@ export default function About() {
               })}
             </p>
           </div>
-        </div>
 
         {/* ── 2. Bottom Section: Elevated White/Dark Stats Card Over Solid Flat Brown Base ── */}
         <div className="mt-16 sm:mt-24 relative">

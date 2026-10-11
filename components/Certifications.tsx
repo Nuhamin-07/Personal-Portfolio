@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Folder, FolderOpen, X, Maximize2 } from "lucide-react";
 import { certifications, type Certification, type CategoryId } from "@/data/certifications";
+import SectionHeader from "@/components/shared/SectionHeader";
 import styles from "./Certifications.module.css";
 
 export default function Certifications() {
@@ -83,13 +84,16 @@ export default function Certifications() {
             </div>
 
             <div className={styles.container}>
-                {/* ── Section Header ── */}
-                <header className={styles.header}>
-                    <span className={styles.eyebrow}>FULLSTACK DEVELOPER</span>
-                    <h2 className={styles.mainTitle}>
-                        CREDENTIAL ACQUISITION <span className={styles.titleAccent}>JOURNEY</span>
-                    </h2>
-                </header>
+                {/* ── Reusable Editorial Section Header ── */}
+                <SectionHeader
+                    tag="[ 05 / CREDENTIALS & CERTIFICATIONS ]"
+                    title="Credential"
+                    titleSecondLine="Journey."
+                    stickerText="VERIFIED & CURRENT"
+                    countBadge={`${certifications.length} Certs`}
+                    description="Continuous professional learning journey validating expertise across modern web engineering, cloud platforms, and architecture."
+                    className="mb-8 sm:mb-12 lg:mb-16"
+                />
 
                 {/* ── Dashboard Grid ── */}
                 <div className={styles.dashboardGrid}>

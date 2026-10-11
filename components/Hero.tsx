@@ -230,7 +230,7 @@ export default function Hero() {
 
           {/* ── Right Column: Portrait ── */}
           <div className="lg:col-span-5 flex justify-center items-center relative py-4 lg:py-0">
-            <div className="hero-portrait relative w-56 h-56 sm:w-76 sm:h-76 lg:w-[21rem] lg:h-[21rem] xl:w-[23rem] xl:h-[23rem] flex items-center justify-center">
+            <div className="hero-portrait relative w-48 h-48 xs:w-56 xs:h-56 sm:w-76 sm:h-76 lg:w-[21rem] lg:h-[21rem] xl:w-[23rem] xl:h-[23rem] flex items-center justify-center">
 
               {/* Spinning gradient ring */}
               <div className="absolute inset-0 rounded-full pointer-events-none" style={{ willChange: "transform" }}>
@@ -269,7 +269,7 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={() => scrollToSection("contact")}
-                className="hero-hire-badge absolute top-1/2 -translate-y-1/2 -right-1 sm:-right-6 lg:-right-8 w-24 h-24 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full bg-[#8b4513] hover:bg-[#70360f] text-white flex flex-col items-center justify-center shadow-2xl transition-colors duration-300 hover:scale-110 active:scale-95 group cursor-pointer z-30 ring-4 ring-white dark:ring-[#120c08]"
+                className="hero-hire-badge absolute top-1/2 -translate-y-1/2 right-0 sm:-right-6 lg:-right-8 w-20 h-20 xs:w-24 xs:h-24 sm:w-32 sm:h-32 lg:w-36 lg:h-36 rounded-full bg-[#8b4513] hover:bg-[#70360f] text-white flex flex-col items-center justify-center shadow-2xl transition-colors duration-300 hover:scale-110 active:scale-95 group cursor-pointer z-30 ring-4 ring-white dark:ring-[#120c08]"
                 aria-label="Hire Nuhamin - Scroll to Contact"
                 style={{ willChange: "transform, opacity" }}
               >

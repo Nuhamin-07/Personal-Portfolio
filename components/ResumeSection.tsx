@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Section from "@/components/shared/Section";
+import SectionHeader from "@/components/shared/SectionHeader";
 import ResumeModal from "@/components/ResumeModal";
 
 export default function ResumeSection() {
@@ -9,6 +10,15 @@ export default function ResumeSection() {
 
   return (
     <Section id="resume" className="py-10 sm:py-16">
+      <SectionHeader
+        tag="[ VERIFIED CURRICULUM VITAE ]"
+        title="Curriculum"
+        titleSecondLine="Vitae."
+        stickerText="OFFICIAL PDF"
+        countBadge="04+ Yrs"
+        description="Full-Stack Developer with nearly 4 years of experience building enterprise applications, modern web platforms, and scalable digital solutions."
+      />
+
       <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 sm:p-8 md:p-12 shadow-xl">
         {/* Background Ambient Accent Glow */}
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
@@ -18,12 +28,12 @@ export default function ResumeSection() {
           {/* Text & Content Column */}
           <div className="lg:col-span-8">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-              <span>Verified Resume</span>
+              <span>Career Snapshot</span>
             </div>
 
-            <h2 className="mt-3 sm:mt-4 text-2xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-              Curriculum Vitae / Resume
-            </h2>
+            <h3 className="mt-3 sm:mt-4 text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+              Official Engineering Profile
+            </h3>
 
             <p className="mt-3 sm:mt-4 text-xs sm:text-base leading-relaxed text-muted-foreground sm:text-lg">
               Full-Stack Developer with nearly 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.

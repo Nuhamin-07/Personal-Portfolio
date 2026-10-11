@@ -59,15 +59,15 @@ export default function ResumeModal({
 
         {/* Modal Header */}
         <div className="border-b border-border pb-5 shrink-0">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pr-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pr-8 min-w-0">
+            <div className="min-w-0">
+              <h2 className="text-xl sm:text-3xl font-extrabold text-foreground break-words">
                 Nuhamin Gulilat Masresha
               </h2>
-              <p className="text-sm font-semibold text-primary mt-0.5">
+              <p className="text-xs sm:text-sm font-semibold text-primary mt-0.5 break-words">
                 Full-Stack Developer | Next.js • React • TypeScript • Node.js • Express.js
               </p>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground mt-1 break-words">
                 📍 Addis Ababa, Ethiopia • +251 947 939 507 • nuhamin.gulilat.7@gmail.com
               </p>
             </div>
