@@ -64,29 +64,6 @@ export default function Certifications() {
         }
     };
 
-    // Assign distinct warm color palette to skill pills to match the portfolio accent
-    const getSkillPillClass = (skill: string, index: number) => {
-        const lower = skill.toLowerCase();
-        if (lower.includes("react") || lower.includes("cloud") || lower.includes("power")) {
-            return styles.skillPillAmber;
-        }
-        if (lower.includes("redux") || lower.includes("systems") || lower.includes("design")) {
-            return styles.skillPillTerracotta;
-        }
-        if (lower.includes("next") || lower.includes("dataverse") || lower.includes("algorithm")) {
-            return styles.skillPillWarmBrown;
-        }
-        if (lower.includes("vercel") || lower.includes("automate") || lower.includes("grid")) {
-            return styles.skillPillEspresso;
-        }
-        const colorClasses = [
-            styles.skillPillAmber,
-            styles.skillPillTerracotta,
-            styles.skillPillWarmBrown,
-            styles.skillPillEspresso,
-        ];
-        return colorClasses[index % colorClasses.length];
-    };
 
     return (
         <section id="certifications" className={styles.section}>
@@ -355,19 +332,16 @@ export default function Certifications() {
                                     </div>
                                 </div>
 
-                                {/* 4. Validated Skills */}
+                                {/* 4. Skills Earned */}
                                 <div>
                                     <div className={styles.panelSectionTitle}>
-                                        4. VALIDATED SKILLS
+                                        4. SKILLS EARNED
                                     </div>
                                     <div className={styles.skillsPillGrid}>
                                         {activeCertificate.validatedSkills.map((skill, idx) => (
                                             <span
                                                 key={idx}
-                                                className={`${styles.skillPill} ${getSkillPillClass(
-                                                    skill,
-                                                    idx
-                                                )}`}
+                                                className={styles.skillPill}
                                             >
                                                 {skill}
                                             </span>
@@ -457,19 +431,16 @@ export default function Certifications() {
                             </div>
                         </div>
 
-                        {/* 4. Validated Skills */}
+                        {/* 4. Skills Earned */}
                         <div>
                             <div className={styles.panelSectionTitle}>
-                                4. VALIDATED SKILLS
+                                4. SKILLS EARNED
                             </div>
                             <div className={styles.skillsPillGrid}>
                                 {activeCertificate.validatedSkills.map((skill, idx) => (
                                     <span
                                         key={idx}
-                                        className={`${styles.skillPill} ${getSkillPillClass(
-                                            skill,
-                                            idx
-                                        )}`}
+                                        className={styles.skillPill}
                                     >
                                         {skill}
                                     </span>
