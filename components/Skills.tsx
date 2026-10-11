@@ -199,8 +199,8 @@ export default function Skills() {
 
       {/* 4. Interactive Detail Modal */}
       {activeModalSkill && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-xs p-4 animate-fadeIn">
-          <div className="w-full max-w-lg rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-2xl relative animate-scaleUp">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/65 backdrop-blur-xs p-3 sm:p-4 animate-fadeIn">
+          <div className="w-full max-w-lg rounded-3xl border border-border bg-card p-4 sm:p-8 max-h-[90vh] overflow-y-auto shadow-2xl relative animate-scaleUp">
             <button
               type="button"
               onClick={() => setActiveModalSkill(null)}

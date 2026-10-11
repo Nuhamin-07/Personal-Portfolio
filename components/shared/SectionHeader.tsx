@@ -37,16 +37,16 @@ export default function SectionHeader({
     <div className={`mb-10 sm:mb-16 lg:mb-24 w-full ${className}`}>
       {/* ── Top Tag / Category Breadcrumb ── */}
       {tag && (
-        <div className="inline-flex items-center gap-2.5 text-xs sm:text-[13px] font-bold tracking-widest text-[#8b4513] dark:text-[#e09045] uppercase mb-3 sm:mb-6">
-          <span className="inline-block w-5 sm:w-8 h-[2px] bg-[#8b4513] dark:bg-[#e09045] rounded-full" />
-          <span className="truncate max-w-[280px] sm:max-w-none">{tag}</span>
+        <div className="inline-flex items-center gap-2.5 text-xs sm:text-[13px] font-bold tracking-widest text-[#8b4513] dark:text-[#e09045] uppercase mb-3 sm:mb-6 max-w-full">
+          <span className="inline-block w-5 sm:w-8 h-[2px] bg-[#8b4513] dark:bg-[#e09045] rounded-full shrink-0" />
+          <span className="truncate max-w-[calc(100vw-70px)] sm:max-w-none">{tag}</span>
         </div>
       )}
 
       {/* ── Main Grid: Headline on Left, 3D Folder & Description on Right ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-start">
         {/* Left Column (7 cols): Giant Editorial Headline with Standardized Sticker */}
-        <div className="lg:col-span-7 relative">
+        <div className="lg:col-span-7 relative min-w-0">
           <h2 className="text-3xl sm:text-5xl lg:text-[4.8rem] xl:text-[5.4rem] font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0] leading-[1.05] sm:leading-[0.95] relative inline-block break-words max-w-full">
             <span className="block">{title}</span>
             {titleSecondLine && (
@@ -55,7 +55,7 @@ export default function SectionHeader({
 
                 {/* Standardized Uniform Vintage Badge with BLACK text */}
                 {stickerText && (
-                  <span className="inline-flex items-center justify-center px-3 py-1 sm:px-4 sm:py-1.5 rounded-lg bg-[#e29d57] dark:bg-[#d98b3f] text-[#120c06] font-extrabold text-[10px] sm:text-xs tracking-wider uppercase shadow-[0_4px_12px_rgba(226,157,87,0.35)] transform -rotate-3 hover:rotate-0 transition-all duration-200 select-none border border-[#f5c28a]/60 dark:border-amber-300/30 whitespace-nowrap">
+                  <span className="inline-flex items-center justify-center px-2.5 py-1 sm:px-4 sm:py-1.5 rounded-lg bg-[#e29d57] dark:bg-[#d98b3f] text-[#120c08] font-extrabold text-[10px] sm:text-xs tracking-wider uppercase shadow-[0_4px_12px_rgba(226,157,87,0.35)] transform -rotate-3 hover:rotate-0 transition-all duration-200 select-none border border-[#f5c28a]/60 dark:border-amber-300/30 whitespace-nowrap">
                     {stickerText}
                   </span>
                 )}
@@ -65,7 +65,7 @@ export default function SectionHeader({
         </div>
 
         {/* Right Column (5 cols): Ultra-realistic 3D Folder Icon & High-Contrast Description */}
-        <div className="lg:col-span-5 flex flex-col justify-between items-start lg:items-end gap-4 sm:gap-6">
+        <div className="lg:col-span-5 flex flex-col justify-between items-start lg:items-end gap-4 sm:gap-6 min-w-0">
           {/* Top: Premium Realistic Manila File Folder with Pure White Paper */}
           {countBadge !== undefined && (
             <div

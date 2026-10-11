@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { ArrowUp, Copy, Check, Mail, Phone, MessageCircleCheck } from "lucide-react";
+import SectionHeader from "@/components/shared/SectionHeader";
 
 export default function ContactCTA() {
   const [copied, setCopied] = useState<string | null>(null);
@@ -25,7 +26,7 @@ export default function ContactCTA() {
   return (
     <section
       id="contact"
-      className="w-full relative py-16 sm:py-24 lg:py-32 px-6 sm:px-12 lg:px-20 text-[#1c140e] dark:text-[#faf6f0] font-sans overflow-hidden"
+      className="w-full relative py-14 sm:py-20 lg:py-28 px-4 sm:px-8 lg:px-16 text-[#1c140e] dark:text-[#faf6f0] font-sans overflow-hidden"
     >
       <div className="max-w-7xl mx-auto flex flex-col justify-between min-h-[65vh] sm:min-h-[75vh]">
         {/* ── 1. Top Row: Copyright & Back To Top ── */}
@@ -46,24 +47,31 @@ export default function ContactCTA() {
           </button>
         </div>
 
-        {/* ── 2. Middle Row: Editorial Giant Headline & Direct Contacts ── */}
-        <div className="my-14 sm:my-20 lg:my-28 flex flex-col items-start w-full">
-          <span className="text-xs sm:text-sm md:text-base font-bold tracking-[0.2em] uppercase text-[#1c140e]/70 dark:text-[#faf6f0]/70 mb-2 sm:mb-4">
-            HAVE A PROJECT IN MIND?
-          </span>
+        {/* ── 2. Reusable Editorial Section Header ── */}
+        <SectionHeader
+          tag="[ 06 / GET IN TOUCH ]"
+          title="Let's"
+          titleSecondLine="Connect."
+          stickerText="OPEN TO WORK"
+          countBadge="24/7"
+          description="Have an enterprise project, contract opportunity, or engineering leadership role in mind? Let's build something exceptional together."
+          className="my-6 sm:my-10"
+        />
 
-          {/* Giant Editorial LET'S TALK Headline */}
+        {/* ── 3. Middle Row: Editorial Giant Headline & Direct Contacts ── */}
+        <div className="my-4 sm:my-8 flex flex-col items-start w-full min-w-0">
+          {/* Giant Editorial Responsive LET'S TALK Banner */}
           <a
             href={`mailto:${email}`}
-            className="group block w-full select-none"
+            className="group block w-full select-none overflow-hidden"
           >
-            <h2 className="text-6xl xs:text-8xl sm:text-[10rem] md:text-[13rem] lg:text-[15rem] font-black tracking-tighter leading-[0.85] text-neutral-200 dark:text-neutral-800 group-hover:text-[#8b4513] dark:group-hover:text-[#d97706] transition-colors duration-300 uppercase">
+            <div className="text-[clamp(2.75rem,11.5vw,13.5rem)] font-black tracking-tighter leading-[0.88] text-neutral-200 dark:text-neutral-800 group-hover:text-[#8b4513] dark:group-hover:text-[#d97706] transition-colors duration-300 uppercase break-words max-w-full">
               LET&apos;S TALK
-            </h2>
+            </div>
           </a>
 
           {/* Quick Contact & Copy Bar */}
-          <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm font-medium">
+          <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm font-medium">
             <button
               onClick={() => handleCopy(email, "email")}
               type="button"
@@ -98,15 +106,15 @@ export default function ContactCTA() {
           </div>
         </div>
 
-        {/* ── 3. Bottom Row: Rounded Pill Buttons & Studio Credits ── */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pt-8 border-t border-[#1c140e]/10 dark:border-white/10 w-full">
+        {/* ── 4. Bottom Row: Rounded Pill Buttons & Studio Credits ── */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 sm:gap-8 pt-8 border-t border-[#1c140e]/10 dark:border-white/10 w-full min-w-0">
           {/* Left: Capsule Pill Buttons */}
-          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-4">
             <a
               href="https://github.com/Nuhamin-07"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-7 sm:px-9 py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
+              className="inline-flex items-center justify-center px-5 sm:px-8 py-2.5 sm:py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
             >
               GITHUB
             </a>
@@ -115,7 +123,7 @@ export default function ContactCTA() {
               href="https://linkedin.com/in/nuhamin-gulilat-66635318b"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-7 sm:px-9 py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
+              className="inline-flex items-center justify-center px-5 sm:px-8 py-2.5 sm:py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
             >
               LINKEDIN
             </a>
@@ -124,7 +132,7 @@ export default function ContactCTA() {
               href="https://t.me/Nuhamin_07"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-7 sm:px-9 py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
+              className="inline-flex items-center justify-center px-5 sm:px-8 py-2.5 sm:py-3 rounded-full border border-[#1c140e]/20 dark:border-white/20 text-xs sm:text-sm font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0] hover:bg-[#8b4513] hover:border-[#8b4513] hover:text-white dark:hover:bg-[#8b4513] dark:hover:border-[#8b4513] dark:hover:text-white transition-all duration-200 active:scale-95"
             >
               TWITTER / TELEGRAM
             </a>

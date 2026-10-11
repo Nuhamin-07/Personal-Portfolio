@@ -183,16 +183,17 @@ export default function Navbar() {
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="flex items-center gap-2.5 sm:gap-4 transition-transform hover:scale-102 p-0 m-0"
+                className="flex items-center gap-2 sm:gap-4 transition-transform hover:scale-102 p-0 m-0 min-w-0 flex-shrink"
               >
                 <img
                   src="/logo.png"
                   alt="Nuhamin Logo"
-                  className="h-12 sm:h-20 md:h-24 w-auto object-contain drop-shadow-md"
+                  className="h-10 sm:h-20 md:h-24 w-auto object-contain drop-shadow-md shrink-0"
                 />
-                <span className="flex items-baseline gap-1.5 text-xl sm:text-3xl md:text-4xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0]">
-                  Nuhamin Gulilat
-                  <span className="text-[10px] font-bold tracking-wider text-white bg-[#8b4513] dark:bg-[#b45309] px-1.5 py-0.5 rounded-full leading-none align-baseline">.dev</span>
+                <span className="flex items-baseline gap-1 text-base xs:text-xl sm:text-3xl md:text-4xl font-black tracking-tight text-[#1c140e] dark:text-[#faf6f0] truncate">
+                  <span>Nuhamin</span>
+                  <span className="hidden xs:inline">Gulilat</span>
+                  <span className="text-[9px] sm:text-[10px] font-bold tracking-wider text-white bg-[#8b4513] dark:bg-[#b45309] px-1.5 py-0.5 rounded-full leading-none align-baseline shrink-0">.dev</span>
                 </span>
               </Link>
 

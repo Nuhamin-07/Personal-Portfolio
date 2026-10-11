@@ -61,6 +61,7 @@
     top: 5%;
     left: 20%;
     width: 600px;
+    max-width: 100%;
     height: 400px;
     background: radial-gradient(circle, var(--accent-glow), transparent 70%);
     pointer-events: none;
@@ -72,6 +73,9 @@
     position: absolute;
     bottom: 40px;
     left: 40px;
+    max-width: calc(100vw - 80px);
+    overflow: hidden;
+    word-break: break-all;
     font-family: monospace;
     font-size: 11px;
     line-height: 1.6;

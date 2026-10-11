@@ -65,17 +65,15 @@ export default function Experience() {
 
   return (
     <Section id="experience" className="relative pt-24 sm:pt-32 pb-36 sm:pb-48">
-      {/* ── 1. Reusable Editorial Section Header with Generous Spacing ── */}
-      <div className="mb-16 sm:mb-24">
-        <SectionHeader
-          tag="[ 03 / CAREER & TRACK RECORD ]"
-          title="Professional"
-          titleSecondLine="Experience."
-          stickerText="FROM 2021 — NOW"
-          countBadge="04 Roles"
-          description="Transforming complex business requirements into high-performance, elegant software systems and scalable enterprise architectures."
-        />
-      </div>
+      {/* ── 1. Reusable Editorial Section Header ── */}
+      <SectionHeader
+        tag="[ 03 / CAREER & TRACK RECORD ]"
+        title="Professional"
+        titleSecondLine="Experience."
+        stickerText="FROM 2021 — NOW"
+        countBadge="04 Roles"
+        description="Transforming complex business requirements into high-performance, elegant software systems and scalable enterprise architectures."
+      />
 
       {/* ── 2. Clean, Rock-Solid Sticky Stacking Card Deck Container ── */}
       <div
