@@ -4,12 +4,20 @@ import { useState } from "react";
 import Section from "@/components/shared/Section";
 import SectionHeader from "@/components/shared/SectionHeader";
 import ResumeModal from "@/components/ResumeModal";
+import {
+  GraduationCap,
+  MapPin,
+  FileText,
+  Download,
+  ExternalLink,
+} from "lucide-react";
 
 export default function ResumeSection() {
   const [isCvOpen, setIsCvOpen] = useState(false);
 
   return (
-    <Section id="resume" className="py-10 sm:py-16">
+    <Section id="resume" className="overflow-hidden">
+      {/* ── 1. Reusable Shared Section Header ── */}
       <SectionHeader
         tag="[ VERIFIED CURRICULUM VITAE ]"
         title="Curriculum"
@@ -19,107 +27,282 @@ export default function ResumeSection() {
         description="Full-Stack Developer with nearly 4 years of experience building enterprise applications, modern web platforms, and scalable digital solutions."
       />
 
-      <div className="relative overflow-hidden rounded-3xl border border-border bg-card p-5 sm:p-8 md:p-12 shadow-xl">
-        {/* Background Ambient Accent Glow */}
-        <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-accent/20 blur-3xl" />
+      {/* ── 2. Cinematic Futuristic Console Stage ── */}
+      <div className="relative w-full max-w-full rounded-3xl border border-[#8b4513]/20 dark:border-[#b45309]/30 bg-gradient-to-b from-[#fdfbf7] via-white to-[#faf4ed] dark:from-[#140e09] dark:via-[#120c08] dark:to-[#1a130d] p-5 sm:p-8 md:p-12 shadow-lg dark:shadow-[0_0_50px_rgba(180,83,9,0.08)] overflow-hidden min-w-0">
+        {/* Background Ambient Accent Glow Orbs */}
+        <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#8b4513]/10 dark:bg-[#b45309]/15 blur-3xl select-none" />
+        <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-[#8b4513]/10 dark:bg-[#b45309]/15 blur-3xl select-none" />
 
-        <div className="relative z-10 grid gap-8 lg:grid-cols-12 lg:items-center">
-          {/* Text & Content Column */}
-          <div className="lg:col-span-8">
-            <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-primary">
-              <span>Career Snapshot</span>
-            </div>
+        {/* Background Circuit Traces (Left Margin) */}
+        <div className="absolute top-10 left-2 sm:left-4 w-28 sm:w-40 h-72 pointer-events-none select-none opacity-25 dark:opacity-35 z-0">
+          <svg
+            className="w-full h-full text-[#8b4513] dark:text-[#c26510]"
+            viewBox="0 0 160 320"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10 20 H60 L90 50 H150"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <circle cx="150" cy="50" r="3.5" fill="currentColor" />
+            <path
+              d="M10 80 H80 L110 110 H140"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <circle cx="140" cy="110" r="3" fill="currentColor" />
+            <path
+              d="M10 160 H50 L80 190 H155"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <circle cx="155" cy="190" r="4" fill="currentColor" />
+            <path
+              d="M10 240 H70 L100 270 H135"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+            />
+            <circle cx="135" cy="270" r="3" fill="currentColor" />
+            <line
+              x1="45"
+              y1="50"
+              x2="45"
+              y2="140"
+              stroke="currentColor"
+              strokeWidth="1"
+              strokeDasharray="2 3"
+            />
+          </svg>
+        </div>
 
-            <h3 className="mt-3 sm:mt-4 text-xl sm:text-3xl font-extrabold tracking-tight text-foreground">
-              Official Engineering Profile
+        {/* ── Content Container ── */}
+        <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+          {/* ── 3. Centered Header & Narrative ── */}
+          <div className="text-center max-w-3xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wider text-slate-900 dark:text-white uppercase font-sans">
+              FULL-STACK DEVELOPER
             </h3>
-
-            <p className="mt-3 sm:mt-4 text-xs sm:text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Full-Stack Developer with nearly 4 years of experience building enterprise applications, business systems, and modern web platforms. Specialized in Next.js, React, TypeScript, Node.js, Express.js, and Microsoft Power Platform solutions across education, healthcare, ERP, and e-commerce domains.
+            <p className="mt-2.5 sm:mt-3 text-xs sm:text-sm md:text-base font-semibold text-slate-700 dark:text-slate-200 leading-relaxed max-w-2xl mx-auto">
+              Nearly 4 Years of Experience building enterprise applications,
+              business systems, and modern web platforms.
             </p>
+            <p className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs md:text-sm text-slate-500 dark:text-slate-400 leading-relaxed max-w-2xl mx-auto">
+              Specialized in Next.js, React, TypeScript, Node.js, Express.js, and
+              Microsoft Power Platform, across education, healthcare, ERP, and
+              e-commerce domains.
+            </p>
+          </div>
 
-            {/* Quick Details Badges */}
-            <div className="mt-5 flex flex-wrap gap-2 text-xs font-mono">
-              <span className="rounded-lg border border-border bg-muted/60 px-3 py-1.5 text-foreground">
-                🎓 B.Sc. Electrical &amp; Computer Engineering (AMU)
-              </span>
-              <span className="rounded-lg border border-border bg-muted/60 px-3 py-1.5 text-foreground">
-                💼 Nearly 4 Years Experience
-              </span>
-              <span className="rounded-lg border border-border bg-muted/60 px-3 py-1.5 text-foreground">
-                📍 Addis Ababa, Ethiopia (UTC+3)
-              </span>
+          {/* ── 4. Upper Circuit Tree Connecting Lines ── */}
+          <div className="w-full flex justify-center my-3 sm:my-4 select-none pointer-events-none">
+            <svg
+              className="w-64 sm:w-80 md:w-96 h-8 sm:h-10 text-[#8b4513]/40 dark:text-[#b45309]/50"
+              viewBox="0 0 384 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                x1="192"
+                y1="0"
+                x2="192"
+                y2="20"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <circle cx="192" cy="20" r="3" fill="currentColor" />
+              <line
+                x1="96"
+                y1="20"
+                x2="288"
+                y2="20"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <line
+                x1="96"
+                y1="20"
+                x2="96"
+                y2="40"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <line
+                x1="288"
+                y1="20"
+                x2="288"
+                y2="40"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <circle cx="96" cy="40" r="2.5" fill="currentColor" />
+              <circle cx="288" cy="40" r="2.5" fill="currentColor" />
+            </svg>
+          </div>
+
+          {/* ── 5. Two Cards Side-by-Side ── */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full items-stretch">
+            {/* ── Card 1: ACADEMIC BACKGROUND ── */}
+            <div className="relative rounded-2xl border-2 border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/90 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-[#8b4513] dark:hover:border-[#b45309] hover:shadow-[0_0_25px_rgba(139,69,19,0.18)] dark:hover:shadow-[0_0_30px_rgba(180,83,9,0.25)] flex flex-col justify-between">
+              {/* Header Strip */}
+              <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[#8b4513]/15 dark:border-[#b45309]/20">
+                <GraduationCap className="w-4 h-4 text-[#8b4513] dark:text-[#e09045]" />
+                <span className="font-mono text-xs sm:text-[13px] font-extrabold uppercase tracking-widest text-[#8b4513] dark:text-[#e09045]">
+                  ACADEMIC BACKGROUND
+                </span>
+              </div>
+
+              {/* Card Body */}
+              <div className="flex items-center gap-3.5 sm:gap-4">
+                {/* Icon Box */}
+                <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-[#8b4513]/30 dark:border-[#b45309]/40 bg-[#8b4513]/8 dark:bg-[#b45309]/15 text-[#8b4513] dark:text-[#e09045] shadow-inner shrink-0">
+                  <GraduationCap className="w-6 h-6 sm:w-7 sm:h-7" />
+                </div>
+
+                {/* Details */}
+                <div className="min-w-0 flex-1">
+                  <h4 className="text-xs sm:text-sm md:text-[15px] font-extrabold text-slate-900 dark:text-slate-100 leading-snug">
+                    B.Sc. Electrical &amp; Computer Engineering (AMU)
+                  </h4>
+                  <span className="mt-1 font-mono text-[9px] sm:text-[10px] font-bold tracking-wider uppercase text-[#8b4513] dark:text-[#e09045] block truncate">
+                    VERIFICATION DATA: [VERIFIED_AMU]
+                  </span>
+                </div>
+              </div>
             </div>
 
-            {/* Action Buttons */}
-            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 sm:gap-3.5 w-full">
-              {/* Preview CV Button */}
-              <button
-                onClick={() => setIsCvOpen(true)}
-                type="button"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-xs sm:text-sm font-semibold text-primary-foreground shadow-md transition-all hover:bg-primary/90 hover:scale-105 active:scale-95 cursor-pointer w-full sm:w-auto"
-              >
-                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-                Preview CV
-              </button>
+            {/* ── Card 2: LOCATION & TIMEZONE ── */}
+            <div className="relative rounded-2xl border-2 border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/90 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-[#8b4513] dark:hover:border-[#b45309] hover:shadow-[0_0_25px_rgba(139,69,19,0.18)] dark:hover:shadow-[0_0_30px_rgba(180,83,9,0.25)] flex flex-col justify-between">
+              {/* Header Strip */}
+              <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[#8b4513]/15 dark:border-[#b45309]/20">
+                <MapPin className="w-4 h-4 text-[#8b4513] dark:text-[#e09045]" />
+                <span className="font-mono text-xs sm:text-[13px] font-extrabold uppercase tracking-widest text-[#8b4513] dark:text-[#e09045]">
+                  LOCATION &amp; TIMEZONE
+                </span>
+              </div>
 
-              {/* Download CV Button */}
-              <a
-                href="/cv/Nuhamin-Gulilat-CV.pdf"
-                download="Nuhamin-Gulilat-CV.pdf"
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-xs sm:text-sm font-semibold text-foreground shadow-xs transition-all hover:bg-muted hover:border-primary/40 active:scale-95 w-full sm:w-auto"
-              >
-                <svg className="h-4 w-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Download CV (PDF)
-              </a>
+              {/* Card Body */}
+              <div className="flex items-center gap-3.5 sm:gap-4 justify-between">
+                <div className="flex items-center gap-3.5 sm:gap-4 min-w-0">
+                  {/* Icon Box */}
+                  <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-[#8b4513]/30 dark:border-[#b45309]/40 bg-[#8b4513]/8 dark:bg-[#b45309]/15 text-[#8b4513] dark:text-[#e09045] shadow-inner shrink-0">
+                    <MapPin className="w-6 h-6 sm:w-7 sm:h-7" />
+                  </div>
 
-              {/* Direct Open PDF Link */}
-              <a
-                href="/cv/Nuhamin-Gulilat-CV.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-primary transition-colors py-2 px-1 text-center"
-              >
-                Open PDF in Tab ↗
-              </a>
+                  {/* Details */}
+                  <div className="min-w-0">
+                    <h4 className="text-xs sm:text-sm md:text-[15px] font-extrabold text-slate-900 dark:text-slate-100 leading-snug">
+                      Addis Ababa, Ethiopia
+                    </h4>
+                    <span className="mt-1 font-mono text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 block">
+                      (UTC+3)
+                    </span>
+                  </div>
+                </div>
+
+                {/* Radar Beacon Animation */}
+                <div
+                  className="relative flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 shrink-0 ml-2"
+                  title="Active Location Ping"
+                >
+                  <div className="absolute inset-0 rounded-full border border-[#8b4513]/30 dark:border-[#b45309]/40 animate-ping opacity-40" />
+                  <div className="absolute inset-1 rounded-full border border-[#8b4513]/40 dark:border-[#b45309]/50" />
+                  <div className="absolute inset-2.5 rounded-full border border-[#8b4513]/60 dark:border-[#b45309]/70" />
+                  <div className="relative z-10 w-5 h-5 rounded-full bg-[#8b4513]/20 dark:bg-[#b45309]/30 flex items-center justify-center text-[#8b4513] dark:text-[#e09045]">
+                    <MapPin className="w-3 h-3 fill-current" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Right Visual Card */}
-          <div className="lg:col-span-4 flex justify-center">
-            <div className="w-full max-w-xs rounded-2xl border border-border bg-muted/30 p-5 sm:p-6 text-center shadow-sm backdrop-blur-xs">
-              <div className="mx-auto flex h-14 w-14 sm:h-16 sm:w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary text-2xl sm:text-3xl font-bold">
-                📄
-              </div>
-              <h3 className="mt-3 text-base sm:text-lg font-bold text-foreground">Nuhamin Gulilat CV</h3>
-              <p className="mt-0.5 text-xs text-muted-foreground">Official Verified PDF Document</p>
-              
-              <div className="mt-4 space-y-2 pt-3.5 border-t border-border/60 text-left text-xs text-muted-foreground">
-                <div className="flex items-center justify-between">
-                  <span>Format:</span>
-                  <span className="font-mono text-foreground font-medium">PDF Document</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>File Name:</span>
-                  <span className="font-mono text-foreground font-medium truncate max-w-[130px]">Nuhamin-Gulilat-CV.pdf</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Status:</span>
-                  <span className="font-medium text-emerald-600 dark:text-emerald-400">✓ Up to Date</span>
-                </div>
-              </div>
-            </div>
+          {/* ── 6. Lower Circuit Tree & Console Watermark ── */}
+          <div className="w-full relative flex flex-col items-center justify-center my-3 sm:my-4 select-none pointer-events-none">
+            <svg
+              className="w-72 sm:w-96 md:w-[420px] h-8 sm:h-10 text-[#8b4513]/40 dark:text-[#b45309]/50"
+              viewBox="0 0 420 40"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <line
+                x1="105"
+                y1="0"
+                x2="105"
+                y2="18"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <line
+                x1="315"
+                y1="0"
+                x2="315"
+                y2="18"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <path
+                d="M105 18 H315"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <line
+                x1="210"
+                y1="18"
+                x2="210"
+                y2="40"
+                stroke="currentColor"
+                strokeWidth="1.5"
+              />
+              <circle cx="210" cy="18" r="3" fill="currentColor" />
+              <circle cx="210" cy="40" r="2.5" fill="currentColor" />
+            </svg>
+            <span className="font-mono text-[9px] text-[#8b4513]/30 dark:text-[#b45309]/40 tracking-widest uppercase mt-0.5">
+              {"{system:terminal:cv_verification:ready}"}
+            </span>
+          </div>
+
+          {/* ── 7. Action Buttons Row ── */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 w-full">
+            {/* Button 1: PREVIEW CV */}
+            <button
+              onClick={() => setIsCvOpen(true)}
+              type="button"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#8b4513]/40 hover:border-[#8b4513] dark:border-[#b45309]/50 dark:hover:border-[#b45309] bg-white/80 dark:bg-[#1a120c]/80 hover:bg-[#8b4513]/10 dark:hover:bg-[#b45309]/20 text-[#8b4513] dark:text-[#e09045] font-mono text-xs sm:text-sm font-bold tracking-wider uppercase px-5 sm:px-6 py-3 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_0_20px_rgba(139,69,19,0.25)] dark:hover:shadow-[0_0_25px_rgba(180,83,9,0.35)] active:scale-95 w-full sm:w-auto"
+            >
+              <FileText className="w-4 h-4" />
+              <span>PREVIEW CV</span>
+            </button>
+
+            {/* Button 2: DOWNLOAD CV (PDF) */}
+            <a
+              href="/cv/Nuhamin-Gulilat-CV.pdf"
+              download="Nuhamin-Gulilat-CV.pdf"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#8b4513] dark:border-[#b45309] bg-[#8b4513] hover:bg-[#70360f] dark:bg-[#b45309] dark:hover:bg-[#92400e] text-white font-mono text-xs sm:text-sm font-black tracking-wider uppercase px-6 sm:px-7 py-3 transition-all duration-200 cursor-pointer shadow-[0_4px_16px_rgba(139,69,19,0.35)] dark:shadow-[0_4px_16px_rgba(180,83,9,0.45)] hover:shadow-[0_0_25px_rgba(139,69,19,0.5)] dark:hover:shadow-[0_0_30px_rgba(180,83,9,0.6)] active:scale-95 w-full sm:w-auto"
+            >
+              <Download className="w-4 h-4" />
+              <span>DOWNLOAD CV (PDF)</span>
+            </a>
+
+            {/* Button 3: OPEN PDF IN TAB */}
+            <a
+              href="/cv/Nuhamin-Gulilat-CV.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#8b4513]/40 hover:border-[#8b4513] dark:border-[#b45309]/50 dark:hover:border-[#b45309] bg-white/80 dark:bg-[#1a120c]/80 hover:bg-[#8b4513]/10 dark:hover:bg-[#b45309]/20 text-[#8b4513] dark:text-[#e09045] font-mono text-xs sm:text-sm font-bold tracking-wider uppercase px-5 sm:px-6 py-3 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-[0_0_20px_rgba(139,69,19,0.25)] dark:hover:shadow-[0_0_25px_rgba(180,83,9,0.35)] active:scale-95 w-full sm:w-auto"
+            >
+              <ExternalLink className="w-4 h-4" />
+              <span>OPEN PDF IN TAB</span>
+            </a>
           </div>
         </div>
       </div>
 
-      {/* CV Modal */}
+      {/* ── 8. Resume / CV Interactive Modal ── */}
       <ResumeModal isOpen={isCvOpen} onClose={() => setIsCvOpen(false)} />
     </Section>
   );
