@@ -65,7 +65,7 @@ export default function ContactCTA() {
             href={`mailto:${email}`}
             className="group block w-full select-none overflow-hidden"
           >
-            <div className="text-[clamp(2.75rem,11.5vw,13.5rem)] font-black tracking-tighter leading-[0.88] text-neutral-200 dark:text-neutral-800 group-hover:text-[#8b4513] dark:group-hover:text-[#d97706] transition-colors duration-300 uppercase break-words max-w-full">
+            <div className="text-6xl xs:text-8xl sm:text-[10rem] md:text-[13rem] lg:text-[15rem] font-black tracking-tighter leading-[0.85] text-neutral-200 dark:text-neutral-800 group-hover:text-[#8b4513] dark:group-hover:text-[#d97706] transition-colors duration-300 uppercase">
               LET&apos;S TALK
             </div>
           </a>
