@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
   ExternalLink,
@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   X,
 } from "lucide-react";
+import gsap from "gsap";
 import Section from "@/components/shared/Section";
 import SectionHeader from "@/components/shared/SectionHeader";
 import SkillIcon from "@/components/shared/SkillIcon";
@@ -19,7 +20,16 @@ export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState("All Projects");
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(true);
+  const [direction, setDirection] = useState<number>(1);
+
   const stageRef = useRef<HTMLDivElement>(null);
+  const activeCardRef = useRef<HTMLDivElement>(null);
+  const bgCard1Ref = useRef<HTMLDivElement>(null);
+  const bgCard2Ref = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  const wheelThrottleRef = useRef<boolean>(false);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
 
   // Filter tabs definition
   const filterTabs = [
@@ -78,19 +88,167 @@ export default function Projects() {
       : null;
 
   const handleSelectProject = (index: number) => {
+    if (index === safeActiveIndex) return;
+    setDirection(index > safeActiveIndex ? 1 : -1);
     setActiveProjectIndex(index);
   };
 
-  const handlePrev = () => {
+  const handlePrev = useCallback(() => {
     if (filteredProjects.length <= 1) return;
+    setDirection(-1);
     setActiveProjectIndex(
       (prev) => (prev - 1 + filteredProjects.length) % filteredProjects.length
     );
+  }, [filteredProjects.length]);
+
+  const handleNext = useCallback(() => {
+    if (filteredProjects.length <= 1) return;
+    setDirection(1);
+    setActiveProjectIndex((prev) => (prev + 1) % filteredProjects.length);
+  }, [filteredProjects.length]);
+
+  // Smooth expansion and depth transitions on project navigation
+  useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion) return;
+
+    const dir = direction !== 0 ? direction : 1;
+    const ctx = gsap.context(() => {
+      // 1. Front active card: smoothly expands and becomes the main prominent focus
+      if (activeCardRef.current) {
+        gsap.fromTo(
+          activeCardRef.current,
+          {
+            scale: 0.92,
+            opacity: 0.72,
+            x: dir > 0 ? 36 : -36,
+            rotateY: dir > 0 ? -4 : 4,
+          },
+          {
+            scale: 1,
+            opacity: 1,
+            x: 0,
+            rotateY: 2,
+            duration: 0.48,
+            ease: "power2.out",
+          }
+        );
+      }
+
+      // 2. Background Card 1 (Layer 2): smoothly positions in layered depth
+      if (bgCard1Ref.current) {
+        gsap.fromTo(
+          bgCard1Ref.current,
+          {
+            scale: 0.88,
+            opacity: 0.65,
+            x: dir > 0 ? 24 : -24,
+          },
+          {
+            scale: 0.92,
+            opacity: 0.88,
+            x: 0,
+            duration: 0.44,
+            ease: "power2.out",
+          }
+        );
+      }
+
+      // 3. Background Card 2 (Layer 3): smoothly positions in deepest layer
+      if (bgCard2Ref.current) {
+        gsap.fromTo(
+          bgCard2Ref.current,
+          {
+            scale: 0.81,
+            opacity: 0.55,
+            x: dir > 0 ? 18 : -18,
+          },
+          {
+            scale: 0.85,
+            opacity: 0.80,
+            x: 0,
+            duration: 0.44,
+            ease: "power2.out",
+          }
+        );
+      }
+
+      // 4. Details Drawer: adapt panel contents with smooth fade & lift
+      if (drawerRef.current) {
+        gsap.fromTo(
+          drawerRef.current,
+          {
+            opacity: 0.4,
+            y: 8,
+          },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.38,
+            ease: "power2.out",
+          }
+        );
+      }
+    }, stageRef);
+
+    return () => ctx.revert();
+  }, [safeActiveIndex, direction]);
+
+  // Keyboard navigation (ArrowLeft & ArrowRight)
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowLeft") {
+      e.preventDefault();
+      handlePrev();
+    } else if (e.key === "ArrowRight") {
+      e.preventDefault();
+      handleNext();
+    }
   };
 
-  const handleNext = () => {
-    if (filteredProjects.length <= 1) return;
-    setActiveProjectIndex((prev) => (prev + 1) % filteredProjects.length);
+  // Touch swipe support (respects vertical scroll)
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartRef.current) return;
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - touchStartRef.current.x;
+    const deltaY = touch.clientY - touchStartRef.current.y;
+    touchStartRef.current = null;
+
+    // Trigger navigation only when horizontal swipe is intentional and dominant
+    if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
+      if (deltaX < 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+    }
+  };
+
+  // Horizontal wheel / trackpad gesture support (does not interfere with normal vertical scrolling)
+  const handleWheel = (e: React.WheelEvent) => {
+    // Only respond when horizontal displacement is dominant
+    if (
+      Math.abs(e.deltaX) > 35 &&
+      Math.abs(e.deltaX) > Math.abs(e.deltaY) * 1.5
+    ) {
+      if (wheelThrottleRef.current) return;
+      wheelThrottleRef.current = true;
+      if (e.deltaX > 0) {
+        handleNext();
+      } else {
+        handlePrev();
+      }
+      setTimeout(() => {
+        wheelThrottleRef.current = false;
+      }, 450);
+    }
   };
 
   return (
@@ -116,11 +274,13 @@ export default function Projects() {
               onClick={() => {
                 setSelectedCategory(tab);
                 setActiveProjectIndex(0);
+                setDirection(1);
               }}
-              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-1.5 font-mono text-xs font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer ${isActive
-                ? "bg-[#8b4513] dark:bg-[#b45309] text-white shadow-[0_4px_14px_rgba(139,69,19,0.35)] dark:shadow-[0_4px_14px_rgba(180,83,9,0.4)] scale-105"
-                : "border border-[#8b4513]/20 dark:border-[#b45309]/30 bg-white/80 dark:bg-[#1a120c]/80 text-[#664d3d] dark:text-[#c9b4a5] hover:bg-[#8b4513]/10 dark:hover:bg-[#b45309]/20 hover:text-[#8b4513] dark:hover:text-[#e09045]"
-                }`}
+              className={`inline-flex items-center gap-1.5 rounded-full px-3.5 sm:px-4 py-1.5 font-mono text-xs font-bold tracking-wider uppercase transition-all duration-200 cursor-pointer ${
+                isActive
+                  ? "bg-[#8b4513] dark:bg-[#b45309] text-white shadow-[0_4px_14px_rgba(139,69,19,0.35)] dark:shadow-[0_4px_14px_rgba(180,83,9,0.4)] scale-105"
+                  : "border border-[#8b4513]/20 dark:border-[#b45309]/30 bg-white/80 dark:bg-[#1a120c]/80 text-[#664d3d] dark:text-[#c9b4a5] hover:bg-[#8b4513]/10 dark:hover:bg-[#b45309]/20 hover:text-[#8b4513] dark:hover:text-[#e09045]"
+              }`}
             >
               <span>{tab}</span>
             </button>
@@ -128,59 +288,11 @@ export default function Projects() {
         })}
       </div>
 
-      {/* ── 3. 3D SHOWCASE PRESENTATION STAGE (No Unnecessary Top HUD Header) ── */}
+      {/* ── 3. 3D SHOWCASE PRESENTATION STAGE (Clean Left Edge, No Disconnected Circuit SVGs) ── */}
       <div
         ref={stageRef}
         className="relative w-full max-w-full rounded-3xl border border-[#8b4513]/20 dark:border-[#b45309]/30 bg-gradient-to-b from-[#fdfbf7] via-white to-[#faf4ed] dark:from-[#140e09] dark:via-[#120c08] dark:to-[#1a130d] p-4 sm:p-6 lg:p-8 shadow-lg dark:shadow-[0_0_50px_rgba(180,83,9,0.08)] overflow-hidden min-w-0"
       >
-        {/* Background Circuit Traces (Left Margin) */}
-        <div className="absolute top-12 left-2 sm:left-4 w-28 sm:w-40 h-72 pointer-events-none select-none opacity-30 dark:opacity-40 z-0">
-          <svg
-            className="w-full h-full text-[#8b4513] dark:text-[#c26510]"
-            viewBox="0 0 160 320"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 20 H60 L90 50 H150"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle cx="150" cy="50" r="3.5" fill="currentColor" />
-            <path
-              d="M10 80 H80 L110 110 H140"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle cx="140" cy="110" r="3" fill="currentColor" />
-            <path
-              d="M10 160 H50 L80 190 H155"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle cx="155" cy="190" r="4" fill="currentColor" />
-            <path
-              d="M10 240 H70 L100 270 H135"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle cx="135" cy="270" r="3" fill="currentColor" />
-            <line
-              x1="45"
-              y1="50"
-              x2="45"
-              y2="140"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeDasharray="2 3"
-            />
-          </svg>
-        </div>
-
         {/* Floating Reopen Button for Details Drawer if user closes it */}
         {!isDrawerOpen && (
           <div className="flex justify-end mb-3 relative z-20">
@@ -194,25 +306,46 @@ export default function Projects() {
           </div>
         )}
 
-        {/* ── Main Content Grid: 3D Holographic Deck + Details Drawer ── */}
+        {/* ── Main Content Grid: 3D Layered Deck + Details Drawer ── */}
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start w-full min-w-0">
           {/* ── Left / Center Area: 3D Layered Cards Deck ── */}
           <div
-            className={`${isDrawerOpen ? "lg:col-span-8 xl:col-span-8" : "lg:col-span-12"
-              } w-full min-w-0 flex flex-col justify-between transition-all duration-300 relative z-10`}
+            className={`${
+              isDrawerOpen ? "lg:col-span-7 xl:col-span-8" : "lg:col-span-12"
+            } w-full min-w-0 flex flex-col justify-between transition-all duration-300 relative z-10`}
           >
-            {/* Card Stage Container */}
-            <div className="relative w-full max-w-full min-w-0 min-h-[480px] sm:min-h-[510px] lg:min-h-[530px] flex items-center justify-start lg:perspective-[1400px]">
+            {/* Card Stage Container — Interactive horizontally */}
+            <div
+              className="relative w-full max-w-full min-w-0 min-h-[480px] sm:min-h-[520px] lg:min-h-[540px] flex items-center justify-start lg:perspective-[1400px] outline-hidden"
+              tabIndex={0}
+              onKeyDown={handleKeyDown}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              onWheel={handleWheel}
+              aria-label="Interactive 3D project cards deck. Use arrow keys or horizontal gestures to navigate."
+            >
               {/* ── Background Card 2 (Layer 3 — Deepest Layer, z-10) ── */}
               {backgroundCard2 && (
                 <div
+                  ref={bgCard2Ref}
                   onClick={() =>
                     handleSelectProject(
                       (safeActiveIndex + 2) % filteredProjects.length
                     )
                   }
-                  className="hidden md:block absolute top-6 lg:top-7 left-[285px] md:left-[390px] lg:left-[450px] xl:left-[565px] w-[320px] md:w-[350px] lg:w-[370px] xl:w-[420px] max-w-none cursor-pointer rounded-2xl border border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/85 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 shadow-2xl transition-all duration-500 ease-out hover:opacity-100 hover:scale-[0.89] [transform:translate3d(0,-12px,-140px)_rotateY(-12deg)_scale(0.85)] opacity-80 dark:opacity-85 select-none z-10"
+                  className="hidden md:block absolute top-6 lg:top-7 left-[320px] md:left-[390px] lg:left-[430px] xl:left-[510px] w-[310px] md:w-[350px] lg:w-[360px] xl:w-[410px] max-w-none cursor-pointer rounded-2xl border border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/85 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 shadow-2xl transition-all duration-300 ease-out hover:opacity-100 hover:scale-[0.88] [transform:translate3d(0,-12px,-140px)_rotateY(-12deg)_scale(0.85)] opacity-80 dark:opacity-85 select-none z-10"
                   title={`Click to view ${backgroundCard2.title}`}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View background project: ${backgroundCard2.title}`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleSelectProject(
+                        (safeActiveIndex + 2) % filteredProjects.length
+                      );
+                    }
+                  }}
                 >
                   {/* Clean Monospace Header Bar */}
                   <div className="flex items-center justify-between border-b border-[#8b4513]/15 dark:border-[#b45309]/20 pb-2 mb-2.5">
@@ -221,7 +354,7 @@ export default function Projects() {
                     </span>
                   </div>
 
-                  {/* High-Resolution Screenshot Frame */}
+                  {/* Screenshot Frame */}
                   <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-[#8b4513]/20 dark:border-[#b45309]/25 bg-slate-950 shadow-inner">
                     <Image
                       src={backgroundCard2.image}
@@ -232,7 +365,7 @@ export default function Projects() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                   </div>
 
-                  {/* 3 Metadata Lines (Role + 2 Highlights Matching Card 1) */}
+                  {/* Metadata Lines */}
                   <div className="mt-3 space-y-1 font-mono text-[11px] sm:text-xs text-slate-700 dark:text-slate-300 min-w-0">
                     <p className="font-bold text-[#8b4513] dark:text-[#c26510] truncate">
                       Role: Full-Stack Developer
@@ -244,7 +377,7 @@ export default function Projects() {
                     ))}
                   </div>
 
-                  {/* Outlined Tech Pill Badges */}
+                  {/* Outlined Tech Badges */}
                   <div className="mt-3.5 flex flex-wrap gap-1.5 pt-2.5 border-t border-[#8b4513]/15 dark:border-[#b45309]/20">
                     {backgroundCard2.technologies.slice(0, 3).map((t) => (
                       <span
@@ -261,13 +394,25 @@ export default function Projects() {
               {/* ── Background Card 1 (Layer 2 — Middle Layer, z-20) ── */}
               {backgroundCard1 && (
                 <div
+                  ref={bgCard1Ref}
                   onClick={() =>
                     handleSelectProject(
                       (safeActiveIndex + 1) % filteredProjects.length
                     )
                   }
-                  className="hidden sm:block absolute top-3 lg:top-4 left-[155px] md:left-[215px] lg:left-[225px] xl:left-[280px] w-[330px] md:w-[370px] lg:w-[380px] xl:w-[430px] max-w-none cursor-pointer rounded-2xl border border-[#8b4513]/35 dark:border-[#b45309]/40 bg-white/90 dark:bg-[#1c130d]/92 backdrop-blur-md p-4 sm:p-5 shadow-xl transition-all duration-500 ease-out hover:opacity-100 hover:scale-[0.96] [transform:translate3d(0,-6px,-70px)_rotateY(-9deg)_scale(0.92)] opacity-88 dark:opacity-92 select-none z-20"
+                  className="hidden sm:block absolute top-3 lg:top-4 left-[170px] md:left-[220px] lg:left-[230px] xl:left-[280px] w-[320px] md:w-[360px] lg:w-[370px] xl:w-[420px] max-w-none cursor-pointer rounded-2xl border border-[#8b4513]/35 dark:border-[#b45309]/40 bg-white/90 dark:bg-[#1c130d]/92 backdrop-blur-md p-4 sm:p-5 shadow-xl transition-all duration-300 ease-out hover:opacity-100 hover:scale-[0.95] [transform:translate3d(0,-6px,-70px)_rotateY(-9deg)_scale(0.92)] opacity-88 dark:opacity-92 select-none z-20"
                   title={`Click to view ${backgroundCard1.title}`}
+                  role="button"
+                  tabIndex={0}
+                  aria-label={`View next project: ${backgroundCard1.title}`}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      handleSelectProject(
+                        (safeActiveIndex + 1) % filteredProjects.length
+                      );
+                    }
+                  }}
                 >
                   {/* Clean Monospace Header Bar */}
                   <div className="flex items-center justify-between border-b border-[#8b4513]/20 dark:border-[#b45309]/25 pb-2 mb-2.5">
@@ -276,7 +421,7 @@ export default function Projects() {
                     </span>
                   </div>
 
-                  {/* High-Resolution Screenshot Frame */}
+                  {/* Screenshot Frame */}
                   <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-[#8b4513]/20 dark:border-[#b45309]/25 bg-slate-950 shadow-inner">
                     <Image
                       src={backgroundCard1.image}
@@ -287,7 +432,7 @@ export default function Projects() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
                   </div>
 
-                  {/* 3 Metadata Lines (Role + 2 Highlights Matching Card 1) */}
+                  {/* Metadata Lines */}
                   <div className="mt-3 space-y-1 font-mono text-[11px] sm:text-xs text-slate-700 dark:text-slate-300 min-w-0">
                     <p className="font-bold text-[#8b4513] dark:text-[#c26510] truncate">
                       Role: Full-Stack Developer
@@ -299,7 +444,7 @@ export default function Projects() {
                     ))}
                   </div>
 
-                  {/* Outlined Tech Pill Badges */}
+                  {/* Outlined Tech Badges */}
                   <div className="mt-3.5 flex flex-wrap gap-1.5 pt-2.5 border-t border-[#8b4513]/15 dark:border-[#b45309]/20">
                     {backgroundCard1.technologies.slice(0, 3).map((t) => (
                       <span
@@ -313,15 +458,25 @@ export default function Projects() {
                 </div>
               )}
 
-              {/* ── FRONT ACTIVE CARD (Layer 1 — Foreground, z-30) ── */}
-              <div className="relative w-full max-w-full sm:max-w-[420px] md:max-w-[430px] lg:max-w-[400px] xl:max-w-[460px] rounded-2xl border-2 border-[#8b4513] dark:border-[#b45309] shadow-[0_0_30px_rgba(139,69,19,0.22),inset_0_0_15px_rgba(139,69,19,0.06)] dark:shadow-[0_0_35px_rgba(180,83,9,0.32),inset_0_0_15px_rgba(180,83,9,0.08)] bg-white/95 dark:bg-[#1c130d]/95 backdrop-blur-xl p-4 sm:p-5 transition-all duration-300 z-30 min-w-0 [transform:perspective(1200px)_rotateY(4deg)]">
+              {/* ── FRONT ACTIVE CARD (Layer 1 — Smoothly Expands and Commands Focus, z-30) ── */}
+              <div
+                ref={activeCardRef}
+                className={`relative w-full max-w-full ${
+                  isDrawerOpen
+                    ? "sm:max-w-[460px] md:max-w-[500px] lg:max-w-[520px] xl:max-w-[580px]"
+                    : "sm:max-w-[540px] md:max-w-[620px] lg:max-w-[680px] xl:max-w-[760px]"
+                } rounded-2xl border-2 border-[#8b4513] dark:border-[#b45309] shadow-[0_0_30px_rgba(139,69,19,0.22),inset_0_0_15px_rgba(139,69,19,0.06)] dark:shadow-[0_0_35px_rgba(180,83,9,0.32),inset_0_0_15px_rgba(180,83,9,0.08)] bg-white/95 dark:bg-[#1c130d]/95 backdrop-blur-xl p-4 sm:p-5 transition-all duration-300 z-30 min-w-0 [transform:perspective(1200px)_rotateY(2deg)]`}
+              >
                 {/* Card Header Strip with Signal Pulse */}
                 <div className="flex items-center justify-between border-b border-[#8b4513]/20 dark:border-[#b45309]/25 pb-2.5 mb-3 min-w-0">
                   <span className="font-mono text-xs sm:text-sm font-bold tracking-wider text-[#8b4513] dark:text-[#e09045] uppercase truncate max-w-[85%]">
                     PROJECT {(safeActiveIndex + 1).toString().padStart(2, "0")}:{" "}
                     {activeProject.title}
                   </span>
-                  <div className="flex items-center gap-0.5 text-[#8b4513] dark:text-[#c26510] shrink-0" title="Active Signal">
+                  <div
+                    className="flex items-center gap-0.5 text-[#8b4513] dark:text-[#c26510] shrink-0"
+                    title="Active Signal"
+                  >
                     <Radio className="w-4 h-4 animate-pulse" />
                   </div>
                 </div>
@@ -334,7 +489,7 @@ export default function Projects() {
                     alt={activeProject.title}
                     fill
                     priority
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 40vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 60vw, 50vw"
                     className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
@@ -343,7 +498,7 @@ export default function Projects() {
                 {/* Highlights / Metadata Block */}
                 <div className="mt-3.5 space-y-1 font-mono text-xs text-slate-700 dark:text-slate-300 min-w-0">
                   <p className="font-bold text-[#8b4513] dark:text-[#c26510] truncate">
-                    Role: Full-Stack Developer & Architect
+                    Role: Full-Stack Developer &amp; Architect
                   </p>
                   {activeProject.highlights.slice(0, 2).map((highlight, idx) => (
                     <p key={idx} className="line-clamp-1 text-slate-600 dark:text-slate-400">
@@ -419,9 +574,9 @@ export default function Projects() {
                   </div>
                 </div>
 
-                {/* Progress Bar with Connected Project Nodes (No Milestone Labels) */}
+                {/* Progress Bar with Connected Project Nodes */}
                 <div className="relative flex items-center justify-between w-full max-w-full py-2 min-w-0">
-                  {/* Connecting Line Track */}
+                  {/* Connecting Line Track (Preserved Intentional Connector) */}
                   <div className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-0.5 bg-[#8b4513]/15 dark:bg-[#b45309]/25 pointer-events-none" />
                   <div
                     className="absolute left-2 top-1/2 -translate-y-1/2 h-0.5 bg-[#8b4513] dark:bg-[#b45309] transition-all duration-300 pointer-events-none"
@@ -448,10 +603,11 @@ export default function Projects() {
                       >
                         {/* Node Circle */}
                         <div
-                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full transition-all duration-300 flex items-center justify-center ${isActive
-                            ? "bg-[#8b4513] dark:bg-[#b45309] shadow-[0_0_12px_rgba(139,69,19,0.45)] dark:shadow-[0_0_12px_rgba(180,83,9,0.55)] scale-125 ring-4 ring-[#8b4513]/25 dark:ring-[#b45309]/30"
-                            : "bg-white dark:bg-[#120c08] border border-[#8b4513]/40 dark:border-[#b45309]/40 group-hover:border-[#8b4513] dark:group-hover:border-[#b45309] group-hover:scale-115"
-                            }`}
+                          className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full transition-all duration-300 flex items-center justify-center ${
+                            isActive
+                              ? "bg-[#8b4513] dark:bg-[#b45309] shadow-[0_0_12px_rgba(139,69,19,0.45)] dark:shadow-[0_0_12px_rgba(180,83,9,0.55)] scale-125 ring-4 ring-[#8b4513]/25 dark:ring-[#b45309]/30"
+                              : "bg-white dark:bg-[#120c08] border border-[#8b4513]/40 dark:border-[#b45309]/40 group-hover:border-[#8b4513] dark:group-hover:border-[#b45309] group-hover:scale-115"
+                          }`}
                         >
                           {isActive && (
                             <span className="w-1.5 h-1.5 rounded-full bg-white" />
@@ -463,7 +619,7 @@ export default function Projects() {
                 </div>
               </div>
             ) : (
-              /* Single Project Status Bar (No stretch overflow) */
+              /* Single Project Status Bar */
               <div className="mt-6 pt-4 border-t border-[#8b4513]/15 dark:border-[#b45309]/20 flex items-center justify-between">
                 <div className="inline-flex items-center gap-2 font-mono text-xs text-[#8b4513] dark:text-[#e09045]">
                   <span className="w-2 h-2 rounded-full bg-[#8b4513] dark:bg-[#b45309] animate-pulse shadow-[0_0_8px_rgba(139,69,19,0.5)] dark:shadow-[0_0_8px_rgba(180,83,9,0.6)]" />
@@ -475,7 +631,10 @@ export default function Projects() {
 
           {/* ── Right Floating Side Panel: "DETAILS DRAWER" ── */}
           {isDrawerOpen && (
-            <div className="lg:col-span-4 xl:col-span-4 w-full min-w-0 rounded-2xl border border-[#8b4513]/25 dark:border-[#b45309]/35 bg-white/95 dark:bg-[#1c130d]/95 backdrop-blur-xl p-5 sm:p-6 shadow-2xl dark:shadow-[0_0_35px_rgba(0,0,0,0.6)] flex flex-col justify-between animate-in fade-in duration-300 relative z-25">
+            <div
+              ref={drawerRef}
+              className="lg:col-span-5 xl:col-span-4 w-full min-w-0 rounded-2xl border border-[#8b4513]/25 dark:border-[#b45309]/35 bg-white/95 dark:bg-[#1c130d]/95 backdrop-blur-xl p-5 sm:p-6 shadow-2xl dark:shadow-[0_0_35px_rgba(0,0,0,0.6)] flex flex-col justify-between relative z-25"
+            >
               <div>
                 {/* Drawer Header with Close Button */}
                 <div className="flex items-center justify-between border-b border-[#8b4513]/20 dark:border-[#b45309]/25 pb-3 mb-4">
@@ -528,7 +687,7 @@ export default function Projects() {
                   </span>
                   <ul className="space-y-1.5 font-mono text-[11px] text-slate-600 dark:text-slate-300">
                     <li>• Category: {activeProject.category}</li>
-                    <li>• Production Status: Verified & Live</li>
+                    <li>• Production Status: Verified &amp; Live</li>
                     <li>• Architecture: Responsive Component System</li>
                   </ul>
                 </div>

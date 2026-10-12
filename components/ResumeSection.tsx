@@ -33,53 +33,7 @@ export default function ResumeSection() {
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#8b4513]/10 dark:bg-[#b45309]/15 blur-3xl select-none" />
         <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-[#8b4513]/10 dark:bg-[#b45309]/15 blur-3xl select-none" />
 
-        {/* Background Circuit Traces (Left Margin) */}
-        <div className="absolute top-10 left-2 sm:left-4 w-28 sm:w-40 h-72 pointer-events-none select-none opacity-25 dark:opacity-35 z-0">
-          <svg
-            className="w-full h-full text-[#8b4513] dark:text-[#c26510]"
-            viewBox="0 0 160 320"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 20 H60 L90 50 H150"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle cx="150" cy="50" r="3.5" fill="currentColor" />
-            <path
-              d="M10 80 H80 L110 110 H140"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle cx="140" cy="110" r="3" fill="currentColor" />
-            <path
-              d="M10 160 H50 L80 190 H155"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle cx="155" cy="190" r="4" fill="currentColor" />
-            <path
-              d="M10 240 H70 L100 270 H135"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <circle cx="135" cy="270" r="3" fill="currentColor" />
-            <line
-              x1="45"
-              y1="50"
-              x2="45"
-              y2="140"
-              stroke="currentColor"
-              strokeWidth="1"
-              strokeDasharray="2 3"
-            />
-          </svg>
-        </div>
+
 
         {/* ── Content Container ── */}
         <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
