@@ -228,20 +228,7 @@
     }
 }
 
-/* Circuit graphic below tree */
-.circuitGraphic {
-    width: 100%;
-    max-width: 180px;
-    height: auto;
-    opacity: 0.45;
-    pointer-events: none;
-}
 
-@media (max-width: 1023px) {
-    .circuitGraphic {
-        display: none;
-    }
-}
 
 /* ── Column 2: Center Timeline Stream ── */
 .timelineCol {

@@ -150,31 +150,7 @@ export default function Certifications() {
                             </button>
                         </nav>
 
-                        {/* Circuit Traces Decorative SVG */}
-                        <svg
-                            className={styles.circuitGraphic}
-                            viewBox="0 0 160 160"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                        >
-                            <path
-                                d="M10 20 H60 V80 H120 V140"
-                                stroke="var(--accent)"
-                                strokeWidth="1.5"
-                                strokeDasharray="4 4"
-                            />
-                            <circle cx="10" cy="20" r="3" fill="var(--accent)" />
-                            <circle cx="60" cy="80" r="3" fill="var(--accent)" />
-                            <circle cx="120" cy="140" r="3" fill="var(--accent)" />
-                            <path
-                                d="M40 10 V40 H90 V110 H140"
-                                stroke="var(--accent)"
-                                strokeWidth="1"
-                                opacity="0.5"
-                            />
-                            <circle cx="90" cy="110" r="2.5" fill="var(--accent)" />
-                        </svg>
+
                     </aside>
 
                     {/* ── Column 2: Center Timeline Stream ── */}
