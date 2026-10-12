@@ -28,7 +28,7 @@ export default function ResumeSection() {
       />
 
       {/* ── 2. Cinematic Futuristic Console Stage ── */}
-      <div className="relative w-full max-w-full rounded-3xl border border-[#8b4513]/20 dark:border-[#b45309]/30 bg-gradient-to-b from-[#fdfbf7] via-white to-[#faf4ed] dark:from-[#140e09] dark:via-[#120c08] dark:to-[#1a130d] p-5 sm:p-8 md:p-12 shadow-lg dark:shadow-[0_0_50px_rgba(180,83,9,0.08)] overflow-hidden min-w-0">
+      <div className="relative w-full max-w-full rounded-3xl border border-[#8b4513]/20 dark:border-[#b45309]/30 bg-gradient-to-b from-[#fdfbf7] via-white to-[#faf4ed] dark:from-[#140e09] dark:via-[#120c08] dark:to-[#1a130d] p-5 sm:p-8 md:p-12 overflow-hidden min-w-0">
         {/* Background Ambient Accent Glow Orbs */}
         <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[#8b4513]/10 dark:bg-[#b45309]/15 blur-3xl select-none" />
         <div className="pointer-events-none absolute -bottom-20 -left-20 h-72 w-72 rounded-full bg-[#8b4513]/10 dark:bg-[#b45309]/15 blur-3xl select-none" />
@@ -102,7 +102,7 @@ export default function ResumeSection() {
           {/* ── 5. Two Cards Side-by-Side ── */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full items-stretch">
             {/* ── Card 1: ACADEMIC BACKGROUND ── */}
-            <div className="relative rounded-2xl border-2 border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/90 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-[#8b4513] dark:hover:border-[#b45309] hover:shadow-[0_0_25px_rgba(139,69,19,0.18)] dark:hover:shadow-[0_0_30px_rgba(180,83,9,0.25)] flex flex-col justify-between">
+            <div className="relative rounded-2xl border-2 border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/90 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 transition-all duration-300 hover:border-[#8b4513] dark:hover:border-[#b45309] flex flex-col justify-between">
               {/* Header Strip */}
               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[#8b4513]/15 dark:border-[#b45309]/20">
                 <GraduationCap className="w-4 h-4 text-[#8b4513] dark:text-[#e09045]" />
@@ -131,7 +131,7 @@ export default function ResumeSection() {
             </div>
 
             {/* ── Card 2: LOCATION & TIMEZONE ── */}
-            <div className="relative rounded-2xl border-2 border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/90 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 shadow-lg dark:shadow-[0_0_30px_rgba(0,0,0,0.5)] transition-all duration-300 hover:border-[#8b4513] dark:hover:border-[#b45309] hover:shadow-[0_0_25px_rgba(139,69,19,0.18)] dark:hover:shadow-[0_0_30px_rgba(180,83,9,0.25)] flex flex-col justify-between">
+            <div className="relative rounded-2xl border-2 border-[#8b4513]/30 dark:border-[#b45309]/35 bg-white/90 dark:bg-[#1a120c]/90 backdrop-blur-md p-4 sm:p-5 transition-all duration-300 hover:border-[#8b4513] dark:hover:border-[#b45309] flex flex-col justify-between">
               {/* Header Strip */}
               <div className="flex items-center gap-2 mb-3 pb-2 border-b border-[#8b4513]/15 dark:border-[#b45309]/20">
                 <MapPin className="w-4 h-4 text-[#8b4513] dark:text-[#e09045]" />
