@@ -205,12 +205,10 @@
     color: var(--accent);
     background: var(--accent-subtle);
     border-color: var(--accent-border);
-    border-left: 2px solid var(--accent);
 }
 
 @media (max-width: 767px) {
     .treeItemActive {
-        border-left-width: 1px;
         box-shadow: 0 0 10px var(--accent-glow);
     }
 }
