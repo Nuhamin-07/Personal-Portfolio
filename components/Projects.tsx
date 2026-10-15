@@ -21,8 +21,6 @@ export default function Projects() {
   const circleRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [mobileActiveIndex, setMobileActiveIndex] = useState<number | null>(0);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   // Check for reduced motion preference
@@ -35,97 +33,91 @@ export default function Projects() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // Responsive breakpoint check
+  // GSAP ScrollTrigger Pinned Horizontal Movement Setup (Runs on all viewports)
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const checkViewport = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    checkViewport();
-    window.addEventListener("resize", checkViewport);
-    return () => window.removeEventListener("resize", checkViewport);
-  }, []);
-
-  // GSAP ScrollTrigger Pinned Horizontal Movement Setup
-  useEffect(() => {
-    if (reducedMotion || isMobile || typeof window === "undefined") return;
+    if (reducedMotion || typeof window === "undefined") return;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const mm = gsap.matchMedia();
+    const pinWrapper = pinWrapperRef.current;
+    const track = trackRef.current;
+    const circle = circleRef.current;
 
-    mm.add("(min-width: 768px)", () => {
-      const pinWrapper = pinWrapperRef.current;
-      const track = trackRef.current;
-      const circle = circleRef.current;
+    if (!pinWrapper || !track || !circle) return;
 
-      if (!pinWrapper || !track || !circle) return;
+    // Reset initial states
+    gsap.set(circle, { clipPath: "circle(20px at 40px 40px)" });
+    gsap.set(track, { x: 0 });
 
-      // Initial visual states matching Screenshot 1:
-      // A small circle dot in the top-left corner
-      gsap.set(circle, { clipPath: "circle(20px at 40px 40px)" });
-      gsap.set(track, { x: 0 });
+    const getScrollDistance = () => {
+      return Math.max(0, track.scrollWidth - window.innerWidth);
+    };
 
-      const getScrollDistance = () => {
-        return Math.max(0, track.scrollWidth - window.innerWidth);
-      };
-
-      // Total vertical scroll range calculated dynamically based on card track dimensions
-      const totalScrollDistance = () => {
-        return Math.max(window.innerHeight * 3.5, getScrollDistance() + window.innerHeight * 0.8);
-      };
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          id: "projects-horizontal-scroll",
-          trigger: pinWrapper,
-          start: "top top",
-          end: () => `+=${totalScrollDistance()}`,
-          pin: true,
-          scrub: 0.8,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const prog = self.progress;
-            // First 22% of progress is Panel 0 circle expanding;
-            // Remaining 78% maps through project cards 0 to 7
-            if (prog < 0.22) {
-              setActiveIndex(0);
-            } else {
-              const cardProg = (prog - 0.22) / 0.78;
-              const currentIdx = Math.min(
-                projects.length - 1,
-                Math.max(0, Math.floor(cardProg * projects.length))
-              );
-              setActiveIndex(currentIdx);
-            }
-          },
-        },
-      });
-
-      // Stage 1: Circle expands from top-left corner over Panel 0 (Screenshots 1 -> 2 -> 3)
-      tl.to(circle, {
-        clipPath: "circle(150% at 0% 0%)",
-        ease: "power1.inOut",
-        duration: 1,
-      });
-
-      // Stage 2: Track translates horizontally to the left, revealing Project Cards (Screenshots 3 -> 4 -> 5)
-      tl.to(
-        track,
-        {
-          x: () => -getScrollDistance(),
-          ease: "none",
-          duration: 3.6,
-        },
-        "-=0.2" // Smooth organic overlap as circle reaches full expansion
+    // Total vertical scroll range calculated dynamically based on card track dimensions
+    const totalScrollDistance = () => {
+      return Math.max(
+        window.innerHeight * 2.8,
+        getScrollDistance() + window.innerHeight * 0.8
       );
+    };
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        id: "projects-horizontal-scroll",
+        trigger: pinWrapper,
+        start: "top top",
+        end: () => `+=${totalScrollDistance()}`,
+        pin: true,
+        scrub: 0.8,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const prog = self.progress;
+          // First 22% of progress is Panel 0 circle expanding;
+          // Remaining 78% maps through project cards 0 to 7
+          if (prog < 0.22) {
+            setActiveIndex(0);
+          } else {
+            const cardProg = (prog - 0.22) / 0.78;
+            const currentIdx = Math.min(
+              projects.length - 1,
+              Math.max(0, Math.floor(cardProg * projects.length))
+            );
+            setActiveIndex(currentIdx);
+          }
+        },
+      },
     });
 
+    // Stage 1: Circle expands from top-left corner over Panel 0
+    tl.to(circle, {
+      clipPath: "circle(150% at 0% 0%)",
+      ease: "power1.inOut",
+      duration: 1,
+    });
+
+    // Stage 2: Track translates horizontally to the left, revealing Project Cards
+    tl.to(
+      track,
+      {
+        x: () => -getScrollDistance(),
+        ease: "none",
+        duration: 3.6,
+      },
+      "-=0.2" // Smooth organic overlap as circle reaches full expansion
+    );
+
+    // Refresh ScrollTrigger when images or fonts load
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 500);
+
     return () => {
-      mm.revert();
+      clearTimeout(refreshTimer);
+      ScrollTrigger.getById("projects-horizontal-scroll")?.kill();
+      tl.kill();
     };
-  }, [reducedMotion, isMobile]);
+  }, [reducedMotion]);
 
   // Smooth scroll jump to a specific project card
   const scrollToProject = useCallback(
@@ -164,7 +156,7 @@ export default function Projects() {
     >
       {/* ── Accessible Reduced Motion Fallback ── */}
       {reducedMotion ? (
-        <div className="mx-auto max-w-5xl px-4 sm:px-8 py-16 space-y-8">
+        <div className="mx-auto max-w-5xl px-4 sm:px-8 py-16 space-y-8 bg-accent text-accent-foreground">
           <div className="text-center mb-10">
             <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
               [ 02 / SELECTED WORKS ]
@@ -229,254 +221,8 @@ export default function Projects() {
             </article>
           ))}
         </div>
-      ) : isMobile ? (
-        /* ── Mobile Layout (Under 768px): Single Clean Header on Accent with Swipe Deck ── */
-        <div className="relative w-full min-h-[85vh] bg-accent text-accent-foreground px-4 sm:px-6 py-12 sm:py-16 overflow-hidden flex flex-col justify-between">
-          {/* Ambient Background Decorative Accent Orbs */}
-          <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#8b4513]/10 dark:bg-[#8b4513]/25 blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-[#8b4513]/5 dark:bg-[#8b4513]/15 blur-2xl pointer-events-none" />
-
-          {/* Single Project Section Header */}
-          <div className="relative z-10 mb-6 px-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 font-mono text-xs font-bold tracking-widest text-primary uppercase mb-3 shadow-xs">
-              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-              <span>[ 02 / SELECTED WORKS ]</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
-              OUR PROJECTS
-            </h2>
-            <div className="mt-2 inline-flex items-center px-3 py-1 rounded-lg bg-primary text-primary-foreground font-extrabold text-xs uppercase tracking-wider shadow-xs">
-              SCROLL SHOWCASE • 08 WORKS
-            </div>
-            <p className="mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-md">
-              Interactive showcase featuring full-stack applications and enterprise software.
-            </p>
-          </div>
-
-          {/* Scroll cue hint */}
-          <div className="relative z-10 flex items-center justify-between pb-3 text-xs font-mono text-muted-foreground px-1">
-            <span>SWIPE OR TAP TO EXPLORE</span>
-            <span>{projects.length} PROJECTS</span>
-          </div>
-
-          {/* Touch-Friendly Horizontal Swipe Deck with Snap Points */}
-          <div className="relative z-10 flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 scrollbar-none -mx-4 px-4">
-            {projects.map((project, idx) => {
-              const isCardActive = mobileActiveIndex === idx;
-              const primaryUrl = project.liveUrl || project.githubUrl;
-
-              return (
-                <div
-                  key={project.title}
-                  onClick={() => setMobileActiveIndex(isCardActive ? null : idx)}
-                  className={`relative flex-shrink-0 w-[84vw] max-w-[340px] snap-center rounded-2xl border transition-all duration-300 overflow-hidden flex flex-col justify-between p-5 select-none group cursor-pointer ${
-                    isCardActive
-                      ? "bg-[#8b4513] text-white border-white/20 shadow-xl scale-[1.01]"
-                      : "bg-card border-border text-card-foreground shadow-sm hover:border-[#8b4513]/40 hover:shadow-md"
-                  }`}
-                >
-                  {/* Expanding #8b4513 Accent Circle on Mobile Card Hover & Active */}
-                  <div
-                    className="absolute inset-0 bg-[#8b4513] transition-[clip-path] duration-500 ease-in-out z-0 pointer-events-none [clip-path:circle(0%_at_0%_0%)] group-hover:[clip-path:circle(150%_at_0%_0%)]"
-                    style={{
-                      clipPath: isCardActive ? "circle(150% at 0% 0%)" : undefined,
-                    }}
-                  />
-
-                  {/* Floating Center Badge on Mobile Hover / Tap */}
-                  <div
-                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-20 h-20 rounded-full bg-white text-[#8b4513] shadow-lg flex flex-col items-center justify-center font-mono text-[9px] font-black uppercase tracking-wider transition-all duration-300 pointer-events-none ${
-                      isCardActive
-                        ? "scale-100 opacity-100"
-                        : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100"
-                    }`}
-                  >
-                    <span>VIEW</span>
-                    <ArrowUpRight className="w-3.5 h-3.5 mt-0.5 text-[#8b4513]" />
-                  </div>
-
-                  <div className="relative z-10 flex flex-col justify-between h-full">
-                    <div>
-                      {/* Header Strip */}
-                      <div className="flex items-center justify-between pb-2.5 border-b border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors">
-                        <span
-                          className={`font-mono text-xs font-bold tracking-wider uppercase transition-colors ${
-                            isCardActive ? "text-white" : "text-primary group-hover:text-white"
-                          }`}
-                        >
-                          PROJECT {(idx + 1).toString().padStart(2, "0")}
-                        </span>
-                        <span
-                          className={`font-mono text-[10px] uppercase font-semibold truncate max-w-[150px] transition-colors ${
-                            isCardActive ? "text-white/80" : "text-muted-foreground group-hover:text-white/80"
-                          }`}
-                        >
-                          {project.category}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <h3
-                        className={`mt-3 font-mono text-lg font-bold uppercase leading-snug line-clamp-2 transition-colors ${
-                          isCardActive ? "text-white" : "text-foreground group-hover:text-white"
-                        }`}
-                      >
-                        {project.title}
-                      </h3>
-
-                      {/* Preview Image */}
-                      <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden my-3 border border-black/10 dark:border-white/10 bg-slate-950 group-hover:border-white/25 transition-colors">
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          sizes="340px"
-                          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-                        />
-                      </div>
-
-                      {/* Description */}
-                      <p
-                        className={`text-xs leading-relaxed line-clamp-3 transition-colors ${
-                          isCardActive ? "text-white/90" : "text-muted-foreground group-hover:text-white/90"
-                        }`}
-                      >
-                        {project.description}
-                      </p>
-                    </div>
-
-                    {/* Footer with Tech & Links */}
-                    <div className="mt-4 pt-3 border-t border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors space-y-3">
-                      <div className="flex flex-wrap gap-1.5">
-                        {project.technologies.slice(0, 3).map((tech) => (
-                          <span
-                            key={tech}
-                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-medium transition-colors ${
-                              isCardActive
-                                ? "bg-white/10 text-white border border-white/20"
-                                : "bg-black/5 dark:bg-white/5 border border-border text-foreground group-hover:bg-white/10 group-hover:text-white group-hover:border-white/20"
-                            }`}
-                          >
-                            <SkillIcon name={tech} className="w-2.5 h-2.5 shrink-0" />
-                            <span>{tech}</span>
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center justify-between pt-1">
-                        <div className="flex items-center gap-2">
-                          {project.liveUrl && (
-                            <a
-                              href={project.liveUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase shadow-xs transition-all ${
-                                isCardActive
-                                  ? "bg-white text-[#8b4513]"
-                                  : "bg-primary text-primary-foreground group-hover:bg-white group-hover:text-[#8b4513]"
-                              }`}
-                            >
-                              <span>Live</span>
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          )}
-                          {project.githubUrl && (
-                            <a
-                              href={project.githubUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase border transition-all ${
-                                isCardActive
-                                  ? "bg-white/15 text-white border-white/30"
-                                  : "bg-card border-border text-foreground group-hover:bg-white/15 group-hover:text-white group-hover:border-white/30"
-                              }`}
-                            >
-                              <span>Code</span>
-                              <ExternalLink className="w-3 h-3" />
-                            </a>
-                          )}
-                        </div>
-
-                        {primaryUrl && (
-                          <a
-                            href={primaryUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className={`w-7 h-7 rounded-full flex items-center justify-center border transition-all ${
-                              isCardActive
-                                ? "bg-white text-[#8b4513] border-white"
-                                : "border-border text-foreground group-hover:bg-white group-hover:text-[#8b4513] group-hover:border-white"
-                            }`}
-                            aria-label={`Open ${project.title}`}
-                          >
-                            <ArrowUpRight className="w-3.5 h-3.5" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-
-            {/* Finale Card in Mobile Swipe Deck */}
-            <div className="relative flex-shrink-0 w-[84vw] max-w-[340px] snap-center rounded-2xl bg-[#8b4513] text-white border border-white/20 shadow-xl flex flex-col justify-between p-6 select-none">
-              <div className="font-mono text-xs font-bold uppercase tracking-widest text-white/70">
-                08 / 08 • COMPLETE SHOWCASE
-              </div>
-
-              <div className="flex flex-col items-center text-center my-6 gap-3">
-                <div className="w-20 h-20 rounded-full bg-white text-[#8b4513] shadow-xl flex flex-col items-center justify-center font-mono text-[10px] font-black uppercase tracking-wider">
-                  <span>LET&apos;S</span>
-                  <span>BUILD</span>
-                  <ArrowRight className="w-3.5 h-3.5 mt-0.5 text-[#8b4513]" />
-                </div>
-
-                <h3 className="text-xl font-black uppercase tracking-tight text-white">
-                  HAVE A PROJECT IN MIND?
-                </h3>
-
-                <p className="text-xs text-white/85 max-w-xs leading-relaxed font-medium">
-                  Let&apos;s build something high-impact and exceptional together.
-                </p>
-
-                <a
-                  href="#contact"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#8b4513] font-mono text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 mt-2"
-                >
-                  <span>Get In Touch</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </a>
-              </div>
-
-              <div className="font-mono text-[10px] text-center text-white/60 uppercase tracking-widest">
-                Nuhamin Gulilat • Portfolio
-              </div>
-            </div>
-          </div>
-
-          {/* Mobile Dot Stepper */}
-          <div className="relative z-10 flex items-center justify-center gap-1.5 pt-4 pb-2">
-            {projects.map((_, dotIdx) => (
-              <button
-                key={dotIdx}
-                type="button"
-                onClick={() => setMobileActiveIndex(dotIdx)}
-                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  mobileActiveIndex === dotIdx
-                    ? "w-6 bg-primary"
-                    : "w-1.5 bg-black/20 dark:bg-white/20"
-                }`}
-                aria-label={`Jump to project ${dotIdx + 1}`}
-              />
-            ))}
-          </div>
-        </div>
       ) : (
-        /* ── Full Desktop/Tablet Scroll-Linked Pinned Showcase (Single Header inside Panel 0) ── */
+        /* ── Continuous Scroll-Linked Pinned Showcase (Responsive on Desktop, Tablet & Mobile) ── */
         <div
           ref={pinWrapperRef}
           className="relative w-full h-screen overflow-hidden bg-accent text-accent-foreground flex flex-col justify-between"
@@ -502,7 +248,7 @@ export default function Projects() {
                   <span>[ 02 / SELECTED WORKS ]</span>
                 </div>
 
-                <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-foreground leading-none drop-shadow-xs">
+                <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-foreground leading-none drop-shadow-xs">
                   OUR PROJECTS
                 </h2>
 
@@ -510,12 +256,12 @@ export default function Projects() {
                   SCROLL-DRIVEN SHOWCASE • 08 WORKS
                 </div>
 
-                <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg font-medium text-muted-foreground max-w-xl leading-relaxed">
+                <p className="mt-4 sm:mt-6 text-xs sm:text-base lg:text-lg font-medium text-muted-foreground max-w-xl leading-relaxed">
                   A continuous horizontal journey through full-stack systems, modern web
                   applications, and scalable platforms.
                 </p>
 
-                <div className="mt-8 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-wider text-foreground">
+                <div className="mt-6 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-wider text-foreground">
                   <span>SCROLL DOWN TO ADVANCE CARDS</span>
                   <ArrowRight className="w-4 h-4 text-primary animate-pulse" />
                 </div>
@@ -538,26 +284,19 @@ export default function Projects() {
                         window.open(primaryUrl, "_blank", "noreferrer");
                       }
                     }}
-                    className="relative flex-shrink-0 w-[360px] sm:w-[410px] lg:w-[460px] xl:w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between py-12 sm:py-16 px-6 sm:px-8 lg:px-10 group overflow-hidden cursor-pointer bg-card transition-colors duration-300"
+                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between py-8 sm:py-14 lg:py-16 px-5 sm:px-8 lg:px-10 group project-card overflow-hidden cursor-pointer bg-card transition-colors duration-300 ${
+                      isHovered ? "is-hovered" : ""
+                    }`}
                   >
                     {/* Expanding Accent Circle on Individual Card Hover (Uses #8b4513 Accent) */}
                     <div
-                      className="absolute inset-0 bg-[#8b4513] transition-[clip-path] duration-700 ease-in-out z-0 pointer-events-none [clip-path:circle(0%_at_0%_0%)] group-hover:[clip-path:circle(150%_at_0%_0%)]"
-                      style={{
-                        clipPath: isHovered
-                          ? "circle(150% at 0% 0%)"
-                          : undefined,
-                      }}
+                      className={`project-card-accent-bg ${
+                        isHovered ? "is-active" : ""
+                      }`}
                     />
 
                     {/* Floating Center Badge (from Spotlight screenshot) */}
-                    <div
-                      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white text-[#8b4513] shadow-[0_14px_45px_rgba(0,0,0,0.35)] flex flex-col items-center justify-center font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all duration-300 pointer-events-none ${
-                        isHovered
-                          ? "scale-100 opacity-100"
-                          : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100"
-                      }`}
-                    >
+                    <div className="project-card-view-badge absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-22 h-22 sm:w-28 sm:h-28 rounded-full bg-white text-[#8b4513] shadow-[0_14px_45px_rgba(0,0,0,0.35)] flex flex-col items-center justify-center font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all duration-300 pointer-events-none scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100">
                       <span>VIEW</span>
                       <span>PROJECT</span>
                       <ArrowUpRight className="w-3.5 h-3.5 mt-0.5 text-[#8b4513]" />
@@ -567,68 +306,42 @@ export default function Projects() {
                     <div className="relative z-10 flex flex-col justify-between h-full min-h-0">
                       {/* Top Header Strip */}
                       <div>
-                        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors">
-                          <span
-                            className={`font-mono text-xs sm:text-[13px] font-bold uppercase tracking-widest transition-colors ${
-                              isHovered ? "text-white" : "text-primary group-hover:text-white"
-                            }`}
-                          >
+                        <div className="flex items-center justify-between pb-2.5 sm:pb-4 border-b border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors">
+                          <span className="project-card-num font-mono text-xs sm:text-[13px] font-bold uppercase tracking-widest text-primary transition-colors">
                             PROJECT {(idx + 1).toString().padStart(2, "0")}
                           </span>
-                          <span
-                            className={`font-mono text-[11px] font-semibold uppercase tracking-wider transition-colors truncate max-w-[180px] ${
-                              isHovered ? "text-white/80" : "text-muted-foreground group-hover:text-white/80"
-                            }`}
-                          >
+                          <span className="project-card-cat font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground transition-colors truncate max-w-[170px]">
                             {project.category}
                           </span>
                         </div>
 
                         {/* Title */}
-                        <h3
-                          className={`mt-4 sm:mt-5 font-mono text-xl sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-tight leading-snug line-clamp-2 transition-colors ${
-                            isHovered ? "text-white" : "text-foreground group-hover:text-white"
-                          }`}
-                        >
+                        <h3 className="project-card-title mt-3 sm:mt-5 font-mono text-lg sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-tight leading-snug line-clamp-2 text-foreground transition-colors">
                           {project.title}
                         </h3>
 
                         {/* Visual Image Preview */}
-                        <div className="relative w-full aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden my-4 sm:my-5 border border-black/10 dark:border-white/10 shadow-sm group-hover:border-white/30 group-hover:shadow-lg transition-all bg-slate-950">
+                        <div className="relative w-full aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden my-3 sm:my-5 border border-black/10 dark:border-white/10 shadow-sm group-hover:border-white/30 group-hover:shadow-lg transition-all bg-slate-950">
                           <Image
                             src={project.image}
                             alt={project.title}
                             fill
-                            sizes="(max-width: 1024px) 410px, 490px"
+                            sizes="(max-width: 640px) 320px, (max-width: 1024px) 410px, 490px"
                             className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
                         </div>
 
                         {/* Project Narrative Description */}
-                        <p
-                          className={`text-xs sm:text-sm leading-relaxed line-clamp-3 transition-colors ${
-                            isHovered ? "text-white/90" : "text-muted-foreground group-hover:text-white/90"
-                          }`}
-                        >
+                        <p className="project-card-desc text-xs sm:text-sm leading-relaxed line-clamp-3 text-muted-foreground transition-colors">
                           {project.description}
                         </p>
 
                         {/* Core Highlight */}
                         {project.highlights?.[0] && (
-                          <div
-                            className={`mt-3 p-2.5 rounded-lg border transition-all ${
-                              isHovered
-                                ? "bg-white/10 border-white/20 text-white"
-                                : "bg-black/5 dark:bg-white/5 border-border text-foreground group-hover:bg-white/10 group-hover:border-white/20 group-hover:text-white"
-                            }`}
-                          >
-                            <p className="text-[11px] leading-relaxed line-clamp-2">
-                              <span
-                                className={`font-mono font-bold uppercase mr-1.5 ${
-                                  isHovered ? "text-white" : "text-primary group-hover:text-white"
-                                }`}
-                              >
+                          <div className="project-card-highlight mt-2.5 sm:mt-3 p-2 sm:p-2.5 rounded-lg border bg-black/5 dark:bg-white/5 border-border text-foreground transition-all">
+                            <p className="text-[10px] sm:text-[11px] leading-relaxed line-clamp-2">
+                              <span className="font-mono font-bold uppercase mr-1.5 text-primary project-card-highlight-label">
                                 HIGHLIGHT:
                               </span>
                               <span>{project.highlights[0]}</span>
@@ -638,28 +351,20 @@ export default function Projects() {
                       </div>
 
                       {/* Bottom Footer: Tech Pills & Action Buttons */}
-                      <div className="pt-4 border-t border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors space-y-3 sm:space-y-4">
+                      <div className="pt-3 sm:pt-4 border-t border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors space-y-2.5 sm:space-y-4">
                         {/* Technology Stack Pills */}
                         <div className="flex flex-wrap gap-1.5 sm:gap-2">
                           {project.technologies.slice(0, 4).map((tech) => (
                             <span
                               key={tech}
-                              className={`inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-md font-mono text-[10px] sm:text-[11px] font-semibold border transition-all ${
-                                isHovered
-                                  ? "bg-white/10 text-white border-white/20"
-                                  : "bg-black/5 dark:bg-white/5 border-border text-foreground group-hover:bg-white/10 group-hover:text-white group-hover:border-white/20"
-                              }`}
+                              className="project-card-pill inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-md font-mono text-[10px] sm:text-[11px] font-semibold border bg-black/5 dark:bg-white/5 border-border text-foreground transition-all"
                             >
-                              <SkillIcon name={tech} className="w-3 h-3 shrink-0" />
+                              <SkillIcon name={tech} className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
                               <span>{tech}</span>
                             </span>
                           ))}
                           {project.technologies.length > 4 && (
-                            <span
-                              className={`px-1.5 py-1 rounded font-mono text-[10px] ${
-                                isHovered ? "text-white/70" : "text-muted-foreground group-hover:text-white/70"
-                              }`}
-                            >
+                            <span className="project-card-pill-more px-1.5 py-1 rounded font-mono text-[10px] text-muted-foreground">
                               +{project.technologies.length - 4}
                             </span>
                           )}
@@ -674,11 +379,7 @@ export default function Projects() {
                                 target="_blank"
                                 rel="noreferrer"
                                 onClick={(e) => e.stopPropagation()}
-                                className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-xs hover:scale-105 active:scale-95 cursor-pointer ${
-                                  isHovered
-                                    ? "bg-white text-[#8b4513] hover:bg-white/90 shadow-md"
-                                    : "bg-primary text-primary-foreground group-hover:bg-white group-hover:text-[#8b4513] group-hover:shadow-md"
-                                }`}
+                                className="project-card-btn-demo inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-xs hover:scale-105 active:scale-95 cursor-pointer bg-primary text-primary-foreground"
                               >
                                 <Zap className="w-3.5 h-3.5 fill-current" />
                                 <span>Demo</span>
@@ -691,11 +392,7 @@ export default function Projects() {
                                 target="_blank"
                                 rel="noreferrer"
                                 onClick={(e) => e.stopPropagation()}
-                                className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider border transition-all hover:scale-105 active:scale-95 cursor-pointer ${
-                                  isHovered
-                                    ? "bg-white/15 text-white border-white/30 hover:bg-white/25"
-                                    : "bg-black/5 dark:bg-white/5 border-border text-foreground hover:bg-black/10 dark:hover:bg-white/10 group-hover:bg-white/15 group-hover:text-white group-hover:border-white/30"
-                                }`}
+                                className="project-card-btn-code inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider border transition-all hover:scale-105 active:scale-95 cursor-pointer bg-black/5 dark:bg-white/5 border-border text-foreground"
                               >
                                 <SkillIcon name="github" className="w-3.5 h-3.5 shrink-0" />
                                 <span>Code</span>
@@ -705,14 +402,8 @@ export default function Projects() {
                           </div>
 
                           {primaryUrl && (
-                            <span
-                              className={`inline-flex h-8 w-8 items-center justify-center rounded-full border transition-all group-hover:scale-110 shrink-0 ${
-                                isHovered
-                                  ? "bg-white text-[#8b4513] border-white shadow-xs"
-                                  : "border-border text-foreground group-hover:bg-white group-hover:text-[#8b4513] group-hover:border-white group-hover:shadow-xs"
-                              }`}
-                            >
-                              <ArrowUpRight className="w-4 h-4" />
+                            <span className="project-card-arrow inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-border text-foreground transition-all group-hover:scale-110 shrink-0">
+                              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                             </span>
                           )}
                         </div>
@@ -723,19 +414,19 @@ export default function Projects() {
               })}
 
               {/* ── Finale Card: Closing Banner at the End of the Track ── */}
-              <div className="w-[340px] sm:w-[380px] lg:w-[420px] flex-shrink-0 h-full bg-[#8b4513] text-white flex flex-col justify-between p-8 sm:p-12 border-l border-white/15 select-none">
+              <div className="w-[84vw] max-w-[340px] sm:max-w-[380px] lg:max-w-[420px] flex-shrink-0 h-full bg-[#8b4513] text-white flex flex-col justify-between p-6 sm:p-12 border-l border-white/15 select-none">
                 <div className="font-mono text-xs font-bold uppercase tracking-widest text-white/70">
                   08 / 08 • COMPLETE SHOWCASE
                 </div>
 
                 <div className="flex flex-col items-center text-center gap-4 sm:gap-6">
-                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white text-[#8b4513] shadow-xl flex flex-col items-center justify-center font-mono text-xs font-black uppercase tracking-wider">
+                  <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-white text-[#8b4513] shadow-xl flex flex-col items-center justify-center font-mono text-[11px] sm:text-xs font-black uppercase tracking-wider">
                     <span>LET&apos;S</span>
                     <span>BUILD</span>
                     <ArrowRight className="w-4 h-4 mt-0.5 text-[#8b4513]" />
                   </div>
 
-                  <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+                  <h3 className="text-xl sm:text-3xl font-black uppercase tracking-tight text-white">
                     HAVE A PROJECT IN MIND?
                   </h3>
 
@@ -760,7 +451,7 @@ export default function Projects() {
           </div>
 
           {/* ── Bottom Floating Kinetic Controls & Project Stepper Bar ── */}
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 px-4 sm:px-6 py-2 rounded-full border border-black/10 dark:border-white/10 bg-card/90 text-card-foreground backdrop-blur-md shadow-xl flex items-center gap-3 sm:gap-4 max-w-[92vw]">
+          <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 px-3 sm:px-6 py-1.5 sm:py-2 rounded-full border border-black/10 dark:border-white/10 bg-card/90 text-card-foreground backdrop-blur-md shadow-xl flex items-center gap-2 sm:gap-4 max-w-[94vw]">
             <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-primary">
               <span>PROJECT {(activeIndex + 1).toString().padStart(2, "0")}</span>
               <span className="text-muted-foreground">/ 08</span>
@@ -819,6 +510,108 @@ export default function Projects() {
           </div>
         </div>
       )}
+
+      {/* Global bulletproof CSS for #projects background and #8b4513 card hover */}
+      <style jsx global>{`
+        #projects {
+          background-color: var(--accent) !important;
+          color: var(--accent-foreground) !important;
+        }
+
+        .project-card-accent-bg {
+          position: absolute;
+          inset: 0;
+          background-color: #8b4513 !important;
+          clip-path: circle(0% at 0% 0%);
+          transition: clip-path 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .project-card:hover .project-card-accent-bg,
+        .project-card:active .project-card-accent-bg,
+        .project-card:focus-within .project-card-accent-bg,
+        .project-card-accent-bg.is-active,
+        .project-card.is-hovered .project-card-accent-bg {
+          clip-path: circle(160% at 0% 0%) !important;
+        }
+
+        /* High-contrast typography on hover & active */
+        .project-card:hover .project-card-num,
+        .project-card:active .project-card-num,
+        .project-card.is-hovered .project-card-num,
+        .project-card:hover .project-card-title,
+        .project-card:active .project-card-title,
+        .project-card.is-hovered .project-card-title {
+          color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-cat,
+        .project-card:active .project-card-cat,
+        .project-card.is-hovered .project-card-cat {
+          color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .project-card:hover .project-card-desc,
+        .project-card:active .project-card-desc,
+        .project-card.is-hovered .project-card-desc {
+          color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .project-card:hover .project-card-highlight,
+        .project-card:active .project-card-highlight,
+        .project-card.is-hovered .project-card-highlight,
+        .project-card:hover .project-card-pill,
+        .project-card:active .project-card-pill,
+        .project-card.is-hovered .project-card-pill {
+          background-color: rgba(255, 255, 255, 0.12) !important;
+          border-color: rgba(255, 255, 255, 0.25) !important;
+          color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-highlight-label,
+        .project-card:active .project-card-highlight-label,
+        .project-card.is-hovered .project-card-highlight-label {
+          color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-pill-more,
+        .project-card:active .project-card-pill-more,
+        .project-card.is-hovered .project-card-pill-more {
+          color: rgba(255, 255, 255, 0.75) !important;
+        }
+
+        .project-card:hover .project-card-btn-demo,
+        .project-card:active .project-card-btn-demo,
+        .project-card.is-hovered .project-card-btn-demo {
+          background-color: #ffffff !important;
+          color: #8b4513 !important;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+        }
+
+        .project-card:hover .project-card-btn-code,
+        .project-card:active .project-card-btn-code,
+        .project-card.is-hovered .project-card-btn-code {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-arrow,
+        .project-card:active .project-card-arrow,
+        .project-card.is-hovered .project-card-arrow {
+          background-color: #ffffff !important;
+          color: #8b4513 !important;
+          border-color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-view-badge,
+        .project-card:active .project-card-view-badge,
+        .project-card.is-hovered .project-card-view-badge {
+          transform: translate(-50%, -50%) scale(1) !important;
+          opacity: 1 !important;
+        }
+      `}</style>
     </section>
   );
 }
