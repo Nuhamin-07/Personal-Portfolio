@@ -264,7 +264,7 @@ export default function Projects() {
                   onClick={() => setMobileActiveIndex(isCardActive ? null : idx)}
                   className={`relative flex-shrink-0 w-[84vw] max-w-[340px] snap-center rounded-2xl border transition-all duration-300 overflow-hidden flex flex-col justify-between p-5 select-none ${
                     isCardActive
-                      ? "bg-[#e29d57] dark:bg-[#d98b3f] text-[#120c08] border-black/20 shadow-lg"
+                      ? "bg-[#8b4513] text-white border-white/20 shadow-lg"
                       : "bg-card border-border text-card-foreground shadow-sm"
                   }`}
                 >
@@ -273,14 +273,14 @@ export default function Projects() {
                     <div className="flex items-center justify-between pb-2.5 border-b border-black/10 dark:border-white/10">
                       <span
                         className={`font-mono text-xs font-bold tracking-wider uppercase ${
-                          isCardActive ? "text-[#120c08]" : "text-primary"
+                          isCardActive ? "text-white" : "text-primary"
                         }`}
                       >
                         PROJECT {(idx + 1).toString().padStart(2, "0")}
                       </span>
                       <span
                         className={`font-mono text-[10px] uppercase font-semibold truncate max-w-[150px] ${
-                          isCardActive ? "text-[#120c08]/80" : "text-muted-foreground"
+                          isCardActive ? "text-white/80" : "text-muted-foreground"
                         }`}
                       >
                         {project.category}
@@ -290,7 +290,7 @@ export default function Projects() {
                     {/* Title */}
                     <h3
                       className={`mt-3 font-mono text-lg font-bold uppercase leading-snug line-clamp-2 ${
-                        isCardActive ? "text-[#120c08]" : "text-foreground"
+                        isCardActive ? "text-white" : "text-foreground"
                       }`}
                     >
                       {project.title}
@@ -310,7 +310,7 @@ export default function Projects() {
                     {/* Description */}
                     <p
                       className={`text-xs leading-relaxed line-clamp-3 ${
-                        isCardActive ? "text-[#120c08]/90" : "text-muted-foreground"
+                        isCardActive ? "text-white/90" : "text-muted-foreground"
                       }`}
                     >
                       {project.description}
@@ -325,7 +325,7 @@ export default function Projects() {
                           key={tech}
                           className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
                             isCardActive
-                              ? "bg-black/10 text-[#120c08] border border-black/15"
+                              ? "bg-white/10 text-white border border-white/20"
                               : "bg-black/5 dark:bg-white/5 border border-border text-foreground"
                           }`}
                         >
@@ -343,7 +343,11 @@ export default function Projects() {
                             target="_blank"
                             rel="noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase bg-[#120c08] text-white shadow-xs"
+                            className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase shadow-xs ${
+                              isCardActive
+                                ? "bg-white text-[#8b4513]"
+                                : "bg-primary text-primary-foreground"
+                            }`}
                           >
                             <span>Live</span>
                             <ExternalLink className="w-3 h-3" />
@@ -357,7 +361,7 @@ export default function Projects() {
                             onClick={(e) => e.stopPropagation()}
                             className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase border ${
                               isCardActive
-                                ? "bg-white/80 text-[#120c08] border-black/20"
+                                ? "bg-white/15 text-white border-white/30"
                                 : "bg-card border-border text-foreground"
                             }`}
                           >
@@ -375,7 +379,7 @@ export default function Projects() {
                           onClick={(e) => e.stopPropagation()}
                           className={`w-7 h-7 rounded-full flex items-center justify-center border ${
                             isCardActive
-                              ? "bg-white text-[#120c08] border-black/20"
+                              ? "bg-white text-[#8b4513] border-white"
                               : "border-border text-foreground"
                           }`}
                           aria-label={`Open ${project.title}`}
@@ -406,7 +410,7 @@ export default function Projects() {
               {/* Expanding Accent Circle that grows from top-left corner */}
               <div
                 ref={circleRef}
-                className="absolute inset-0 bg-[#e29d57] dark:bg-[#d98b3f] transition-none pointer-events-none"
+                className="absolute inset-0 bg-[#8b4513]/10 dark:bg-[#8b4513]/25 transition-none pointer-events-none"
                 style={{ clipPath: "circle(20px at 40px 40px)" }}
               />
 
@@ -421,7 +425,7 @@ export default function Projects() {
                   OUR PROJECTS
                 </h2>
 
-                <div className="mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-[#e29d57] dark:bg-[#d98b3f] text-[#120c08] font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none border border-black/10">
+                <div className="mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-primary text-primary-foreground font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none border border-black/10">
                   SCROLL-DRIVEN SHOWCASE • 08 WORKS
                 </div>
 
@@ -455,20 +459,22 @@ export default function Projects() {
                     }}
                     className="relative flex-shrink-0 w-[360px] sm:w-[410px] lg:w-[460px] xl:w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between py-12 sm:py-16 px-6 sm:px-8 lg:px-10 group overflow-hidden cursor-pointer bg-card transition-colors duration-300"
                   >
-                    {/* Expanding Accent Circle on Individual Card Hover (Spotlight Reference Screenshots 4 & 5) */}
+                    {/* Expanding Accent Circle on Individual Card Hover (Uses #8b4513 Accent) */}
                     <div
-                      className="absolute inset-0 bg-[#e29d57] dark:bg-[#d98b3f] transition-[clip-path] duration-700 ease-in-out z-0 pointer-events-none"
+                      className="absolute inset-0 bg-[#8b4513] transition-[clip-path] duration-700 ease-in-out z-0 pointer-events-none [clip-path:circle(0%_at_0%_0%)] group-hover:[clip-path:circle(150%_at_0%_0%)]"
                       style={{
                         clipPath: isHovered
                           ? "circle(150% at 0% 0%)"
-                          : "circle(0% at 0% 0%)",
+                          : undefined,
                       }}
                     />
 
                     {/* Floating Center Badge (from Spotlight screenshot) */}
                     <div
-                      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white text-[#8b4513] shadow-[0_12px_40px_rgba(0,0,0,0.22)] flex flex-col items-center justify-center font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all duration-300 pointer-events-none ${
-                        isHovered ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                      className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-white text-[#8b4513] shadow-[0_14px_45px_rgba(0,0,0,0.35)] flex flex-col items-center justify-center font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all duration-300 pointer-events-none ${
+                        isHovered
+                          ? "scale-100 opacity-100"
+                          : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100"
                       }`}
                     >
                       <span>VIEW</span>
@@ -480,17 +486,17 @@ export default function Projects() {
                     <div className="relative z-10 flex flex-col justify-between h-full min-h-0">
                       {/* Top Header Strip */}
                       <div>
-                        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10 group-hover:border-black/20 transition-colors">
+                        <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors">
                           <span
                             className={`font-mono text-xs sm:text-[13px] font-bold uppercase tracking-widest transition-colors ${
-                              isHovered ? "text-[#120c08]" : "text-primary"
+                              isHovered ? "text-white" : "text-primary group-hover:text-white"
                             }`}
                           >
                             PROJECT {(idx + 1).toString().padStart(2, "0")}
                           </span>
                           <span
                             className={`font-mono text-[11px] font-semibold uppercase tracking-wider transition-colors truncate max-w-[180px] ${
-                              isHovered ? "text-[#120c08]/80" : "text-muted-foreground"
+                              isHovered ? "text-white/80" : "text-muted-foreground group-hover:text-white/80"
                             }`}
                           >
                             {project.category}
@@ -500,14 +506,14 @@ export default function Projects() {
                         {/* Title */}
                         <h3
                           className={`mt-4 sm:mt-5 font-mono text-xl sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-tight leading-snug line-clamp-2 transition-colors ${
-                            isHovered ? "text-[#120c08]" : "text-foreground"
+                            isHovered ? "text-white" : "text-foreground group-hover:text-white"
                           }`}
                         >
                           {project.title}
                         </h3>
 
                         {/* Visual Image Preview */}
-                        <div className="relative w-full aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden my-4 sm:my-5 border border-black/10 dark:border-white/10 shadow-sm group-hover:border-black/25 group-hover:shadow-md transition-all bg-slate-950">
+                        <div className="relative w-full aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden my-4 sm:my-5 border border-black/10 dark:border-white/10 shadow-sm group-hover:border-white/30 group-hover:shadow-lg transition-all bg-slate-950">
                           <Image
                             src={project.image}
                             alt={project.title}
@@ -521,7 +527,7 @@ export default function Projects() {
                         {/* Project Narrative Description */}
                         <p
                           className={`text-xs sm:text-sm leading-relaxed line-clamp-3 transition-colors ${
-                            isHovered ? "text-[#120c08]/90" : "text-muted-foreground"
+                            isHovered ? "text-white/90" : "text-muted-foreground group-hover:text-white/90"
                           }`}
                         >
                           {project.description}
@@ -532,14 +538,14 @@ export default function Projects() {
                           <div
                             className={`mt-3 p-2.5 rounded-lg border transition-all ${
                               isHovered
-                                ? "bg-black/10 border-black/15 text-[#120c08]"
-                                : "bg-black/5 dark:bg-white/5 border-border text-foreground"
+                                ? "bg-white/10 border-white/20 text-white"
+                                : "bg-black/5 dark:bg-white/5 border-border text-foreground group-hover:bg-white/10 group-hover:border-white/20 group-hover:text-white"
                             }`}
                           >
                             <p className="text-[11px] leading-relaxed line-clamp-2">
                               <span
                                 className={`font-mono font-bold uppercase mr-1.5 ${
-                                  isHovered ? "text-[#120c08]" : "text-primary"
+                                  isHovered ? "text-white" : "text-primary group-hover:text-white"
                                 }`}
                               >
                                 HIGHLIGHT:
@@ -551,7 +557,7 @@ export default function Projects() {
                       </div>
 
                       {/* Bottom Footer: Tech Pills & Action Buttons */}
-                      <div className="pt-4 border-t border-black/10 dark:border-white/10 group-hover:border-black/20 transition-colors space-y-3 sm:space-y-4">
+                      <div className="pt-4 border-t border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors space-y-3 sm:space-y-4">
                         {/* Technology Stack Pills */}
                         <div className="flex flex-wrap gap-1.5 sm:gap-2">
                           {project.technologies.slice(0, 4).map((tech) => (
@@ -559,8 +565,8 @@ export default function Projects() {
                               key={tech}
                               className={`inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-md font-mono text-[10px] sm:text-[11px] font-semibold border transition-all ${
                                 isHovered
-                                  ? "bg-black/10 text-[#120c08] border-black/20"
-                                  : "bg-black/5 dark:bg-white/5 border-border text-foreground"
+                                  ? "bg-white/10 text-white border-white/20"
+                                  : "bg-black/5 dark:bg-white/5 border-border text-foreground group-hover:bg-white/10 group-hover:text-white group-hover:border-white/20"
                               }`}
                             >
                               <SkillIcon name={tech} className="w-3 h-3 shrink-0" />
@@ -570,7 +576,7 @@ export default function Projects() {
                           {project.technologies.length > 4 && (
                             <span
                               className={`px-1.5 py-1 rounded font-mono text-[10px] ${
-                                isHovered ? "text-[#120c08]/70" : "text-muted-foreground"
+                                isHovered ? "text-white/70" : "text-muted-foreground group-hover:text-white/70"
                               }`}
                             >
                               +{project.technologies.length - 4}
@@ -587,7 +593,11 @@ export default function Projects() {
                                 target="_blank"
                                 rel="noreferrer"
                                 onClick={(e) => e.stopPropagation()}
-                                className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider bg-[#8b4513] dark:bg-[#120c08] text-white group-hover:bg-[#120c08] group-hover:text-white transition-all shadow-xs hover:scale-105 active:scale-95 cursor-pointer"
+                                className={`inline-flex items-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-xs hover:scale-105 active:scale-95 cursor-pointer ${
+                                  isHovered
+                                    ? "bg-white text-[#8b4513] hover:bg-white/90 shadow-md"
+                                    : "bg-primary text-primary-foreground group-hover:bg-white group-hover:text-[#8b4513] group-hover:shadow-md"
+                                }`}
                               >
                                 <Zap className="w-3.5 h-3.5 fill-current" />
                                 <span>Demo</span>
@@ -602,8 +612,8 @@ export default function Projects() {
                                 onClick={(e) => e.stopPropagation()}
                                 className={`inline-flex items-center gap-1.5 px-3 sm:px-3.5 py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider border transition-all hover:scale-105 active:scale-95 cursor-pointer ${
                                   isHovered
-                                    ? "bg-white/80 text-[#120c08] border-black/25 hover:bg-white"
-                                    : "bg-black/5 dark:bg-white/5 border-border text-foreground hover:bg-black/10 dark:hover:bg-white/10"
+                                    ? "bg-white/15 text-white border-white/30 hover:bg-white/25"
+                                    : "bg-black/5 dark:bg-white/5 border-border text-foreground hover:bg-black/10 dark:hover:bg-white/10 group-hover:bg-white/15 group-hover:text-white group-hover:border-white/30"
                                 }`}
                               >
                                 <SkillIcon name="github" className="w-3.5 h-3.5 shrink-0" />
@@ -617,8 +627,8 @@ export default function Projects() {
                             <span
                               className={`inline-flex h-8 w-8 items-center justify-center rounded-full border transition-all group-hover:scale-110 shrink-0 ${
                                 isHovered
-                                  ? "bg-[#120c08] text-white border-[#120c08]"
-                                  : "border-border text-foreground"
+                                  ? "bg-white text-[#8b4513] border-white shadow-xs"
+                                  : "border-border text-foreground group-hover:bg-white group-hover:text-[#8b4513] group-hover:border-white group-hover:shadow-xs"
                               }`}
                             >
                               <ArrowUpRight className="w-4 h-4" />
@@ -632,8 +642,8 @@ export default function Projects() {
               })}
 
               {/* ── Finale Card: Closing Banner at the End of the Track ── */}
-              <div className="w-[340px] sm:w-[380px] lg:w-[420px] flex-shrink-0 h-full bg-[#e29d57] dark:bg-[#d98b3f] text-[#120c08] flex flex-col justify-between p-8 sm:p-12 border-l border-black/10 select-none">
-                <div className="font-mono text-xs font-bold uppercase tracking-widest text-[#120c08]/70">
+              <div className="w-[340px] sm:w-[380px] lg:w-[420px] flex-shrink-0 h-full bg-[#8b4513] text-white flex flex-col justify-between p-8 sm:p-12 border-l border-white/15 select-none">
+                <div className="font-mono text-xs font-bold uppercase tracking-widest text-white/70">
                   08 / 08 • COMPLETE SHOWCASE
                 </div>
 
@@ -644,24 +654,24 @@ export default function Projects() {
                     <ArrowRight className="w-4 h-4 mt-0.5 text-[#8b4513]" />
                   </div>
 
-                  <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#120c08]">
+                  <h3 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
                     HAVE A PROJECT IN MIND?
                   </h3>
 
-                  <p className="text-xs sm:text-sm text-[#120c08]/85 max-w-xs leading-relaxed font-medium">
+                  <p className="text-xs sm:text-sm text-white/85 max-w-xs leading-relaxed font-medium">
                     Let&apos;s build something high-impact and exceptional together.
                   </p>
 
                   <a
                     href="#contact"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#120c08] text-white font-mono text-xs font-bold uppercase tracking-wider hover:scale-105 transition-all shadow-md active:scale-95"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#8b4513] font-mono text-xs font-bold uppercase tracking-wider hover:scale-105 transition-all shadow-md active:scale-95"
                   >
                     <span>Get In Touch</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
 
-                <div className="font-mono text-xs text-center text-[#120c08]/60 uppercase tracking-widest">
+                <div className="font-mono text-xs text-center text-white/60 uppercase tracking-widest">
                   Nuhamin Gulilat • Portfolio
                 </div>
               </div>
