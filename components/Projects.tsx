@@ -4,152 +4,24 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import {
   ExternalLink,
-  ChevronUp,
-  ChevronDown,
-  CheckSquare,
-  Box,
-  ShoppingBag,
-  Sparkles,
-  GraduationCap,
-  HeartPulse,
-  Store,
-  Building2,
+  ArrowRight,
+  ArrowUpRight,
   Zap,
-  ArrowUp,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Section from "@/components/shared/Section";
-import SectionHeader from "@/components/shared/SectionHeader";
 import SkillIcon from "@/components/shared/SkillIcon";
 import { projects } from "@/data/projects";
 
-interface ProjectVisualTheme {
-  icon: React.ComponentType<{ className?: string }>;
-  accentColor: string;
-  glowBorder: string;
-  glowBoxShadow: string;
-  badgeBg: string;
-  badgeText: string;
-  pulseDot: string;
-  statLabel: string;
-  statValue: string;
-  chartPath: string;
-  chipLabel: string;
-}
-
-const PROJECT_THEMES: Record<number, ProjectVisualTheme> = {
-  0: {
-    icon: CheckSquare,
-    accentColor: "emerald",
-    glowBorder: "border-emerald-500/50 dark:border-emerald-400/50",
-    glowBoxShadow: "shadow-[0_0_35px_rgba(16,185,129,0.22)]",
-    badgeBg: "bg-emerald-500/10 dark:bg-emerald-400/15 border-emerald-500/30",
-    badgeText: "text-emerald-700 dark:text-emerald-300",
-    pulseDot: "bg-emerald-500 dark:bg-emerald-400",
-    statLabel: "Active Sessions",
-    statValue: "157 Tasks Active",
-    chartPath: "M0 18 Q 15 6, 30 16 T 60 10 T 100 4",
-    chipLabel: "Session Auth • SQLite",
-  },
-  1: {
-    icon: Box,
-    accentColor: "cyan",
-    glowBorder: "border-cyan-500/50 dark:border-cyan-400/50",
-    glowBoxShadow: "shadow-[0_0_35px_rgba(6,182,212,0.22)]",
-    badgeBg: "bg-cyan-500/10 dark:bg-cyan-400/15 border-cyan-500/30",
-    badgeText: "text-cyan-700 dark:text-cyan-300",
-    pulseDot: "bg-cyan-500 dark:bg-cyan-400",
-    statLabel: "3D Pipeline",
-    statValue: "Next.js & WebGL",
-    chartPath: "M0 16 Q 20 4, 45 18 T 75 6 T 100 12",
-    chipLabel: "3D Asset Marketplace",
-  },
-  2: {
-    icon: ShoppingBag,
-    accentColor: "amber",
-    glowBorder: "border-amber-500/50 dark:border-amber-400/50",
-    glowBoxShadow: "shadow-[0_0_35px_rgba(245,158,11,0.22)]",
-    badgeBg: "bg-amber-500/10 dark:bg-amber-400/15 border-amber-500/30",
-    badgeText: "text-amber-700 dark:text-amber-300",
-    pulseDot: "bg-amber-500 dark:bg-amber-400",
-    statLabel: "Checkout Flow",
-    statValue: "< 120ms Latency",
-    chartPath: "M0 20 Q 25 8, 45 16 T 70 4 T 100 2",
-    chipLabel: "Scalable Frontend",
-  },
-  3: {
-    icon: Sparkles,
-    accentColor: "purple",
-    glowBorder: "border-purple-500/50 dark:border-purple-400/50",
-    glowBoxShadow: "shadow-[0_0_35px_rgba(168,85,247,0.22)]",
-    badgeBg: "bg-purple-500/10 dark:bg-purple-400/15 border-purple-500/30",
-    badgeText: "text-purple-700 dark:text-purple-300",
-    pulseDot: "bg-purple-500 dark:bg-purple-400",
-    statLabel: "Booking Workflow",
-    statValue: "Mobile-First UX",
-    chartPath: "M0 15 Q 30 20, 55 5 T 80 12 T 100 4",
-    chipLabel: "Dynamic Routing",
-  },
-  4: {
-    icon: GraduationCap,
-    accentColor: "rose",
-    glowBorder: "border-rose-500/50 dark:border-rose-400/50",
-    glowBoxShadow: "shadow-[0_0_35px_rgba(244,63,94,0.22)]",
-    badgeBg: "bg-rose-500/10 dark:bg-rose-400/15 border-rose-500/30",
-    badgeText: "text-rose-700 dark:text-rose-300",
-    pulseDot: "bg-rose-500 dark:bg-rose-400",
-    statLabel: "Enterprise DB",
-    statValue: "Dataverse & Liquid",
-    chartPath: "M0 22 Q 25 10, 50 18 T 75 4 T 100 8",
-    chipLabel: "Power Pages System",
-  },
-  5: {
-    icon: HeartPulse,
-    accentColor: "teal",
-    glowBorder: "border-teal-500/50 dark:border-teal-400/50",
-    glowBoxShadow: "shadow-[0_0_35px_rgba(20,184,166,0.22)]",
-    badgeBg: "bg-teal-500/10 dark:bg-teal-400/15 border-teal-500/30",
-    badgeText: "text-teal-700 dark:text-teal-300",
-    pulseDot: "bg-teal-500 dark:bg-teal-400",
-    statLabel: "Diagnostic Flow",
-    statValue: "Pathology Reports",
-    chartPath: "M0 16 Q 20 2, 40 18 T 70 8 T 100 14",
-    chipLabel: "Clinical Java System",
-  },
-  6: {
-    icon: Store,
-    accentColor: "blue",
-    glowBorder: "border-blue-500/50 dark:border-blue-400/50",
-    glowBoxShadow: "shadow-[0_0_35px_rgba(59,130,246,0.22)]",
-    badgeBg: "bg-blue-500/10 dark:bg-blue-400/15 border-blue-500/30",
-    badgeText: "text-blue-700 dark:text-blue-300",
-    pulseDot: "bg-blue-500 dark:bg-blue-400",
-    statLabel: "Automated Tests",
-    statValue: "Cypress E2E",
-    chartPath: "M0 14 Q 25 18, 45 4 T 75 10 T 100 2",
-    chipLabel: "Multi-Tenant SaaS",
-  },
-  7: {
-    icon: Building2,
-    accentColor: "orange",
-    glowBorder: "border-orange-500/50 dark:border-orange-400/50",
-    glowBoxShadow: "shadow-[0_0_35px_rgba(249,115,22,0.22)]",
-    badgeBg: "bg-orange-500/10 dark:bg-orange-400/15 border-orange-500/30",
-    badgeText: "text-orange-700 dark:text-orange-300",
-    pulseDot: "bg-orange-500 dark:bg-orange-400",
-    statLabel: "HR & Finance",
-    statValue: "Redux Architecture",
-    chartPath: "M0 20 Q 30 6, 50 16 T 80 4 T 100 8",
-    chipLabel: "Enterprise ERP",
-  },
-};
-
 export default function Projects() {
   const pinWrapperRef = useRef<HTMLDivElement>(null);
-  const cardPanelsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const circleRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const activeIndexRef = useRef(0);
+  const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [isHeaderHovered, setIsHeaderHovered] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   // Check for reduced motion preference
@@ -162,107 +34,111 @@ export default function Projects() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // GSAP ScrollTrigger Stacked Animation
+  // GSAP ScrollTrigger Pinned Horizontal Movement Setup (Runs on all viewports)
   useEffect(() => {
     if (reducedMotion || typeof window === "undefined") return;
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const ctx = gsap.context(() => {
-      const cards = cardPanelsRef.current.filter(Boolean) as HTMLDivElement[];
-      if (cards.length === 0 || !pinWrapperRef.current) return;
+    const pinWrapper = pinWrapperRef.current;
+    const track = trackRef.current;
+    const circle = circleRef.current;
 
-      // Initial card placements:
-      // Project 1 is fully centered and visible in the showcase viewport.
-      // Projects 2..N are positioned below the visible showcase area (yPercent: 105%),
-      // ready to enter from the bottom boundary.
-      cards.forEach((card, i) => {
-        if (i === 0) {
-          gsap.set(card, { yPercent: 0, scale: 1, opacity: 1 });
-        } else {
-          gsap.set(card, { yPercent: 105, scale: 0.96, opacity: 0.35 });
-        }
-      });
+    if (!pinWrapper || !track || !circle) return;
 
-      // Pin the showcase container and drive the timeline directly from scroll progress
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          id: "projects-scroll-trigger",
-          trigger: pinWrapperRef.current,
-          start: "top top+=72",
-          end: () => `+=${(cards.length - 1) * 650}`,
-          pin: true,
-          scrub: 0.5,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const prog = self.progress;
+    // Reset initial states
+    gsap.set(circle, { clipPath: "circle(20px at 40px 40px)" });
+    gsap.set(track, { x: 0 });
+
+    const getScrollDistance = () => {
+      return Math.max(0, track.scrollWidth - window.innerWidth);
+    };
+
+    // Total vertical scroll range calculated dynamically based on card track dimensions
+    const totalScrollDistance = () => {
+      return Math.max(
+        window.innerHeight * 2.8,
+        getScrollDistance() + window.innerHeight * 0.8
+      );
+    };
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        id: "projects-horizontal-scroll",
+        trigger: pinWrapper,
+        start: "top top",
+        end: () => `+=${totalScrollDistance()}`,
+        pin: true,
+        scrub: 0.8,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const prog = self.progress;
+          // First 22% of progress is Panel 0 circle expanding;
+          // Remaining 78% maps through project cards 0 to 7
+          if (prog < 0.22) {
+            setActiveIndex(0);
+          } else {
+            const cardProg = (prog - 0.22) / 0.78;
             const currentIdx = Math.min(
-              cards.length - 1,
-              Math.max(0, Math.round(prog * (cards.length - 1)))
+              projects.length - 1,
+              Math.max(0, Math.floor(cardProg * projects.length))
             );
-            if (currentIdx !== activeIndexRef.current) {
-              activeIndexRef.current = currentIdx;
-              setActiveIndex(currentIdx);
-            }
-          },
+            setActiveIndex(currentIdx);
+          }
         },
-      });
+      },
+    });
 
-      // Build sequential scroll-driven transitions:
-      // For each step i from 0 to N-2:
-      // 1. Outgoing project i moves upward (yPercent: 0 -> -105%) and disappears behind the top edge
-      // 2. Incoming project i+1 rises from bottom (yPercent: 105% -> 0) and takes over the primary position
-      for (let i = 0; i < cards.length - 1; i++) {
-        // Outgoing project exits out the top clipping boundary
-        tl.to(
-          cards[i],
-          {
-            yPercent: -105,
-            scale: 0.92,
-            opacity: 0.15,
-            ease: "power1.inOut",
-            duration: 1,
-          },
-          i
-        );
+    // Stage 1: Circle expands from top-left corner over Panel 0
+    tl.to(circle, {
+      clipPath: "circle(150% at 0% 0%)",
+      ease: "power1.inOut",
+      duration: 1,
+    });
 
-        // Incoming project enters from below the bottom clipping boundary
-        tl.to(
-          cards[i + 1],
-          {
-            yPercent: 0,
-            scale: 1,
-            opacity: 1,
-            ease: "power1.inOut",
-            duration: 1,
-          },
-          i
-        );
-      }
-    }, pinWrapperRef);
+    // Stage 2: Track translates horizontally to the left, revealing Project Cards
+    tl.to(
+      track,
+      {
+        x: () => -getScrollDistance(),
+        ease: "none",
+        duration: 3.6,
+      },
+      "-=0.2" // Smooth organic overlap as circle reaches full expansion
+    );
+
+    // Refresh ScrollTrigger when images or fonts load
+    const refreshTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 500);
 
     return () => {
-      ctx.revert();
+      clearTimeout(refreshTimer);
+      ScrollTrigger.getById("projects-horizontal-scroll")?.kill();
+      tl.kill();
     };
   }, [reducedMotion]);
 
-  // Smooth jump to specific project
-  const scrollToProject = useCallback((targetIndex: number) => {
-    if (typeof window === "undefined") return;
-    const st = ScrollTrigger.getById("projects-scroll-trigger");
-    if (st && st.start !== undefined && st.end !== undefined) {
-      const scrollRange = st.end - st.start;
-      const targetScroll =
-        st.start + (targetIndex / (projects.length - 1)) * scrollRange;
-      window.scrollTo({
-        top: targetScroll + 2,
-        behavior: "smooth",
-      });
-    } else {
-      setActiveIndex(targetIndex);
-    }
-  }, []);
+  // Smooth scroll jump to a specific project card
+  const scrollToProject = useCallback(
+    (targetIndex: number) => {
+      if (typeof window === "undefined") return;
+      const st = ScrollTrigger.getById("projects-horizontal-scroll");
+      if (st && st.start !== undefined && st.end !== undefined) {
+        const totalDist = st.end - st.start;
+        const targetProgress = 0.24 + (targetIndex / projects.length) * 0.74;
+        const targetScroll = st.start + targetProgress * totalDist;
+        window.scrollTo({
+          top: targetScroll + 2,
+          behavior: "smooth",
+        });
+      } else {
+        setActiveIndex(targetIndex);
+      }
+    },
+    []
+  );
 
   const handlePrev = useCallback(() => {
     const nextIdx = Math.max(0, activeIndex - 1);
@@ -275,335 +151,420 @@ export default function Projects() {
   }, [activeIndex, scrollToProject]);
 
   return (
-    <Section id="projects" className="relative z-10 w-full py-10 sm:py-16">
-      {/* ── Section Header ── */}
-      <SectionHeader
-        tag="[ 02 / SELECTED WORKS ]"
-        title="Kinetic"
-        titleSecondLine="Projects."
-        stickerText="SCROLL-DRIVEN SHOWCASE"
-        countBadge={projects.length}
-        description="Vertical kinetic flow featuring full-stack applications, enterprise platforms, and interactive software engineered with precision."
-      />
-
-      {/* ── Reduced Motion Fallback (Accessible standard vertical list) ── */}
+    <section
+      id="projects"
+      className="relative z-10 w-full overflow-hidden bg-accent text-accent-foreground scroll-mt-16 transition-colors duration-300"
+    >
+      {/* ── Accessible Reduced Motion Fallback ── */}
       {reducedMotion ? (
-        <div className="space-y-8 max-w-5xl mx-auto">
+        <div className="mx-auto max-w-5xl px-4 sm:px-8 py-16 space-y-8 bg-accent text-accent-foreground">
+          {/* Header Panel */}
+          <div
+            onMouseEnter={() => setIsHeaderHovered(true)}
+            onMouseOver={() => setIsHeaderHovered(true)}
+            onMouseMove={() => {
+              if (!isHeaderHovered) setIsHeaderHovered(true);
+            }}
+            onMouseLeave={() => setIsHeaderHovered(false)}
+            className={`relative rounded-3xl p-8 sm:p-12 text-center mb-10 overflow-hidden header-panel cursor-pointer transition-colors duration-500 bg-card border border-border ${
+              isHeaderHovered ? "header-hovered" : ""
+            }`}
+          >
+            <div
+              className={`header-hover-accent-bg ${
+                isHeaderHovered ? "is-header-active" : ""
+              }`}
+              style={{
+                clipPath: isHeaderHovered
+                  ? "circle(160% at 50% 50%)"
+                  : undefined,
+              }}
+            />
+            <div className="relative z-10 flex flex-col items-center">
+              <span className="header-tag px-3 py-1 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-widest text-foreground transition-all duration-300">
+                [ 02 / SELECTED WORKS ]
+              </span>
+              <h2 className="header-title text-4xl sm:text-6xl font-black uppercase mt-3 text-foreground transition-colors duration-300">
+                OUR PROJECTS
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-muted-foreground max-w-md header-desc transition-colors duration-300">
+                A showcase of full-stack systems, modern web applications, and scalable platforms.
+              </p>
+            </div>
+          </div>
+
+          {/* Project Cards */}
           {projects.map((project, idx) => {
-            const theme = PROJECT_THEMES[idx] || PROJECT_THEMES[0];
-            const ThemeIcon = theme.icon;
+            const isHovered = hoveredCardIndex === idx;
             return (
               <article
                 key={project.title}
-                className={`rounded-2xl border ${theme.glowBorder} bg-white/95 dark:bg-[#0c121e]/95 p-6 sm:p-8 shadow-md`}
+                onMouseEnter={() => setHoveredCardIndex(idx)}
+                onMouseOver={() => setHoveredCardIndex(idx)}
+                onMouseMove={() => {
+                  if (hoveredCardIndex !== idx) setHoveredCardIndex(idx);
+                }}
+                onMouseLeave={() => setHoveredCardIndex(null)}
+                className={`relative rounded-2xl border border-border bg-card text-card-foreground p-6 sm:p-8 shadow-sm overflow-hidden project-card transition-colors duration-300 cursor-pointer ${
+                  isHovered ? "is-hovered" : ""
+                }`}
               >
-                <div className="flex items-center gap-2 mb-3">
-                  <ThemeIcon className={`w-5 h-5 ${theme.badgeText}`} />
-                  <span className="font-mono text-xs font-bold uppercase text-slate-500">
-                    PROJECT {(idx + 1).toString().padStart(2, "0")} • {project.category}
-                  </span>
-                </div>
-                <h3 className="font-mono text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mb-2">
-                  {project.title}
-                </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300 mb-4">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {project.technologies.map((t) => (
-                    <span
-                      key={t}
-                      className="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 font-mono text-xs"
-                    >
-                      {t}
+                <div
+                  className={`project-card-accent-bg ${
+                    isHovered ? "is-active" : ""
+                  }`}
+                  style={{
+                    clipPath: isHovered
+                      ? "circle(160% at 0% 0%)"
+                      : undefined,
+                  }}
+                />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="project-card-num font-mono text-xs font-bold uppercase text-primary transition-colors">
+                      PROJECT {(idx + 1).toString().padStart(2, "0")}
                     </span>
-                  ))}
-                </div>
-                <div className="flex items-center gap-3">
-                  {project.liveUrl && (
-                    <a
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#8b4513] dark:bg-[#b45309] text-white font-mono text-xs font-bold"
-                    >
-                      <span>LIVE DEMO</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  )}
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 font-mono text-xs font-bold"
-                    >
-                      <span>CODE REPO</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  )}
+                    <span className="project-card-cat font-mono text-xs uppercase text-muted-foreground transition-colors">
+                      {project.category}
+                    </span>
+                  </div>
+                  <h3 className="project-card-title font-mono text-xl sm:text-2xl font-bold text-foreground mb-2 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="project-card-desc text-sm text-muted-foreground mb-4 leading-relaxed transition-colors">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.map((t) => (
+                      <span
+                        key={t}
+                        className="project-card-pill px-2.5 py-1 rounded border border-border bg-black/5 dark:bg-white/5 font-mono text-xs text-foreground transition-all"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-card-btn-demo inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-mono text-xs font-bold transition-all shadow-sm"
+                      >
+                        <span>LIVE DEMO</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-card-btn-code inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border font-mono text-xs font-bold text-foreground transition-all"
+                      >
+                        <span>CODE REPO</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </article>
             );
           })}
         </div>
       ) : (
-        /* ── Full Scroll-Driven Pinned Kinetic Showcase ── */
-        <div ref={pinWrapperRef} className="relative w-full max-w-6xl mx-auto">
-          {/* ── Main Showcase Viewport: Physical Clipping Window ── */}
-          <div className="relative w-full h-[580px] sm:h-[620px] lg:h-[640px] overflow-hidden rounded-b-2xl sm:rounded-b-3xl border border-[#8b4513]/25 dark:border-white/10 bg-stone-50/90 dark:bg-[#070b12]/95 backdrop-blur-2xl shadow-2xl">
-            {/* Ambient Background Grid & Radial Glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(#8b4513_1px,transparent_1px)] dark:bg-[radial-gradient(#38bdf8_1px,transparent_1px)] opacity-[0.04] [background-size:20px_20px] pointer-events-none" />
+        /* ── Continuous Scroll-Linked Pinned Showcase (Responsive on Desktop, Tablet & Mobile) ── */
+        <div
+          ref={pinWrapperRef}
+          className="relative w-full h-screen overflow-hidden bg-accent text-accent-foreground flex flex-col justify-between"
+        >
+          {/* Main Horizontal Sliding Track */}
+          <div
+            ref={trackRef}
+            className="absolute top-0 left-0 flex h-full will-change-transform w-max select-none"
+          >
+            {/* ── Panel 0: Single Cinematic Project Header (Reference Screenshots 1, 2, 3) ── */}
+            <div
+              onMouseEnter={() => setIsHeaderHovered(true)}
+              onMouseOver={() => setIsHeaderHovered(true)}
+              onMouseMove={() => {
+                if (!isHeaderHovered) setIsHeaderHovered(true);
+              }}
+              onTouchStart={() => setIsHeaderHovered(true)}
+              onMouseLeave={() => setIsHeaderHovered(false)}
+              className={`relative flex-shrink-0 w-screen h-full flex flex-col items-center justify-center p-6 sm:p-12 lg:p-20 overflow-hidden bg-accent header-panel transition-colors duration-500 cursor-pointer ${
+                isHeaderHovered ? "header-hovered" : ""
+              }`}
+            >
+              {/* Expanding Accent Circle that grows from top-left corner on scroll */}
+              <div
+                ref={circleRef}
+                className="absolute inset-0 bg-[#8b4513]/10 dark:bg-[#8b4513]/25 transition-none pointer-events-none z-0"
+                style={{ clipPath: "circle(20px at 40px 40px)" }}
+              />
 
-            {/* Stacked Project Panels */}
-            {projects.map((project, idx) => {
-              const theme = PROJECT_THEMES[idx] || PROJECT_THEMES[0];
-              const ThemeIcon = theme.icon;
-              const isCurrent = idx === activeIndex;
+              {/* Hover and onMouseOver Expanding #8b4513 Background Circle */}
+              <div
+                className={`header-hover-accent-bg ${
+                  isHeaderHovered ? "is-header-active" : ""
+                }`}
+                style={{
+                  clipPath: isHeaderHovered
+                    ? "circle(160% at 50% 50%)"
+                    : undefined,
+                }}
+              />
 
-              return (
-                <div
-                  key={project.title}
-                  ref={(el) => {
-                    cardPanelsRef.current[idx] = el;
-                  }}
-                  className={`absolute inset-0 w-full h-full p-3 sm:p-5 lg:p-7 flex items-center justify-center will-change-transform ${isCurrent ? "pointer-events-auto" : "pointer-events-none"
-                    }`}
-                  style={{
-                    zIndex: 10 + idx * 5,
-                  }}
-                >
-                  {/* Project Card Element */}
+              {/* Title Content */}
+              <div className="relative z-10 flex flex-col items-center text-center max-w-4xl px-4 pointer-events-auto">
+                <div className="header-tag inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold tracking-widest text-foreground uppercase mb-4 sm:mb-6 shadow-xs transition-all duration-300">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <span>[ 02 / SELECTED WORKS ]</span>
+                </div>
+
+                <h2 className="header-title text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-foreground leading-none drop-shadow-xs transition-colors duration-300">
+                  OUR PROJECTS
+                </h2>
+
+                <div className="header-badge mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-primary text-primary-foreground font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none border border-black/10 transition-all duration-300">
+                  SCROLL-DRIVEN SHOWCASE • 08 WORKS
+                </div>
+
+                <p className="mt-4 sm:mt-6 text-xs sm:text-base lg:text-lg font-medium text-muted-foreground max-w-xl leading-relaxed header-desc transition-colors duration-300">
+                  A continuous horizontal journey through full-stack systems, modern web
+                  applications, and scalable platforms.
+                </p>
+
+                <div className="header-cue mt-6 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-wider text-foreground transition-all duration-300">
+                  <span>SCROLL DOWN TO ADVANCE CARDS</span>
+                  <ArrowRight className="header-cue-icon w-4 h-4 text-primary animate-pulse transition-colors duration-300" />
+                </div>
+              </div>
+            </div>
+
+            {/* ── Panel 1..N: Individual Project Cards Track (Reference Screenshots 3, 4, 5) ── */}
+            <div
+              onMouseLeave={() => setHoveredCardIndex(null)}
+              className="flex flex-shrink-0 h-full items-stretch"
+            >
+              {projects.map((project, idx) => {
+                const isHovered = hoveredCardIndex === idx;
+                const primaryUrl = project.liveUrl || project.githubUrl;
+
+                return (
                   <div
-                    className={`w-full h-full max-w-5xl rounded-2xl sm:rounded-3xl border-2 ${theme.glowBorder} ${theme.glowBoxShadow} bg-white/95 dark:bg-[#0d131f]/95 backdrop-blur-xl p-4 sm:p-6 lg:p-8 flex flex-col justify-between overflow-hidden relative transition-all duration-300`}
+                    key={project.title}
+                    onMouseEnter={() => setHoveredCardIndex(idx)}
+                    onMouseOver={() => setHoveredCardIndex(idx)}
+                    onMouseMove={() => {
+                      if (hoveredCardIndex !== idx) setHoveredCardIndex(idx);
+                    }}
+                    onTouchStart={() => setHoveredCardIndex(idx)}
+                    onMouseLeave={() => setHoveredCardIndex(null)}
+                    onClick={() => {
+                      if (primaryUrl) {
+                        window.open(primaryUrl, "_blank", "noreferrer");
+                      }
+                    }}
+                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between py-8 sm:py-14 lg:py-16 px-5 sm:px-8 lg:px-10 group project-card overflow-hidden cursor-pointer bg-card transition-colors duration-300 ${
+                      isHovered ? "is-hovered" : ""
+                    }`}
                   >
-                    {/* Top Header Strip inside Card */}
-                    <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10 w-full shrink-0">
-                      <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                        <div
-                          className={`p-2 rounded-xl ${theme.badgeBg} border ${theme.glowBorder} flex items-center justify-center shrink-0`}
-                        >
-                          <ThemeIcon
-                            className={`w-4 h-4 sm:w-5 sm:h-5 ${theme.badgeText}`}
-                          />
-                        </div>
-                        <div className="min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap">
-                            <span className="font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                              PROJECT {(idx + 1).toString().padStart(2, "0")}
-                            </span>
-                            <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">
-                              •
-                            </span>
-                            <span
-                              className={`font-mono text-[10px] sm:text-xs font-bold uppercase tracking-wider ${theme.badgeText} truncate`}
-                            >
-                              {project.category}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
+                    {/* Expanding Accent Circle on Individual Card Hover & onMouseOver (Uses #8b4513 Accent) */}
+                    <div
+                      className={`project-card-accent-bg ${
+                        isHovered ? "is-active" : ""
+                      }`}
+                      style={{
+                        clipPath: isHovered
+                          ? "circle(160% at 0% 0%)"
+                          : undefined,
+                      }}
+                    />
 
-                      {/* Live Feature Badge */}
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span
-                          className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider ${theme.badgeBg} ${theme.badgeText} border`}
-                        >
-                          <span
-                            className={`w-1.5 h-1.5 rounded-full ${theme.pulseDot} animate-pulse`}
-                          />
-                          <span className="hidden sm:inline">
-                            {theme.chipLabel}
-                          </span>
-                          <span className="sm:hidden">LIVE</span>
-                        </span>
-                      </div>
+                    {/* Floating Center Badge (from Spotlight screenshot) */}
+                    <div className="project-card-view-badge absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-22 h-22 sm:w-28 sm:h-28 rounded-full bg-white text-[#8b4513] shadow-[0_14px_45px_rgba(0,0,0,0.35)] flex flex-col items-center justify-center font-mono text-[10px] sm:text-[11px] font-black uppercase tracking-wider transition-all duration-300 pointer-events-none scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100">
+                      <span>VIEW</span>
+                      <span>PROJECT</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 mt-0.5 text-[#8b4513]" />
                     </div>
 
-                    {/* Card Body: 2 Columns on Desktop */}
-                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 lg:gap-8 items-center flex-1 my-2 sm:my-4 min-h-0">
-                      {/* Left Column: Metadata & Actions (7 Columns) */}
-                      <div className="lg:col-span-7 flex flex-col justify-between h-full space-y-2 sm:space-y-3.5">
-                        <div>
-                          <h3 className="font-mono text-base sm:text-xl lg:text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-snug">
-                            {project.title}
-                          </h3>
-
-                          <p className="mt-1.5 sm:mt-2 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed line-clamp-2 sm:line-clamp-3">
-                            {project.description}
-                          </p>
-
-                          {project.highlights && project.highlights[0] && (
-                            <div className="mt-2.5 hidden sm:flex items-start gap-2 p-2.5 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10">
-                              <span
-                                className={`font-mono text-xs font-bold ${theme.badgeText} shrink-0`}
-                              >
-                                CORE:
-                              </span>
-                              <p className="text-xs text-slate-700 dark:text-slate-200 leading-normal line-clamp-2">
-                                {project.highlights[0]}
-                              </p>
-                            </div>
-                          )}
+                    {/* Card Content Container */}
+                    <div className="relative z-10 flex flex-col justify-between h-full min-h-0">
+                      {/* Top Header Strip */}
+                      <div>
+                        <div className="flex items-center justify-between pb-2.5 sm:pb-4 border-b border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors">
+                          <span className="project-card-num font-mono text-xs sm:text-[13px] font-bold uppercase tracking-widest text-primary transition-colors">
+                            PROJECT {(idx + 1).toString().padStart(2, "0")}
+                          </span>
+                          <span className="project-card-cat font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider text-muted-foreground transition-colors truncate max-w-[170px]">
+                            {project.category}
+                          </span>
                         </div>
 
-                        {/* Tech Stack Pills */}
-                        <div>
-                          <div className="text-[10px] font-mono font-bold uppercase tracking-widest text-slate-400 dark:text-slate-500 mb-1.5">
-                            TECHNOLOGY STACK
-                          </div>
-                          <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                            {project.technologies.slice(0, 5).map((tech) => (
-                              <span
-                                key={tech}
-                                className="inline-flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 font-mono text-[10px] sm:text-[11px] text-slate-800 dark:text-slate-200"
-                              >
-                                <SkillIcon
-                                  name={tech}
-                                  className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0"
-                                />
-                                <span>{tech}</span>
+                        {/* Title */}
+                        <h3 className="project-card-title mt-3 sm:mt-5 font-mono text-lg sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-tight leading-snug line-clamp-2 text-foreground transition-colors">
+                          {project.title}
+                        </h3>
+
+                        {/* Visual Image Preview */}
+                        <div className="relative w-full aspect-[16/10] rounded-xl sm:rounded-2xl overflow-hidden my-3 sm:my-5 border border-black/10 dark:border-white/10 shadow-sm group-hover:border-white/30 group-hover:shadow-lg transition-all bg-slate-950">
+                          <Image
+                            src={project.image}
+                            alt={project.title}
+                            fill
+                            sizes="(max-width: 640px) 320px, (max-width: 1024px) 410px, 490px"
+                            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                        </div>
+
+                        {/* Project Narrative Description */}
+                        <p className="project-card-desc text-xs sm:text-sm leading-relaxed line-clamp-3 text-muted-foreground transition-colors">
+                          {project.description}
+                        </p>
+
+                        {/* Core Highlight */}
+                        {project.highlights?.[0] && (
+                          <div className="project-card-highlight mt-2.5 sm:mt-3 p-2 sm:p-2.5 rounded-lg border bg-black/5 dark:bg-white/5 border-border text-foreground transition-all">
+                            <p className="text-[10px] sm:text-[11px] leading-relaxed line-clamp-2">
+                              <span className="font-mono font-bold uppercase mr-1.5 text-primary project-card-highlight-label">
+                                HIGHLIGHT:
                               </span>
-                            ))}
+                              <span>{project.highlights[0]}</span>
+                            </p>
                           </div>
+                        )}
+                      </div>
+
+                      {/* Bottom Footer: Tech Pills & Action Buttons */}
+                      <div className="pt-3 sm:pt-4 border-t border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors space-y-2.5 sm:space-y-4">
+                        {/* Technology Stack Pills */}
+                        <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                          {project.technologies.slice(0, 4).map((tech) => (
+                            <span
+                              key={tech}
+                              className="project-card-pill inline-flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-md font-mono text-[10px] sm:text-[11px] font-semibold border bg-black/5 dark:bg-white/5 border-border text-foreground transition-all"
+                            >
+                              <SkillIcon name={tech} className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
+                              <span>{tech}</span>
+                            </span>
+                          ))}
+                          {project.technologies.length > 4 && (
+                            <span className="project-card-pill-more px-1.5 py-1 rounded font-mono text-[10px] text-muted-foreground">
+                              +{project.technologies.length - 4}
+                            </span>
+                          )}
                         </div>
 
                         {/* Action Buttons */}
-                        <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1">
-                          {project.liveUrl ? (
-                            <a
-                              href={project.liveUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className={`inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-mono text-xs sm:text-sm font-bold tracking-wider uppercase text-white ${theme.accentColor === "emerald"
-                                ? "bg-emerald-600 hover:bg-emerald-500"
-                                : theme.accentColor === "cyan"
-                                  ? "bg-cyan-600 hover:bg-cyan-500"
-                                  : theme.accentColor === "amber"
-                                    ? "bg-amber-600 hover:bg-amber-500"
-                                    : theme.accentColor === "purple"
-                                      ? "bg-purple-600 hover:bg-purple-500"
-                                      : theme.accentColor === "rose"
-                                        ? "bg-rose-600 hover:bg-rose-500"
-                                        : theme.accentColor === "teal"
-                                          ? "bg-teal-600 hover:bg-teal-500"
-                                          : theme.accentColor === "blue"
-                                            ? "bg-blue-600 hover:bg-blue-500"
-                                            : "bg-orange-600 hover:bg-orange-500"
-                                } shadow-md hover:shadow-lg transition-all duration-200 active:scale-95 cursor-pointer`}
-                            >
-                              <Zap className="w-3.5 h-3.5 fill-current" />
-                              <span>LIVE DEMO</span>
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          ) : project.githubUrl ? (
-                            <a
-                              href={project.githubUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-mono text-xs sm:text-sm font-bold tracking-wider uppercase text-white bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 shadow-md transition-all duration-200 active:scale-95 cursor-pointer"
-                            >
-                              <SkillIcon
-                                name="github"
-                                className="w-4 h-4 shrink-0"
-                              />
-                              <span>VIEW SOURCE</span>
-                              <ExternalLink className="w-3.5 h-3.5" />
-                            </a>
-                          ) : (
-                            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg font-mono text-xs text-slate-500 dark:text-slate-400 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 uppercase">
-                              Enterprise Core System
-                            </span>
-                          )}
-
-                          {project.githubUrl && project.liveUrl && (
-                            <a
-                              href={project.githubUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-2 px-3 sm:px-3.5 py-2 sm:py-2.5 rounded-xl font-mono text-xs sm:text-sm font-bold tracking-wider uppercase text-slate-700 dark:text-slate-200 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 border border-black/10 dark:border-white/15 transition-all duration-200 active:scale-95 cursor-pointer"
-                            >
-                              <SkillIcon
-                                name="github"
-                                className="w-4 h-4 shrink-0"
-                              />
-                              <span>CODE REPO</span>
-                            </a>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Right Column: Visual Data Feed & Live Screenshot (5 Columns) */}
-                      <div className="lg:col-span-5 relative w-full h-40 sm:h-56 lg:h-full min-h-[170px] sm:min-h-[220px] lg:min-h-[260px] flex items-center justify-center">
-                        <div className="relative w-full h-full rounded-xl sm:rounded-2xl overflow-hidden border border-black/15 dark:border-white/15 bg-slate-950 shadow-xl group">
-                          {/* Screenshot */}
-                          <div className="relative w-full h-[calc(100%-21px)] overflow-hidden">
-                            <Image
-                              src={project.image}
-                              alt={project.title}
-                              fill
-                              sizes="(max-width: 768px) 100vw, 40vw"
-                              className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
+                        <div className="flex items-center justify-between gap-2 pt-1">
+                          <div className="flex items-center gap-2">
+                            {project.liveUrl && (
+                              <a
+                                href={project.liveUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="project-card-btn-demo inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider transition-all shadow-xs hover:scale-105 active:scale-95 cursor-pointer bg-primary text-primary-foreground"
+                              >
+                                <Zap className="w-3.5 h-3.5 fill-current" />
+                                <span>Demo</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
+                            {project.githubUrl && (
+                              <a
+                                href={project.githubUrl}
+                                target="_blank"
+                                rel="noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="project-card-btn-code inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider border transition-all hover:scale-105 active:scale-95 cursor-pointer bg-black/5 dark:bg-white/5 border-border text-foreground"
+                              >
+                                <SkillIcon name="github" className="w-3.5 h-3.5 shrink-0" />
+                                <span>Code</span>
+                                <ExternalLink className="w-3 h-3" />
+                              </a>
+                            )}
                           </div>
 
-                          {/* Floating Live Data Widget (Option 4 Data Card Reproduction) */}
-                          {/* <div className="absolute bottom-2.5 right-2.5 p-2 sm:p-2.5 rounded-xl bg-slate-900/95 dark:bg-black/90 border border-white/20 backdrop-blur-md shadow-2xl flex flex-col gap-1 z-20 max-w-[150px] sm:max-w-[180px]">
-                            <div className="flex items-center justify-between gap-2">
-                              <span className="font-mono text-[9px] font-bold text-slate-400 uppercase tracking-wider">
-                                {theme.statLabel}
-                              </span>
-                              <span className="flex h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                            </div>
-                            <div className="font-mono text-[11px] sm:text-xs font-black text-white">
-                              {theme.statValue}
-                            </div>
-                            <svg
-                              className="w-full h-3.5 sm:h-4 text-emerald-400 overflow-visible"
-                              viewBox="0 0 100 24"
-                              fill="none"
-                            >
-                              <path
-                                d={theme.chartPath}
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </div> */}
+                          {primaryUrl && (
+                            <span className="project-card-arrow inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full border border-border text-foreground transition-all group-hover:scale-110 shrink-0">
+                              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                            </span>
+                          )}
                         </div>
                       </div>
                     </div>
                   </div>
+                );
+              })}
+
+              {/* ── Finale Card: Closing Banner at the End of the Track ── */}
+              <div className="w-[84vw] max-w-[340px] sm:max-w-[380px] lg:max-w-[420px] flex-shrink-0 h-full bg-[#8b4513] text-white flex flex-col justify-between p-6 sm:p-12 border-l border-white/15 select-none">
+                <div className="font-mono text-xs font-bold uppercase tracking-widest text-white/70">
+                  08 / 08 • COMPLETE SHOWCASE
                 </div>
-              );
-            })}
+
+                <div className="flex flex-col items-center text-center gap-4 sm:gap-6">
+                  <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-white text-[#8b4513] shadow-xl flex flex-col items-center justify-center font-mono text-[11px] sm:text-xs font-black uppercase tracking-wider">
+                    <span>LET&apos;S</span>
+                    <span>BUILD</span>
+                    <ArrowRight className="w-4 h-4 mt-0.5 text-[#8b4513]" />
+                  </div>
+
+                  <h3 className="text-xl sm:text-3xl font-black uppercase tracking-tight text-white">
+                    HAVE A PROJECT IN MIND?
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-white/85 max-w-xs leading-relaxed font-medium">
+                    Let&apos;s build something high-impact and exceptional together.
+                  </p>
+
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-[#8b4513] font-mono text-xs font-bold uppercase tracking-wider hover:scale-105 transition-all shadow-md active:scale-95"
+                  >
+                    <span>Get In Touch</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+
+                <div className="font-mono text-xs text-center text-white/60 uppercase tracking-widest">
+                  Nuhamin Gulilat • Portfolio
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* ── Kinetic Navigation Bar ── */}
-          <div className="mt-4 px-3 sm:px-6 py-2.5 rounded-xl border border-[#8b4513]/20 dark:border-white/10 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md flex flex-wrap items-center justify-between gap-3">
-            {/* Left: Scroll Cue */}
-            <div className="flex items-center gap-2 font-mono text-xs text-slate-600 dark:text-slate-400">
-              <ArrowUp className="w-3.5 h-3.5 animate-bounce text-[#8b4513] dark:text-[#e09045]" />
-              <span>SCROLL DOWN TO ADVANCE STACK</span>
+          {/* ── Bottom Floating Kinetic Controls & Project Stepper Bar ── */}
+          <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 px-3 sm:px-6 py-1.5 sm:py-2 rounded-full border border-black/10 dark:border-white/10 bg-card/90 text-card-foreground backdrop-blur-md shadow-xl flex items-center gap-2 sm:gap-4 max-w-[94vw]">
+            <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-primary">
+              <span>PROJECT {(activeIndex + 1).toString().padStart(2, "0")}</span>
+              <span className="text-muted-foreground">/ 08</span>
             </div>
 
-            {/* Center: Interactive Project Stepper */}
-            <div className="flex items-center gap-1.5 overflow-x-auto py-1 max-w-full">
+            <span className="text-border hidden sm:inline">•</span>
+
+            {/* Interactive Jump Buttons */}
+            <div className="hidden sm:flex items-center gap-1">
               {projects.map((p, idx) => {
                 const isActive = idx === activeIndex;
                 return (
                   <button
                     key={p.title}
-                    onClick={() => scrollToProject(idx)}
                     type="button"
-                    className={`px-2.5 py-1 rounded-md font-mono text-[11px] font-bold transition-all duration-200 cursor-pointer ${isActive
-                      ? "bg-[#8b4513] dark:bg-[#b45309] text-white shadow-sm scale-105"
-                      : "bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-slate-600 dark:text-slate-400"
-                      }`}
-                    aria-label={`Jump to project ${idx + 1}: ${p.title}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      scrollToProject(idx);
+                    }}
+                    className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-primary text-primary-foreground shadow-xs scale-105"
+                        : "text-muted-foreground hover:text-foreground"
+                    }`}
+                    aria-label={`Jump to project ${idx + 1}`}
                   >
                     {(idx + 1).toString().padStart(2, "0")}
                   </button>
@@ -611,30 +572,196 @@ export default function Projects() {
               })}
             </div>
 
-            {/* Right: Prev/Next Quick Controls */}
+            <span className="text-border">•</span>
+
+            {/* Prev / Next controls */}
             <div className="flex items-center gap-1">
               <button
                 type="button"
                 onClick={handlePrev}
                 disabled={activeIndex === 0}
-                className="p-1.5 rounded-lg border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-slate-700 dark:text-slate-300"
+                className="p-1 rounded-md hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-foreground"
                 aria-label="Previous project"
               >
-                <ChevronUp className="w-4 h-4" />
+                <ChevronLeft className="w-4 h-4" />
               </button>
               <button
                 type="button"
                 onClick={handleNext}
                 disabled={activeIndex === projects.length - 1}
-                className="p-1.5 rounded-lg border border-black/10 dark:border-white/10 hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-slate-700 dark:text-slate-300"
+                className="p-1 rounded-md hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-foreground"
                 aria-label="Next project"
               >
-                <ChevronDown className="w-4 h-4" />
+                <ChevronRight className="w-4 h-4" />
               </button>
             </div>
           </div>
         </div>
       )}
-    </Section>
+
+      {/* Global bulletproof CSS for #projects background and #8b4513 card & header hover */}
+      <style jsx global>{`
+        #projects {
+          background-color: var(--accent) !important;
+          color: var(--accent-foreground) !important;
+        }
+
+        /* ── Header Hover & MouseOver Accent Background (#8b4513) ── */
+        .header-hover-accent-bg {
+          position: absolute;
+          inset: 0;
+          background-color: #8b4513 !important;
+          clip-path: circle(0% at 50% 50%);
+          transition: clip-path 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        .header-panel:hover .header-hover-accent-bg,
+        .header-panel:active .header-hover-accent-bg,
+        .header-panel.header-hovered .header-hover-accent-bg,
+        .header-hover-accent-bg.is-header-active {
+          clip-path: circle(160% at 50% 50%) !important;
+        }
+
+        /* High-contrast Header typography & elements on hover / mouseover */
+        .header-panel:hover .header-title,
+        .header-panel:active .header-title,
+        .header-panel.header-hovered .header-title {
+          color: #ffffff !important;
+        }
+
+        .header-panel:hover .header-desc,
+        .header-panel:active .header-desc,
+        .header-panel.header-hovered .header-desc {
+          color: rgba(255, 255, 255, 0.92) !important;
+        }
+
+        .header-panel:hover .header-tag,
+        .header-panel:active .header-tag,
+        .header-panel.header-hovered .header-tag {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          color: #ffffff !important;
+        }
+
+        .header-panel:hover .header-badge,
+        .header-panel:active .header-badge,
+        .header-panel.header-hovered .header-badge {
+          background-color: #ffffff !important;
+          color: #8b4513 !important;
+          border-color: #ffffff !important;
+        }
+
+        .header-panel:hover .header-cue,
+        .header-panel:active .header-cue,
+        .header-panel.header-hovered .header-cue {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          color: #ffffff !important;
+        }
+
+        .header-panel:hover .header-cue-icon,
+        .header-panel:active .header-cue-icon,
+        .header-panel.header-hovered .header-cue-icon {
+          color: #ffffff !important;
+        }
+
+        /* ── Project Cards Hover & MouseOver Accent Background (#8b4513) ── */
+        .project-card-accent-bg {
+          position: absolute;
+          inset: 0;
+          background-color: #8b4513 !important;
+          clip-path: circle(0% at 0% 0%);
+          transition: clip-path 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+          pointer-events: none;
+          z-index: 0;
+        }
+
+        .project-card:hover .project-card-accent-bg,
+        .project-card:active .project-card-accent-bg,
+        .project-card:focus-within .project-card-accent-bg,
+        .project-card-accent-bg.is-active,
+        .project-card.is-hovered .project-card-accent-bg {
+          clip-path: circle(160% at 0% 0%) !important;
+        }
+
+        /* High-contrast typography on hover, mouseover & active */
+        .project-card:hover .project-card-num,
+        .project-card:active .project-card-num,
+        .project-card.is-hovered .project-card-num,
+        .project-card:hover .project-card-title,
+        .project-card:active .project-card-title,
+        .project-card.is-hovered .project-card-title {
+          color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-cat,
+        .project-card:active .project-card-cat,
+        .project-card.is-hovered .project-card-cat {
+          color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .project-card:hover .project-card-desc,
+        .project-card:active .project-card-desc,
+        .project-card.is-hovered .project-card-desc {
+          color: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        .project-card:hover .project-card-highlight,
+        .project-card:active .project-card-highlight,
+        .project-card.is-hovered .project-card-highlight,
+        .project-card:hover .project-card-pill,
+        .project-card:active .project-card-pill,
+        .project-card.is-hovered .project-card-pill {
+          background-color: rgba(255, 255, 255, 0.12) !important;
+          border-color: rgba(255, 255, 255, 0.25) !important;
+          color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-highlight-label,
+        .project-card:active .project-card-highlight-label,
+        .project-card.is-hovered .project-card-highlight-label {
+          color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-pill-more,
+        .project-card:active .project-card-pill-more,
+        .project-card.is-hovered .project-card-pill-more {
+          color: rgba(255, 255, 255, 0.75) !important;
+        }
+
+        .project-card:hover .project-card-btn-demo,
+        .project-card:active .project-card-btn-demo,
+        .project-card.is-hovered .project-card-btn-demo {
+          background-color: #ffffff !important;
+          color: #8b4513 !important;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25) !important;
+        }
+
+        .project-card:hover .project-card-btn-code,
+        .project-card:active .project-card-btn-code,
+        .project-card.is-hovered .project-card-btn-code {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-arrow,
+        .project-card:active .project-card-arrow,
+        .project-card.is-hovered .project-card-arrow {
+          background-color: #ffffff !important;
+          color: #8b4513 !important;
+          border-color: #ffffff !important;
+        }
+
+        .project-card:hover .project-card-view-badge,
+        .project-card:active .project-card-view-badge,
+        .project-card.is-hovered .project-card-view-badge {
+          transform: translate(-50%, -50%) scale(1) !important;
+          opacity: 1 !important;
+        }
+      `}</style>
+    </section>
   );
 }
