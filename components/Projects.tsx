@@ -231,29 +231,36 @@ export default function Projects() {
         </div>
       ) : isMobile ? (
         /* ── Mobile Layout (Under 768px): Single Clean Header on Accent with Swipe Deck ── */
-        <div className="w-full px-4 sm:px-6 py-12">
+        <div className="relative w-full min-h-[85vh] bg-accent text-accent-foreground px-4 sm:px-6 py-12 sm:py-16 overflow-hidden flex flex-col justify-between">
+          {/* Ambient Background Decorative Accent Orbs */}
+          <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#8b4513]/10 dark:bg-[#8b4513]/25 blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 rounded-full bg-[#8b4513]/5 dark:bg-[#8b4513]/15 blur-2xl pointer-events-none" />
+
           {/* Single Project Section Header */}
-          <div className="mb-6 px-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 font-mono text-xs font-bold tracking-widest text-primary uppercase mb-3">
+          <div className="relative z-10 mb-6 px-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 font-mono text-xs font-bold tracking-widest text-primary uppercase mb-3 shadow-xs">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
               <span>[ 02 / SELECTED WORKS ]</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
               OUR PROJECTS
             </h2>
-            <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+            <div className="mt-2 inline-flex items-center px-3 py-1 rounded-lg bg-primary text-primary-foreground font-extrabold text-xs uppercase tracking-wider shadow-xs">
+              SCROLL SHOWCASE • 08 WORKS
+            </div>
+            <p className="mt-3 text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-md">
               Interactive showcase featuring full-stack applications and enterprise software.
             </p>
           </div>
 
           {/* Scroll cue hint */}
-          <div className="flex items-center justify-between pb-3 text-xs font-mono text-muted-foreground px-1">
+          <div className="relative z-10 flex items-center justify-between pb-3 text-xs font-mono text-muted-foreground px-1">
             <span>SWIPE OR TAP TO EXPLORE</span>
             <span>{projects.length} PROJECTS</span>
           </div>
 
           {/* Touch-Friendly Horizontal Swipe Deck with Snap Points */}
-          <div className="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 scrollbar-none -mx-4 px-4">
+          <div className="relative z-10 flex overflow-x-auto snap-x snap-mandatory gap-4 pb-6 scrollbar-none -mx-4 px-4">
             {projects.map((project, idx) => {
               const isCardActive = mobileActiveIndex === idx;
               const primaryUrl = project.liveUrl || project.githubUrl;
@@ -262,136 +269,210 @@ export default function Projects() {
                 <div
                   key={project.title}
                   onClick={() => setMobileActiveIndex(isCardActive ? null : idx)}
-                  className={`relative flex-shrink-0 w-[84vw] max-w-[340px] snap-center rounded-2xl border transition-all duration-300 overflow-hidden flex flex-col justify-between p-5 select-none ${
+                  className={`relative flex-shrink-0 w-[84vw] max-w-[340px] snap-center rounded-2xl border transition-all duration-300 overflow-hidden flex flex-col justify-between p-5 select-none group cursor-pointer ${
                     isCardActive
-                      ? "bg-[#8b4513] text-white border-white/20 shadow-lg"
-                      : "bg-card border-border text-card-foreground shadow-sm"
+                      ? "bg-[#8b4513] text-white border-white/20 shadow-xl scale-[1.01]"
+                      : "bg-card border-border text-card-foreground shadow-sm hover:border-[#8b4513]/40 hover:shadow-md"
                   }`}
                 >
-                  <div>
-                    {/* Header Strip */}
-                    <div className="flex items-center justify-between pb-2.5 border-b border-black/10 dark:border-white/10">
-                      <span
-                        className={`font-mono text-xs font-bold tracking-wider uppercase ${
-                          isCardActive ? "text-white" : "text-primary"
-                        }`}
-                      >
-                        PROJECT {(idx + 1).toString().padStart(2, "0")}
-                      </span>
-                      <span
-                        className={`font-mono text-[10px] uppercase font-semibold truncate max-w-[150px] ${
-                          isCardActive ? "text-white/80" : "text-muted-foreground"
-                        }`}
-                      >
-                        {project.category}
-                      </span>
-                    </div>
+                  {/* Expanding #8b4513 Accent Circle on Mobile Card Hover & Active */}
+                  <div
+                    className="absolute inset-0 bg-[#8b4513] transition-[clip-path] duration-500 ease-in-out z-0 pointer-events-none [clip-path:circle(0%_at_0%_0%)] group-hover:[clip-path:circle(150%_at_0%_0%)]"
+                    style={{
+                      clipPath: isCardActive ? "circle(150% at 0% 0%)" : undefined,
+                    }}
+                  />
 
-                    {/* Title */}
-                    <h3
-                      className={`mt-3 font-mono text-lg font-bold uppercase leading-snug line-clamp-2 ${
-                        isCardActive ? "text-white" : "text-foreground"
-                      }`}
-                    >
-                      {project.title}
-                    </h3>
-
-                    {/* Preview Image */}
-                    <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden my-3 border border-black/10 dark:border-white/10 bg-slate-950">
-                      <Image
-                        src={project.image}
-                        alt={project.title}
-                        fill
-                        sizes="340px"
-                        className="object-cover object-top"
-                      />
-                    </div>
-
-                    {/* Description */}
-                    <p
-                      className={`text-xs leading-relaxed line-clamp-3 ${
-                        isCardActive ? "text-white/90" : "text-muted-foreground"
-                      }`}
-                    >
-                      {project.description}
-                    </p>
+                  {/* Floating Center Badge on Mobile Hover / Tap */}
+                  <div
+                    className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-20 h-20 rounded-full bg-white text-[#8b4513] shadow-lg flex flex-col items-center justify-center font-mono text-[9px] font-black uppercase tracking-wider transition-all duration-300 pointer-events-none ${
+                      isCardActive
+                        ? "scale-100 opacity-100"
+                        : "scale-0 opacity-0 group-hover:scale-100 group-hover:opacity-100"
+                    }`}
+                  >
+                    <span>VIEW</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 mt-0.5 text-[#8b4513]" />
                   </div>
 
-                  {/* Footer with Tech & Links */}
-                  <div className="mt-4 pt-3 border-t border-black/10 dark:border-white/10 space-y-3">
-                    <div className="flex flex-wrap gap-1.5">
-                      {project.technologies.slice(0, 3).map((tech) => (
+                  <div className="relative z-10 flex flex-col justify-between h-full">
+                    <div>
+                      {/* Header Strip */}
+                      <div className="flex items-center justify-between pb-2.5 border-b border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors">
                         <span
-                          key={tech}
-                          className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-medium ${
-                            isCardActive
-                              ? "bg-white/10 text-white border border-white/20"
-                              : "bg-black/5 dark:bg-white/5 border border-border text-foreground"
+                          className={`font-mono text-xs font-bold tracking-wider uppercase transition-colors ${
+                            isCardActive ? "text-white" : "text-primary group-hover:text-white"
                           }`}
                         >
-                          <SkillIcon name={tech} className="w-2.5 h-2.5 shrink-0" />
-                          <span>{tech}</span>
+                          PROJECT {(idx + 1).toString().padStart(2, "0")}
                         </span>
-                      ))}
+                        <span
+                          className={`font-mono text-[10px] uppercase font-semibold truncate max-w-[150px] transition-colors ${
+                            isCardActive ? "text-white/80" : "text-muted-foreground group-hover:text-white/80"
+                          }`}
+                        >
+                          {project.category}
+                        </span>
+                      </div>
+
+                      {/* Title */}
+                      <h3
+                        className={`mt-3 font-mono text-lg font-bold uppercase leading-snug line-clamp-2 transition-colors ${
+                          isCardActive ? "text-white" : "text-foreground group-hover:text-white"
+                        }`}
+                      >
+                        {project.title}
+                      </h3>
+
+                      {/* Preview Image */}
+                      <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden my-3 border border-black/10 dark:border-white/10 bg-slate-950 group-hover:border-white/25 transition-colors">
+                        <Image
+                          src={project.image}
+                          alt={project.title}
+                          fill
+                          sizes="340px"
+                          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+
+                      {/* Description */}
+                      <p
+                        className={`text-xs leading-relaxed line-clamp-3 transition-colors ${
+                          isCardActive ? "text-white/90" : "text-muted-foreground group-hover:text-white/90"
+                        }`}
+                      >
+                        {project.description}
+                      </p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-1">
-                      <div className="flex items-center gap-2">
-                        {project.liveUrl && (
+                    {/* Footer with Tech & Links */}
+                    <div className="mt-4 pt-3 border-t border-black/10 dark:border-white/10 group-hover:border-white/20 transition-colors space-y-3">
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.technologies.slice(0, 3).map((tech) => (
+                          <span
+                            key={tech}
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-medium transition-colors ${
+                              isCardActive
+                                ? "bg-white/10 text-white border border-white/20"
+                                : "bg-black/5 dark:bg-white/5 border border-border text-foreground group-hover:bg-white/10 group-hover:text-white group-hover:border-white/20"
+                            }`}
+                          >
+                            <SkillIcon name={tech} className="w-2.5 h-2.5 shrink-0" />
+                            <span>{tech}</span>
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex items-center justify-between pt-1">
+                        <div className="flex items-center gap-2">
+                          {project.liveUrl && (
+                            <a
+                              href={project.liveUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase shadow-xs transition-all ${
+                                isCardActive
+                                  ? "bg-white text-[#8b4513]"
+                                  : "bg-primary text-primary-foreground group-hover:bg-white group-hover:text-[#8b4513]"
+                              }`}
+                            >
+                              <span>Live</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                          {project.githubUrl && (
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              onClick={(e) => e.stopPropagation()}
+                              className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase border transition-all ${
+                                isCardActive
+                                  ? "bg-white/15 text-white border-white/30"
+                                  : "bg-card border-border text-foreground group-hover:bg-white/15 group-hover:text-white group-hover:border-white/30"
+                              }`}
+                            >
+                              <span>Code</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                        </div>
+
+                        {primaryUrl && (
                           <a
-                            href={project.liveUrl}
+                            href={primaryUrl}
                             target="_blank"
                             rel="noreferrer"
                             onClick={(e) => e.stopPropagation()}
-                            className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase shadow-xs ${
+                            className={`w-7 h-7 rounded-full flex items-center justify-center border transition-all ${
                               isCardActive
-                                ? "bg-white text-[#8b4513]"
-                                : "bg-primary text-primary-foreground"
+                                ? "bg-white text-[#8b4513] border-white"
+                                : "border-border text-foreground group-hover:bg-white group-hover:text-[#8b4513] group-hover:border-white"
                             }`}
+                            aria-label={`Open ${project.title}`}
                           >
-                            <span>Live</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        )}
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg font-mono text-xs font-bold uppercase border ${
-                              isCardActive
-                                ? "bg-white/15 text-white border-white/30"
-                                : "bg-card border-border text-foreground"
-                            }`}
-                          >
-                            <span>Code</span>
-                            <ExternalLink className="w-3 h-3" />
+                            <ArrowUpRight className="w-3.5 h-3.5" />
                           </a>
                         )}
                       </div>
-
-                      {primaryUrl && (
-                        <a
-                          href={primaryUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className={`w-7 h-7 rounded-full flex items-center justify-center border ${
-                            isCardActive
-                              ? "bg-white text-[#8b4513] border-white"
-                              : "border-border text-foreground"
-                          }`}
-                          aria-label={`Open ${project.title}`}
-                        >
-                          <ArrowUpRight className="w-3.5 h-3.5" />
-                        </a>
-                      )}
                     </div>
                   </div>
                 </div>
               );
             })}
+
+            {/* Finale Card in Mobile Swipe Deck */}
+            <div className="relative flex-shrink-0 w-[84vw] max-w-[340px] snap-center rounded-2xl bg-[#8b4513] text-white border border-white/20 shadow-xl flex flex-col justify-between p-6 select-none">
+              <div className="font-mono text-xs font-bold uppercase tracking-widest text-white/70">
+                08 / 08 • COMPLETE SHOWCASE
+              </div>
+
+              <div className="flex flex-col items-center text-center my-6 gap-3">
+                <div className="w-20 h-20 rounded-full bg-white text-[#8b4513] shadow-xl flex flex-col items-center justify-center font-mono text-[10px] font-black uppercase tracking-wider">
+                  <span>LET&apos;S</span>
+                  <span>BUILD</span>
+                  <ArrowRight className="w-3.5 h-3.5 mt-0.5 text-[#8b4513]" />
+                </div>
+
+                <h3 className="text-xl font-black uppercase tracking-tight text-white">
+                  HAVE A PROJECT IN MIND?
+                </h3>
+
+                <p className="text-xs text-white/85 max-w-xs leading-relaxed font-medium">
+                  Let&apos;s build something high-impact and exceptional together.
+                </p>
+
+                <a
+                  href="#contact"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-white text-[#8b4513] font-mono text-xs font-bold uppercase tracking-wider shadow-md active:scale-95 mt-2"
+                >
+                  <span>Get In Touch</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              <div className="font-mono text-[10px] text-center text-white/60 uppercase tracking-widest">
+                Nuhamin Gulilat • Portfolio
+              </div>
+            </div>
+          </div>
+
+          {/* Mobile Dot Stepper */}
+          <div className="relative z-10 flex items-center justify-center gap-1.5 pt-4 pb-2">
+            {projects.map((_, dotIdx) => (
+              <button
+                key={dotIdx}
+                type="button"
+                onClick={() => setMobileActiveIndex(dotIdx)}
+                className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  mobileActiveIndex === dotIdx
+                    ? "w-6 bg-primary"
+                    : "w-1.5 bg-black/20 dark:bg-white/20"
+                }`}
+                aria-label={`Jump to project ${dotIdx + 1}`}
+              />
+            ))}
           </div>
         </div>
       ) : (
