@@ -12,8 +12,6 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Section from "@/components/shared/Section";
-import SectionHeader from "@/components/shared/SectionHeader";
 import SkillIcon from "@/components/shared/SkillIcon";
 import { projects } from "@/data/projects";
 
@@ -160,32 +158,31 @@ export default function Projects() {
   }, [activeIndex, scrollToProject]);
 
   return (
-    <section id="projects" className="relative z-10 w-full pt-10 sm:pt-16 pb-6 overflow-hidden">
-      {/* ── Section Header (Portfolio Design System Consistency) ── */}
-      <div className="mx-auto max-w-[1440px] px-4 sm:px-8 lg:px-12 mb-6 sm:mb-10">
-        <SectionHeader
-          tag="[ 02 / SELECTED WORKS ]"
-          title="Kinetic"
-          titleSecondLine="Projects."
-          stickerText="SCROLL-DRIVEN SHOWCASE"
-          countBadge={projects.length}
-          description="Interactive horizontal kinetic showcase featuring full-stack applications, enterprise platforms, and scalable web software."
-        />
-      </div>
-
+    <section
+      id="projects"
+      className="relative z-10 w-full overflow-hidden bg-accent text-accent-foreground scroll-mt-16 transition-colors duration-300"
+    >
       {/* ── Accessible Reduced Motion Fallback ── */}
       {reducedMotion ? (
-        <div className="mx-auto max-w-5xl px-4 sm:px-8 space-y-8">
+        <div className="mx-auto max-w-5xl px-4 sm:px-8 py-16 space-y-8">
+          <div className="text-center mb-10">
+            <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+              [ 02 / SELECTED WORKS ]
+            </span>
+            <h2 className="text-4xl font-black uppercase mt-2 text-foreground">
+              OUR PROJECTS
+            </h2>
+          </div>
           {projects.map((project, idx) => (
             <article
               key={project.title}
-              className="rounded-2xl border border-[#ebdcd0] dark:border-[#3d2a1e] bg-card p-6 sm:p-8 shadow-sm"
+              className="rounded-2xl border border-border bg-card text-card-foreground p-6 sm:p-8 shadow-sm"
             >
               <div className="flex items-center justify-between mb-3">
-                <span className="font-mono text-xs font-bold uppercase text-[#8b4513] dark:text-[#e09045]">
+                <span className="font-mono text-xs font-bold uppercase text-primary">
                   PROJECT {(idx + 1).toString().padStart(2, "0")}
                 </span>
-                <span className="font-mono text-xs uppercase text-slate-500">
+                <span className="font-mono text-xs uppercase text-muted-foreground">
                   {project.category}
                 </span>
               </div>
@@ -211,7 +208,7 @@ export default function Projects() {
                     href={project.liveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#8b4513] dark:bg-[#b45309] text-white font-mono text-xs font-bold"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-mono text-xs font-bold"
                   >
                     <span>LIVE DEMO</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -222,7 +219,7 @@ export default function Projects() {
                     href={project.githubUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border font-mono text-xs font-bold"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border font-mono text-xs font-bold text-foreground"
                   >
                     <span>CODE REPO</span>
                     <ExternalLink className="w-3.5 h-3.5" />
@@ -233,10 +230,24 @@ export default function Projects() {
           ))}
         </div>
       ) : isMobile ? (
-        /* ── Mobile Layout (Under 768px): Natural Vertical Page Scroll with Interactive Cards ── */
-        <div className="w-full px-4 sm:px-6">
+        /* ── Mobile Layout (Under 768px): Single Clean Header on Accent with Swipe Deck ── */
+        <div className="w-full px-4 sm:px-6 py-12">
+          {/* Single Project Section Header */}
+          <div className="mb-6 px-1">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/10 bg-black/5 dark:bg-white/5 font-mono text-xs font-bold tracking-widest text-primary uppercase mb-3">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span>[ 02 / SELECTED WORKS ]</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black uppercase tracking-tight text-foreground leading-tight">
+              OUR PROJECTS
+            </h2>
+            <p className="mt-2 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              Interactive showcase featuring full-stack applications and enterprise software.
+            </p>
+          </div>
+
           {/* Scroll cue hint */}
-          <div className="flex items-center justify-between pb-3 text-xs font-mono text-muted-foreground">
+          <div className="flex items-center justify-between pb-3 text-xs font-mono text-muted-foreground px-1">
             <span>SWIPE OR TAP TO EXPLORE</span>
             <span>{projects.length} PROJECTS</span>
           </div>
@@ -254,7 +265,7 @@ export default function Projects() {
                   className={`relative flex-shrink-0 w-[84vw] max-w-[340px] snap-center rounded-2xl border transition-all duration-300 overflow-hidden flex flex-col justify-between p-5 select-none ${
                     isCardActive
                       ? "bg-[#e29d57] dark:bg-[#d98b3f] text-[#120c08] border-black/20 shadow-lg"
-                      : "bg-card border-border text-foreground shadow-sm"
+                      : "bg-card border-border text-card-foreground shadow-sm"
                   }`}
                 >
                   <div>
@@ -262,7 +273,7 @@ export default function Projects() {
                     <div className="flex items-center justify-between pb-2.5 border-b border-black/10 dark:border-white/10">
                       <span
                         className={`font-mono text-xs font-bold tracking-wider uppercase ${
-                          isCardActive ? "text-[#120c08]" : "text-[#8b4513] dark:text-[#e09045]"
+                          isCardActive ? "text-[#120c08]" : "text-primary"
                         }`}
                       >
                         PROJECT {(idx + 1).toString().padStart(2, "0")}
@@ -380,18 +391,18 @@ export default function Projects() {
           </div>
         </div>
       ) : (
-        /* ── Full Desktop/Tablet Scroll-Linked Pinned Showcase ── */
+        /* ── Full Desktop/Tablet Scroll-Linked Pinned Showcase (Single Header inside Panel 0) ── */
         <div
           ref={pinWrapperRef}
-          className="relative w-full h-screen overflow-hidden bg-background flex flex-col justify-between"
+          className="relative w-full h-screen overflow-hidden bg-accent text-accent-foreground flex flex-col justify-between"
         >
           {/* Main Horizontal Sliding Track */}
           <div
             ref={trackRef}
             className="absolute top-0 left-0 flex h-full will-change-transform w-max select-none"
           >
-            {/* ── Panel 0: Title Stage with Expanding Circle (Reference Screenshots 1, 2, 3) ── */}
-            <div className="relative flex-shrink-0 w-screen h-full flex flex-col items-center justify-center p-6 sm:p-12 lg:p-20 overflow-hidden bg-background">
+            {/* ── Panel 0: Single Cinematic Project Header (Reference Screenshots 1, 2, 3) ── */}
+            <div className="relative flex-shrink-0 w-screen h-full flex flex-col items-center justify-center p-6 sm:p-12 lg:p-20 overflow-hidden bg-accent">
               {/* Expanding Accent Circle that grows from top-left corner */}
               <div
                 ref={circleRef}
@@ -401,23 +412,27 @@ export default function Projects() {
 
               {/* Title Content */}
               <div className="relative z-10 flex flex-col items-center text-center max-w-4xl px-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold tracking-widest text-[#1c140e] dark:text-[#faf6f0] uppercase mb-4 sm:mb-6 shadow-xs">
-                  <span className="w-2 h-2 rounded-full bg-[#8b4513] dark:bg-[#fde68a] animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold tracking-widest text-foreground uppercase mb-4 sm:mb-6 shadow-xs">
+                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                   <span>[ 02 / SELECTED WORKS ]</span>
                 </div>
 
-                <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-[#1c140e] dark:text-[#faf6f0] leading-none drop-shadow-xs">
+                <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-foreground leading-none drop-shadow-xs">
                   OUR PROJECTS
                 </h2>
 
-                <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg font-medium text-slate-700 dark:text-slate-200 max-w-xl leading-relaxed">
+                <div className="mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-[#e29d57] dark:bg-[#d98b3f] text-[#120c08] font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none border border-black/10">
+                  SCROLL-DRIVEN SHOWCASE • 08 WORKS
+                </div>
+
+                <p className="mt-4 sm:mt-6 text-sm sm:text-base lg:text-lg font-medium text-muted-foreground max-w-xl leading-relaxed">
                   A continuous horizontal journey through full-stack systems, modern web
                   applications, and scalable platforms.
                 </p>
 
-                <div className="mt-8 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-wider text-[#1c140e] dark:text-[#faf6f0]">
+                <div className="mt-8 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-wider text-foreground">
                   <span>SCROLL DOWN TO ADVANCE CARDS</span>
-                  <ArrowRight className="w-4 h-4 text-[#8b4513] dark:text-[#fde68a] animate-pulse" />
+                  <ArrowRight className="w-4 h-4 text-primary animate-pulse" />
                 </div>
               </div>
             </div>
@@ -468,9 +483,7 @@ export default function Projects() {
                         <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10 group-hover:border-black/20 transition-colors">
                           <span
                             className={`font-mono text-xs sm:text-[13px] font-bold uppercase tracking-widest transition-colors ${
-                              isHovered
-                                ? "text-[#120c08]"
-                                : "text-[#8b4513] dark:text-[#e09045]"
+                              isHovered ? "text-[#120c08]" : "text-primary"
                             }`}
                           >
                             PROJECT {(idx + 1).toString().padStart(2, "0")}
@@ -526,9 +539,7 @@ export default function Projects() {
                             <p className="text-[11px] leading-relaxed line-clamp-2">
                               <span
                                 className={`font-mono font-bold uppercase mr-1.5 ${
-                                  isHovered
-                                    ? "text-[#120c08]"
-                                    : "text-[#8b4513] dark:text-[#fde68a]"
+                                  isHovered ? "text-[#120c08]" : "text-primary"
                                 }`}
                               >
                                 HIGHLIGHT:
@@ -658,13 +669,13 @@ export default function Projects() {
           </div>
 
           {/* ── Bottom Floating Kinetic Controls & Project Stepper Bar ── */}
-          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 px-4 sm:px-6 py-2 rounded-full border border-black/10 dark:border-white/10 bg-white/80 dark:bg-[#120c08]/85 backdrop-blur-md shadow-xl flex items-center gap-3 sm:gap-4 max-w-[92vw]">
-            <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-[#8b4513] dark:text-[#fde68a]">
+          <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-30 px-4 sm:px-6 py-2 rounded-full border border-black/10 dark:border-white/10 bg-card/90 text-card-foreground backdrop-blur-md shadow-xl flex items-center gap-3 sm:gap-4 max-w-[92vw]">
+            <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-primary">
               <span>PROJECT {(activeIndex + 1).toString().padStart(2, "0")}</span>
-              <span className="text-slate-400">/ 08</span>
+              <span className="text-muted-foreground">/ 08</span>
             </div>
 
-            <span className="text-slate-300 dark:text-slate-700 hidden sm:inline">•</span>
+            <span className="text-border hidden sm:inline">•</span>
 
             {/* Interactive Jump Buttons */}
             <div className="hidden sm:flex items-center gap-1">
@@ -680,8 +691,8 @@ export default function Projects() {
                     }}
                     className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold transition-all cursor-pointer ${
                       isActive
-                        ? "bg-[#8b4513] dark:bg-[#b45309] text-white shadow-xs scale-105"
-                        : "text-slate-500 hover:text-slate-900 dark:hover:text-white"
+                        ? "bg-primary text-primary-foreground shadow-xs scale-105"
+                        : "text-muted-foreground hover:text-foreground"
                     }`}
                     aria-label={`Jump to project ${idx + 1}`}
                   >
@@ -691,7 +702,7 @@ export default function Projects() {
               })}
             </div>
 
-            <span className="text-slate-300 dark:text-slate-700">•</span>
+            <span className="text-border">•</span>
 
             {/* Prev / Next controls */}
             <div className="flex items-center gap-1">
