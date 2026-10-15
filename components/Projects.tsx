@@ -21,6 +21,7 @@ export default function Projects() {
   const circleRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [isHeaderHovered, setIsHeaderHovered] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   // Check for reduced motion preference
@@ -157,69 +158,120 @@ export default function Projects() {
       {/* ── Accessible Reduced Motion Fallback ── */}
       {reducedMotion ? (
         <div className="mx-auto max-w-5xl px-4 sm:px-8 py-16 space-y-8 bg-accent text-accent-foreground">
-          <div className="text-center mb-10">
-            <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
-              [ 02 / SELECTED WORKS ]
-            </span>
-            <h2 className="text-4xl font-black uppercase mt-2 text-foreground">
-              OUR PROJECTS
-            </h2>
-          </div>
-          {projects.map((project, idx) => (
-            <article
-              key={project.title}
-              className="rounded-2xl border border-border bg-card text-card-foreground p-6 sm:p-8 shadow-sm"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <span className="font-mono text-xs font-bold uppercase text-primary">
-                  PROJECT {(idx + 1).toString().padStart(2, "0")}
-                </span>
-                <span className="font-mono text-xs uppercase text-muted-foreground">
-                  {project.category}
-                </span>
-              </div>
-              <h3 className="font-mono text-xl sm:text-2xl font-bold text-foreground mb-2">
-                {project.title}
-              </h3>
-              <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
-                {project.description}
+          {/* Header Panel */}
+          <div
+            onMouseEnter={() => setIsHeaderHovered(true)}
+            onMouseOver={() => setIsHeaderHovered(true)}
+            onMouseMove={() => {
+              if (!isHeaderHovered) setIsHeaderHovered(true);
+            }}
+            onMouseLeave={() => setIsHeaderHovered(false)}
+            className={`relative rounded-3xl p-8 sm:p-12 text-center mb-10 overflow-hidden header-panel cursor-pointer transition-colors duration-500 bg-card border border-border ${
+              isHeaderHovered ? "header-hovered" : ""
+            }`}
+          >
+            <div
+              className={`header-hover-accent-bg ${
+                isHeaderHovered ? "is-header-active" : ""
+              }`}
+              style={{
+                clipPath: isHeaderHovered
+                  ? "circle(160% at 50% 50%)"
+                  : undefined,
+              }}
+            />
+            <div className="relative z-10 flex flex-col items-center">
+              <span className="header-tag px-3 py-1 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-widest text-foreground transition-all duration-300">
+                [ 02 / SELECTED WORKS ]
+              </span>
+              <h2 className="header-title text-4xl sm:text-6xl font-black uppercase mt-3 text-foreground transition-colors duration-300">
+                OUR PROJECTS
+              </h2>
+              <p className="mt-3 text-sm sm:text-base text-muted-foreground max-w-md header-desc transition-colors duration-300">
+                A showcase of full-stack systems, modern web applications, and scalable platforms.
               </p>
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.technologies.map((t) => (
-                  <span
-                    key={t}
-                    className="px-2.5 py-1 rounded bg-black/5 dark:bg-white/5 font-mono text-xs"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-              <div className="flex items-center gap-3">
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-mono text-xs font-bold"
-                  >
-                    <span>LIVE DEMO</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                )}
-                {project.githubUrl && (
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border font-mono text-xs font-bold text-foreground"
-                  >
-                    <span>CODE REPO</span>
-                    <ExternalLink className="w-3.5 h-3.5" />
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
+            </div>
+          </div>
+
+          {/* Project Cards */}
+          {projects.map((project, idx) => {
+            const isHovered = hoveredCardIndex === idx;
+            return (
+              <article
+                key={project.title}
+                onMouseEnter={() => setHoveredCardIndex(idx)}
+                onMouseOver={() => setHoveredCardIndex(idx)}
+                onMouseMove={() => {
+                  if (hoveredCardIndex !== idx) setHoveredCardIndex(idx);
+                }}
+                onMouseLeave={() => setHoveredCardIndex(null)}
+                className={`relative rounded-2xl border border-border bg-card text-card-foreground p-6 sm:p-8 shadow-sm overflow-hidden project-card transition-colors duration-300 cursor-pointer ${
+                  isHovered ? "is-hovered" : ""
+                }`}
+              >
+                <div
+                  className={`project-card-accent-bg ${
+                    isHovered ? "is-active" : ""
+                  }`}
+                  style={{
+                    clipPath: isHovered
+                      ? "circle(160% at 0% 0%)"
+                      : undefined,
+                  }}
+                />
+                <div className="relative z-10">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="project-card-num font-mono text-xs font-bold uppercase text-primary transition-colors">
+                      PROJECT {(idx + 1).toString().padStart(2, "0")}
+                    </span>
+                    <span className="project-card-cat font-mono text-xs uppercase text-muted-foreground transition-colors">
+                      {project.category}
+                    </span>
+                  </div>
+                  <h3 className="project-card-title font-mono text-xl sm:text-2xl font-bold text-foreground mb-2 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="project-card-desc text-sm text-muted-foreground mb-4 leading-relaxed transition-colors">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {project.technologies.map((t) => (
+                      <span
+                        key={t}
+                        className="project-card-pill px-2.5 py-1 rounded border border-border bg-black/5 dark:bg-white/5 font-mono text-xs text-foreground transition-all"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-3">
+                    {project.liveUrl && (
+                      <a
+                        href={project.liveUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-card-btn-demo inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-primary text-primary-foreground font-mono text-xs font-bold transition-all shadow-sm"
+                      >
+                        <span>LIVE DEMO</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="project-card-btn-code inline-flex items-center gap-1.5 px-4 py-2 rounded-lg border border-border font-mono text-xs font-bold text-foreground transition-all"
+                      >
+                        <span>CODE REPO</span>
+                        <ExternalLink className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </div>
       ) : (
         /* ── Continuous Scroll-Linked Pinned Showcase (Responsive on Desktop, Tablet & Mobile) ── */
@@ -233,43 +285,69 @@ export default function Projects() {
             className="absolute top-0 left-0 flex h-full will-change-transform w-max select-none"
           >
             {/* ── Panel 0: Single Cinematic Project Header (Reference Screenshots 1, 2, 3) ── */}
-            <div className="relative flex-shrink-0 w-screen h-full flex flex-col items-center justify-center p-6 sm:p-12 lg:p-20 overflow-hidden bg-accent">
-              {/* Expanding Accent Circle that grows from top-left corner */}
+            <div
+              onMouseEnter={() => setIsHeaderHovered(true)}
+              onMouseOver={() => setIsHeaderHovered(true)}
+              onMouseMove={() => {
+                if (!isHeaderHovered) setIsHeaderHovered(true);
+              }}
+              onTouchStart={() => setIsHeaderHovered(true)}
+              onMouseLeave={() => setIsHeaderHovered(false)}
+              className={`relative flex-shrink-0 w-screen h-full flex flex-col items-center justify-center p-6 sm:p-12 lg:p-20 overflow-hidden bg-accent header-panel transition-colors duration-500 cursor-pointer ${
+                isHeaderHovered ? "header-hovered" : ""
+              }`}
+            >
+              {/* Expanding Accent Circle that grows from top-left corner on scroll */}
               <div
                 ref={circleRef}
-                className="absolute inset-0 bg-[#8b4513]/10 dark:bg-[#8b4513]/25 transition-none pointer-events-none"
+                className="absolute inset-0 bg-[#8b4513]/10 dark:bg-[#8b4513]/25 transition-none pointer-events-none z-0"
                 style={{ clipPath: "circle(20px at 40px 40px)" }}
               />
 
+              {/* Hover and onMouseOver Expanding #8b4513 Background Circle */}
+              <div
+                className={`header-hover-accent-bg ${
+                  isHeaderHovered ? "is-header-active" : ""
+                }`}
+                style={{
+                  clipPath: isHeaderHovered
+                    ? "circle(160% at 50% 50%)"
+                    : undefined,
+                }}
+              />
+
               {/* Title Content */}
-              <div className="relative z-10 flex flex-col items-center text-center max-w-4xl px-4">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold tracking-widest text-foreground uppercase mb-4 sm:mb-6 shadow-xs">
+              <div className="relative z-10 flex flex-col items-center text-center max-w-4xl px-4 pointer-events-auto">
+                <div className="header-tag inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold tracking-widest text-foreground uppercase mb-4 sm:mb-6 shadow-xs transition-all duration-300">
                   <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                   <span>[ 02 / SELECTED WORKS ]</span>
                 </div>
 
-                <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-foreground leading-none drop-shadow-xs">
+                <h2 className="header-title text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-foreground leading-none drop-shadow-xs transition-colors duration-300">
                   OUR PROJECTS
                 </h2>
 
-                <div className="mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-primary text-primary-foreground font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none border border-black/10">
+                <div className="header-badge mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-primary text-primary-foreground font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none border border-black/10 transition-all duration-300">
                   SCROLL-DRIVEN SHOWCASE • 08 WORKS
                 </div>
 
-                <p className="mt-4 sm:mt-6 text-xs sm:text-base lg:text-lg font-medium text-muted-foreground max-w-xl leading-relaxed">
+                <p className="mt-4 sm:mt-6 text-xs sm:text-base lg:text-lg font-medium text-muted-foreground max-w-xl leading-relaxed header-desc transition-colors duration-300">
                   A continuous horizontal journey through full-stack systems, modern web
                   applications, and scalable platforms.
                 </p>
 
-                <div className="mt-6 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-wider text-foreground">
+                <div className="header-cue mt-6 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-wider text-foreground transition-all duration-300">
                   <span>SCROLL DOWN TO ADVANCE CARDS</span>
-                  <ArrowRight className="w-4 h-4 text-primary animate-pulse" />
+                  <ArrowRight className="header-cue-icon w-4 h-4 text-primary animate-pulse transition-colors duration-300" />
                 </div>
               </div>
             </div>
 
             {/* ── Panel 1..N: Individual Project Cards Track (Reference Screenshots 3, 4, 5) ── */}
-            <div className="flex flex-shrink-0 h-full items-stretch">
+            <div
+              onMouseLeave={() => setHoveredCardIndex(null)}
+              className="flex flex-shrink-0 h-full items-stretch"
+            >
               {projects.map((project, idx) => {
                 const isHovered = hoveredCardIndex === idx;
                 const primaryUrl = project.liveUrl || project.githubUrl;
@@ -278,6 +356,11 @@ export default function Projects() {
                   <div
                     key={project.title}
                     onMouseEnter={() => setHoveredCardIndex(idx)}
+                    onMouseOver={() => setHoveredCardIndex(idx)}
+                    onMouseMove={() => {
+                      if (hoveredCardIndex !== idx) setHoveredCardIndex(idx);
+                    }}
+                    onTouchStart={() => setHoveredCardIndex(idx)}
                     onMouseLeave={() => setHoveredCardIndex(null)}
                     onClick={() => {
                       if (primaryUrl) {
@@ -288,11 +371,16 @@ export default function Projects() {
                       isHovered ? "is-hovered" : ""
                     }`}
                   >
-                    {/* Expanding Accent Circle on Individual Card Hover (Uses #8b4513 Accent) */}
+                    {/* Expanding Accent Circle on Individual Card Hover & onMouseOver (Uses #8b4513 Accent) */}
                     <div
                       className={`project-card-accent-bg ${
                         isHovered ? "is-active" : ""
                       }`}
+                      style={{
+                        clipPath: isHovered
+                          ? "circle(160% at 0% 0%)"
+                          : undefined,
+                      }}
                     />
 
                     {/* Floating Center Badge (from Spotlight screenshot) */}
@@ -511,13 +599,75 @@ export default function Projects() {
         </div>
       )}
 
-      {/* Global bulletproof CSS for #projects background and #8b4513 card hover */}
+      {/* Global bulletproof CSS for #projects background and #8b4513 card & header hover */}
       <style jsx global>{`
         #projects {
           background-color: var(--accent) !important;
           color: var(--accent-foreground) !important;
         }
 
+        /* ── Header Hover & MouseOver Accent Background (#8b4513) ── */
+        .header-hover-accent-bg {
+          position: absolute;
+          inset: 0;
+          background-color: #8b4513 !important;
+          clip-path: circle(0% at 50% 50%);
+          transition: clip-path 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        .header-panel:hover .header-hover-accent-bg,
+        .header-panel:active .header-hover-accent-bg,
+        .header-panel.header-hovered .header-hover-accent-bg,
+        .header-hover-accent-bg.is-header-active {
+          clip-path: circle(160% at 50% 50%) !important;
+        }
+
+        /* High-contrast Header typography & elements on hover / mouseover */
+        .header-panel:hover .header-title,
+        .header-panel:active .header-title,
+        .header-panel.header-hovered .header-title {
+          color: #ffffff !important;
+        }
+
+        .header-panel:hover .header-desc,
+        .header-panel:active .header-desc,
+        .header-panel.header-hovered .header-desc {
+          color: rgba(255, 255, 255, 0.92) !important;
+        }
+
+        .header-panel:hover .header-tag,
+        .header-panel:active .header-tag,
+        .header-panel.header-hovered .header-tag {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          color: #ffffff !important;
+        }
+
+        .header-panel:hover .header-badge,
+        .header-panel:active .header-badge,
+        .header-panel.header-hovered .header-badge {
+          background-color: #ffffff !important;
+          color: #8b4513 !important;
+          border-color: #ffffff !important;
+        }
+
+        .header-panel:hover .header-cue,
+        .header-panel:active .header-cue,
+        .header-panel.header-hovered .header-cue {
+          background-color: rgba(255, 255, 255, 0.15) !important;
+          border-color: rgba(255, 255, 255, 0.3) !important;
+          color: #ffffff !important;
+        }
+
+        .header-panel:hover .header-cue-icon,
+        .header-panel:active .header-cue-icon,
+        .header-panel.header-hovered .header-cue-icon {
+          color: #ffffff !important;
+        }
+
+        /* ── Project Cards Hover & MouseOver Accent Background (#8b4513) ── */
         .project-card-accent-bg {
           position: absolute;
           inset: 0;
@@ -536,7 +686,7 @@ export default function Projects() {
           clip-path: circle(160% at 0% 0%) !important;
         }
 
-        /* High-contrast typography on hover & active */
+        /* High-contrast typography on hover, mouseover & active */
         .project-card:hover .project-card-num,
         .project-card:active .project-card-num,
         .project-card.is-hovered .project-card-num,
