@@ -71,6 +71,19 @@ export default function Projects() {
         scrub: 0.8,
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        onToggle: (self) => {
+          if (self.isActive) {
+            document.documentElement.dataset.projectsPinned = "true";
+            window.dispatchEvent(
+              new CustomEvent("projects-active", { detail: true })
+            );
+          } else {
+            delete document.documentElement.dataset.projectsPinned;
+            window.dispatchEvent(
+              new CustomEvent("projects-active", { detail: false })
+            );
+          }
+        },
         onUpdate: (self) => {
           const prog = self.progress;
           // First 25% of progress is Panel 0 accent circle expanding from left to right;
@@ -115,6 +128,10 @@ export default function Projects() {
 
     return () => {
       clearTimeout(refreshTimer);
+      delete document.documentElement.dataset.projectsPinned;
+      window.dispatchEvent(
+        new CustomEvent("projects-active", { detail: false })
+      );
       ScrollTrigger.getById("projects-horizontal-scroll")?.kill();
       tl.kill();
     };
@@ -684,11 +701,20 @@ export default function Projects() {
         </div>
       )}
 
-      {/* Global CSS for #projects background and card hover */}
+      {/* Global CSS for #projects background, full-height navbar hide, and card hover */}
       <style jsx global>{`
         #projects {
           background-color: var(--background) !important;
           color: var(--foreground) !important;
+          scroll-margin-top: 0 !important;
+        }
+
+        /* Auto-hide header when projects section is active for 100% full height */
+        html[data-projects-pinned="true"] header,
+        body[data-projects-pinned="true"] header {
+          transform: translateY(-100%) !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
         }
 
         /* ── Project Cards Hover & MouseOver Accent Background (#8b4513 / #b45309) ── */

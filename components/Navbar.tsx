@@ -28,10 +28,20 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("about");
+  const [isProjectsActive, setIsProjectsActive] = useState(false);
 
-  // Track active section on scroll
+  // Track active section and hide navbar when inside projects section
   useEffect(() => {
     const handleScroll = () => {
+      // Check if projects section is currently in view
+      const projectsEl = document.getElementById("projects");
+      if (projectsEl) {
+        const rect = projectsEl.getBoundingClientRect();
+        // The projects section is in view and pinned
+        const inProjects = rect.top <= 60 && rect.bottom >= 60;
+        setIsProjectsActive(inProjects);
+      }
+
       const scrollPosition = window.scrollY + 200;
       for (let i = navItems.length - 1; i >= 0; i--) {
         const section = document.getElementById(navItems[i].id);
@@ -39,7 +49,7 @@ export default function Navbar() {
           const sectionTop = section.offsetTop;
           if (scrollPosition >= sectionTop) {
             setActiveSection(navItems[i].id);
-            return;
+            break;
           }
         }
       }
@@ -48,9 +58,21 @@ export default function Navbar() {
       }
     };
 
+    const handleProjectsActiveEvent = (e: Event) => {
+      const customEvent = e as CustomEvent<boolean>;
+      if (typeof customEvent.detail === "boolean") {
+        setIsProjectsActive(customEvent.detail);
+      }
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("projects-active", handleProjectsActiveEvent);
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("projects-active", handleProjectsActiveEvent);
+    };
   }, []);
 
   // Lock body scroll when fullscreen menu is open
@@ -67,7 +89,13 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full bg-[#fdfbf7]/95 dark:bg-[#120c08]/95 backdrop-blur-md transition-all duration-200">
+      <header
+        className={`sticky top-0 z-40 w-full bg-[#fdfbf7]/95 dark:bg-[#120c08]/95 backdrop-blur-md transition-all duration-300 ease-in-out ${
+          isProjectsActive
+            ? "-translate-y-full opacity-0 pointer-events-none"
+            : "translate-y-0 opacity-100 pointer-events-auto"
+        }`}
+      >
         <div className="mx-auto max-w-[1440px] px-3.5 sm:px-6 lg:px-8">
           <div className="flex h-16 sm:h-24 md:h-28 items-center justify-between gap-2">
             {/* Logo / Brand - Flush with Left Edge */}
