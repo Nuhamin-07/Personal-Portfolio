@@ -162,11 +162,8 @@ export default function Projects() {
         <div className="mx-auto max-w-5xl px-4 sm:px-8 py-16 space-y-8 bg-background text-foreground">
           {/* Header Panel */}
           <div className="text-center mb-12">
-            <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
-              [ 02 / SELECTED WORKS ]
-            </span>
             <h2 className="text-4xl sm:text-6xl font-black uppercase mt-3 text-foreground">
-              OUR PROJECTS
+              PROJECTS
             </h2>
             <p className="mt-3 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
               A showcase of full-stack systems, modern web applications, and scalable platforms.
@@ -195,15 +192,13 @@ export default function Projects() {
                   onClick={() => {
                     setHoveredCardIndex(hoveredCardIndex === idx ? null : idx);
                   }}
-                  className={`relative rounded-2xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden project-card transition-colors duration-300 min-h-[460px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                    isHovered ? "is-hovered" : ""
-                  }`}
+                  className={`relative rounded-2xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden project-card transition-colors duration-300 min-h-[460px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary ${isHovered ? "is-hovered" : ""
+                    }`}
                   aria-label={`${project.title} - Click to toggle details`}
                 >
                   <div
-                    className={`project-card-accent-bg ${
-                      isHovered ? "is-active" : ""
-                    }`}
+                    className={`project-card-accent-bg ${isHovered ? "is-active" : ""
+                      }`}
                     style={{
                       clipPath: isHovered
                         ? "circle(160% at 0% 0%)"
@@ -213,11 +208,10 @@ export default function Projects() {
 
                   {/* 1. Default State: Title Only */}
                   <div
-                    className={`absolute inset-0 p-6 sm:p-8 flex flex-col justify-between transition-all duration-400 z-10 ${
-                      isHovered
-                        ? "opacity-0 scale-95 pointer-events-none"
-                        : "opacity-100 scale-100 pointer-events-auto"
-                    }`}
+                    className={`absolute inset-0 p-6 sm:p-8 flex flex-col justify-between transition-all duration-400 z-10 ${isHovered
+                      ? "opacity-0 scale-95 pointer-events-none"
+                      : "opacity-100 scale-100 pointer-events-auto"
+                      }`}
                   >
                     <div className="flex items-center justify-between pb-3 border-b border-border">
                       <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
@@ -229,9 +223,6 @@ export default function Projects() {
                     </div>
 
                     <div className="my-auto py-6">
-                      <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground block mb-2">
-                        [ SELECTED WORK ]
-                      </span>
                       <h3 className="font-mono text-2xl sm:text-3xl font-black uppercase text-foreground leading-snug">
                         {project.title}
                       </h3>
@@ -248,11 +239,10 @@ export default function Projects() {
 
                   {/* 2. Hovered State: Details & Image */}
                   <div
-                    className={`absolute inset-0 p-6 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${
-                      isHovered
-                        ? "opacity-100 translate-y-0 pointer-events-auto"
-                        : "opacity-0 translate-y-3 pointer-events-none"
-                    }`}
+                    className={`absolute inset-0 p-6 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${isHovered
+                      ? "opacity-100 translate-y-0 pointer-events-auto"
+                      : "opacity-0 translate-y-3 pointer-events-none"
+                      }`}
                   >
                     <div>
                       <div className="flex items-center justify-between pb-2 border-b border-white/20">
@@ -349,17 +339,12 @@ export default function Projects() {
               >
                 {/* High-Contrast White Text Version of Header (Revealed with pixel-perfect alignment) */}
                 <div className="relative flex flex-col items-center text-center max-w-4xl px-4 text-white">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/30 bg-white/15 font-mono text-xs font-bold tracking-widest text-white uppercase mb-4 sm:mb-6 shadow-xs">
-                    <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                    <span>[ 02 / SELECTED WORKS ]</span>
-                  </div>
-
                   <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-white leading-none drop-shadow-sm">
-                    OUR PROJECTS
+                    PROJECTS
                   </h2>
 
                   <div className="mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-white text-[#8b4513] font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none">
-                    SCROLL-DRIVEN SHOWCASE • 08 WORKS
+                    PROJECT SHOWCASE • 08 WORKS
                   </div>
 
                   <p className="mt-4 sm:mt-6 text-xs sm:text-base lg:text-lg font-medium text-white/90 max-w-xl leading-relaxed">
@@ -376,17 +361,12 @@ export default function Projects() {
 
               {/* Base Header Layer (Visible before accent reveal) */}
               <div className="relative z-0 flex flex-col items-center text-center max-w-4xl px-4 text-foreground pointer-events-auto">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold tracking-widest text-foreground uppercase mb-4 sm:mb-6 shadow-xs">
-                  <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                  <span>[ 02 / SELECTED WORKS ]</span>
-                </div>
-
                 <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-foreground leading-none drop-shadow-xs">
-                  OUR PROJECTS
+                  PROJECTS
                 </h2>
 
                 <div className="mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-primary text-primary-foreground font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none border border-black/10">
-                  SCROLL-DRIVEN SHOWCASE • 08 WORKS
+                  PROJECT SHOWCASE • 08 WORKS
                 </div>
 
                 <p className="mt-4 sm:mt-6 text-xs sm:text-base lg:text-lg font-medium text-muted-foreground max-w-xl leading-relaxed">
@@ -435,16 +415,14 @@ export default function Projects() {
                         setHoveredCardIndex(hoveredCardIndex === idx ? null : idx);
                       }
                     }}
-                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between overflow-hidden cursor-pointer bg-card transition-colors duration-300 group project-card outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                      isHovered ? "is-hovered" : ""
-                    }`}
+                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between overflow-hidden cursor-pointer bg-card transition-colors duration-300 group project-card outline-none focus-visible:ring-2 focus-visible:ring-primary ${isHovered ? "is-hovered" : ""
+                      }`}
                     aria-label={`${project.title} - Click or hover to view details`}
                   >
                     {/* Expanding Accent Background Circle on Card Hover & onMouseOver */}
                     <div
-                      className={`project-card-accent-bg ${
-                        isHovered ? "is-active" : ""
-                      }`}
+                      className={`project-card-accent-bg ${isHovered ? "is-active" : ""
+                        }`}
                       style={{
                         clipPath: isHovered
                           ? "circle(160% at 0% 0%)"
@@ -454,11 +432,10 @@ export default function Projects() {
 
                     {/* ── 1. Default State: Title-Only Minimalist View ── */}
                     <div
-                      className={`absolute inset-0 p-6 sm:p-10 flex flex-col justify-between transition-all duration-400 z-10 ${
-                        isHovered
-                          ? "opacity-0 scale-95 pointer-events-none"
-                          : "opacity-100 scale-100 pointer-events-auto"
-                      }`}
+                      className={`absolute inset-0 p-6 sm:p-10 flex flex-col justify-between transition-all duration-400 z-10 ${isHovered
+                        ? "opacity-0 scale-95 pointer-events-none"
+                        : "opacity-100 scale-100 pointer-events-auto"
+                        }`}
                     >
                       {/* Top Header */}
                       <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10">
@@ -472,9 +449,6 @@ export default function Projects() {
 
                       {/* Center Prominent Title */}
                       <div className="my-auto py-6 sm:py-10">
-                        <span className="font-mono text-[11px] font-bold tracking-widest text-muted-foreground uppercase block mb-3">
-                          [ 0{idx + 1} / SELECTED WORK ]
-                        </span>
                         <h3 className="font-mono text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.12]">
                           {project.title}
                         </h3>
@@ -492,11 +466,10 @@ export default function Projects() {
 
                     {/* ── 2. Hover / Active State: Full Details & Screenshot View ── */}
                     <div
-                      className={`absolute inset-0 p-5 sm:p-8 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${
-                        isHovered
-                          ? "opacity-100 translate-y-0 pointer-events-auto"
-                          : "opacity-0 translate-y-3 pointer-events-none"
-                      }`}
+                      className={`absolute inset-0 p-5 sm:p-8 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${isHovered
+                        ? "opacity-100 translate-y-0 pointer-events-auto"
+                        : "opacity-0 translate-y-3 pointer-events-none"
+                        }`}
                     >
                       <div>
                         {/* Top Header Strip */}
@@ -672,11 +645,10 @@ export default function Projects() {
                       e.stopPropagation();
                       scrollToProject(idx);
                     }}
-                    className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold transition-all cursor-pointer ${
-                      isActive
-                        ? "bg-primary text-primary-foreground shadow-xs scale-105"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
+                    className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold transition-all cursor-pointer ${isActive
+                      ? "bg-primary text-primary-foreground shadow-xs scale-105"
+                      : "text-muted-foreground hover:text-foreground"
+                      }`}
                     aria-label={`Jump to project ${idx + 1}`}
                   >
                     {(idx + 1).toString().padStart(2, "0")}
