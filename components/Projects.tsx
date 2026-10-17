@@ -271,9 +271,9 @@ export default function Projects() {
                       }`}
                   >
                     <div className="flex items-center justify-between pb-3 border-b border-border">
-                      <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
+                      {/* <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
                         PROJECT {(idx + 1).toString().padStart(2, "0")}
-                      </span>
+                      </span> */}
                       <span className="font-mono text-xs uppercase text-muted-foreground">
                         {project.category}
                       </span>
@@ -303,9 +303,9 @@ export default function Projects() {
                   >
                     <div>
                       <div className="flex items-center justify-between pb-2 border-b border-white/20">
-                        <span className="font-mono text-xs font-bold uppercase text-white">
+                        {/* <span className="font-mono text-xs font-bold uppercase text-white">
                           PROJECT {(idx + 1).toString().padStart(2, "0")}
-                        </span>
+                        </span> */}
                         <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/20 text-white">
                           {project.category}
                         </span>
@@ -520,9 +520,9 @@ export default function Projects() {
                     >
                       {/* Top Header */}
                       <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10">
-                        <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary">
+                        {/* <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary">
                           PROJECT {(idx + 1).toString().padStart(2, "0")}
-                        </span>
+                        </span> */}
                         <span className="font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-muted-foreground truncate max-w-[170px]">
                           {project.category}
                         </span>
@@ -547,9 +547,9 @@ export default function Projects() {
                       <div>
                         {/* Top Header Strip */}
                         <div className="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-white/20">
-                          <span className="font-mono text-xs sm:text-[13px] font-bold uppercase tracking-widest text-white">
+                          {/* <span className="font-mono text-xs sm:text-[13px] font-bold uppercase tracking-widest text-white">
                             PROJECT {(idx + 1).toString().padStart(2, "0")}
-                          </span>
+                          </span> */}
                           <span className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30 truncate max-w-[170px]">
                             {project.category}
                           </span>
@@ -663,7 +663,7 @@ export default function Projects() {
               {/* ── Finale Card: Closing Banner at the End of the Track ── */}
               <div className="w-[84vw] max-w-[340px] sm:max-w-[380px] lg:max-w-[420px] flex-shrink-0 h-full bg-[#8b4513] dark:bg-[#b45309] text-white flex flex-col justify-between p-6 sm:p-12 border-l border-white/15 select-none">
                 <div className="font-mono text-xs font-bold uppercase tracking-widest text-white/70">
-                  08 / 08 • COMPLETE SHOWCASE
+                  COMPLETE SHOWCASE
                 </div>
 
                 <div className="flex flex-col items-center text-center gap-4 sm:gap-6">
