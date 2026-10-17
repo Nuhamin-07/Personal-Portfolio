@@ -31,10 +31,6 @@ export default function ContactCTA() {
       <div className="max-w-7xl mx-auto flex flex-col justify-between min-h-[65vh] sm:min-h-[75vh]">
         {/* ── 1. Top Row: Copyright & Back To Top ── */}
         <div className="flex items-center justify-between w-full">
-          <div className="text-sm sm:text-base font-semibold tracking-tight text-[#1c140e]/60 dark:text-[#faf6f0]/60">
-            © {currentYear}
-          </div>
-
           <button
             onClick={scrollToTop}
             type="button"
@@ -49,7 +45,6 @@ export default function ContactCTA() {
 
         {/* ── 2. Reusable Editorial Section Header ── */}
         <SectionHeader
-          tag="[ 06 / GET IN TOUCH ]"
           title="Let's"
           titleSecondLine="Connect."
           stickerText="OPEN TO WORK"

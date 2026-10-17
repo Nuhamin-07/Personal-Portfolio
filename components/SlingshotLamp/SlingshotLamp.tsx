@@ -528,8 +528,22 @@ export default function SlingshotLamp() {
 
     // Render Pipeline
     const renderLight = () => {
+
+
       const s = stateRef.current;
       const I = clamp(s.light.I, 0, 1);
+
+      if (
+        !glow.width ||
+        !glow.height ||
+        !dark.width ||
+        !dark.height ||
+        !s.W ||
+        !s.H
+      ) {
+        return;
+      }
+
       gctx.setTransform(1, 0, 0, 1, 0, 0);
       gctx.clearRect(0, 0, glow.width, glow.height);
 
@@ -1098,8 +1112,8 @@ export default function SlingshotLamp() {
           {/* Glowing Amber Pilot LED */}
           <span
             className={`absolute right-[9px] top-1/2 -translate-y-1/2 w-[4px] h-[4px] rounded-full transition-all duration-200 ${isLightOn
-                ? "bg-[#ffb45a] shadow-[0_0_6px_1px_rgba(255,170,80,0.8)]"
-                : "bg-[#3a2a1a]"
+              ? "bg-[#ffb45a] shadow-[0_0_6px_1px_rgba(255,170,80,0.8)]"
+              : "bg-[#3a2a1a]"
               }`}
           />
 

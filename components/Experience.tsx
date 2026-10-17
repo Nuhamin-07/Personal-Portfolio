@@ -67,7 +67,6 @@ export default function Experience() {
     <Section id="experience" className="relative pt-24 sm:pt-32 pb-36 sm:pb-48">
       {/* ── 1. Reusable Editorial Section Header ── */}
       <SectionHeader
-        tag="[ 03 / CAREER & TRACK RECORD ]"
         title="Professional"
         titleSecondLine="Experience."
         stickerText="FROM 2021 — NOW"

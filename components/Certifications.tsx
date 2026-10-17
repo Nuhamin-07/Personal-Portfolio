@@ -86,7 +86,6 @@ export default function Certifications() {
             <div className={styles.container}>
                 {/* ── Reusable Editorial Section Header ── */}
                 <SectionHeader
-                    tag="[ 05 / CREDENTIALS & CERTIFICATIONS ]"
                     title="Credential"
                     titleSecondLine="Journey."
                     stickerText="VERIFIED & CURRENT"

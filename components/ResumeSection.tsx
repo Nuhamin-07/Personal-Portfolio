@@ -19,7 +19,6 @@ export default function ResumeSection() {
     <Section id="resume" className="overflow-hidden">
       {/* ── 1. Reusable Shared Section Header ── */}
       <SectionHeader
-        tag="[ VERIFIED CURRICULUM VITAE ]"
         title="Curriculum"
         titleSecondLine="Vitae."
         stickerText="OFFICIAL PDF"
