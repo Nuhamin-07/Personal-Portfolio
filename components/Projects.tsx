@@ -21,7 +21,22 @@ export default function Projects() {
   const circleRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
+
+  // Check for mobile viewport / touch device
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const checkMobile = () => {
+      setIsMobile(
+        window.innerWidth < 768 ||
+        window.matchMedia("(hover: none) and (pointer: coarse)").matches
+      );
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Check for reduced motion preference
   useEffect(() => {
@@ -89,14 +104,26 @@ export default function Projects() {
           // First 25% of progress is Panel 0 accent circle expanding from left to right;
           // Remaining 75% maps through project cards 0 to 7
           if (prog < 0.25) {
-            setActiveIndex(0);
+            setActiveIndex((prev) => {
+              if (prev !== 0) {
+                setHoveredCardIndex(null);
+                return 0;
+              }
+              return prev;
+            });
           } else {
             const cardProg = (prog - 0.25) / 0.75;
             const currentIdx = Math.min(
               projects.length - 1,
               Math.max(0, Math.floor(cardProg * projects.length))
             );
-            setActiveIndex(currentIdx);
+            setActiveIndex((prev) => {
+              if (prev !== currentIdx) {
+                setHoveredCardIndex(null);
+                return currentIdx;
+              }
+              return prev;
+            });
           }
         },
       },
@@ -190,34 +217,47 @@ export default function Projects() {
           {/* Project Cards (Title-only default, reveal on hover/tap) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {projects.map((project, idx) => {
-              const isHovered = hoveredCardIndex === idx;
+              const isCardActive =
+                hoveredCardIndex !== null
+                  ? hoveredCardIndex === idx
+                  : false;
               const primaryUrl = project.liveUrl || project.githubUrl;
+
+              const toggleCard = (e: React.SyntheticEvent) => {
+                if ((e.target as HTMLElement).closest("a, button")) return;
+                setHoveredCardIndex((prev) => (prev === idx ? null : idx));
+              };
 
               return (
                 <div
                   key={project.title}
                   tabIndex={0}
-                  onMouseEnter={() => setHoveredCardIndex(idx)}
-                  onMouseOver={() => setHoveredCardIndex(idx)}
-                  onMouseLeave={() => setHoveredCardIndex(null)}
-                  onFocus={() => setHoveredCardIndex(idx)}
-                  onBlur={(e) => {
-                    if (!e.currentTarget.contains(e.relatedTarget)) {
-                      setHoveredCardIndex(null);
+                  onMouseEnter={() => {
+                    if (!isMobile) setHoveredCardIndex(idx);
+                  }}
+                  onMouseOver={() => {
+                    if (!isMobile) setHoveredCardIndex(idx);
+                  }}
+                  onMouseLeave={() => {
+                    if (!isMobile) setHoveredCardIndex(null);
+                  }}
+                  onTouchEnd={toggleCard}
+                  onClick={toggleCard}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      toggleCard(e);
                     }
                   }}
-                  onClick={() => {
-                    setHoveredCardIndex(hoveredCardIndex === idx ? null : idx);
-                  }}
-                  className={`relative rounded-2xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden project-card transition-colors duration-300 min-h-[460px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary ${isHovered ? "is-hovered" : ""
+                  className={`relative rounded-2xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden project-card transition-colors duration-300 min-h-[460px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary ${isCardActive ? "is-hovered is-active" : ""
                     }`}
-                  aria-label={`${project.title} - Click to toggle details`}
+                  aria-label={`${project.title} - Click or tap to toggle details`}
                 >
                   <div
-                    className={`project-card-accent-bg ${isHovered ? "is-active" : ""
+                    className={`project-card-accent-bg ${isCardActive ? "is-active" : ""
                       }`}
                     style={{
-                      clipPath: isHovered
+                      clipPath: isCardActive
                         ? "circle(160% at 0% 0%)"
                         : undefined,
                     }}
@@ -225,7 +265,7 @@ export default function Projects() {
 
                   {/* 1. Default State: Title Only */}
                   <div
-                    className={`absolute inset-0 p-6 sm:p-8 flex flex-col justify-between transition-all duration-400 z-10 ${isHovered
+                    className={`absolute inset-0 p-6 sm:p-8 flex flex-col justify-between transition-all duration-400 z-10 ${isCardActive
                       ? "opacity-0 scale-95 pointer-events-none"
                       : "opacity-100 scale-100 pointer-events-auto"
                       }`}
@@ -256,7 +296,7 @@ export default function Projects() {
 
                   {/* 2. Hovered State: Details & Image */}
                   <div
-                    className={`absolute inset-0 p-6 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${isHovered
+                    className={`absolute inset-0 p-6 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${isCardActive
                       ? "opacity-100 translate-y-0 pointer-events-auto"
                       : "opacity-0 translate-y-3 pointer-events-none"
                       }`}
@@ -404,44 +444,70 @@ export default function Projects() {
               className="flex flex-shrink-0 h-full items-stretch"
             >
               {projects.map((project, idx) => {
-                const isHovered = hoveredCardIndex === idx;
+                const isCardActive =
+                  hoveredCardIndex !== null
+                    ? hoveredCardIndex === idx
+                    : isMobile
+                    ? activeIndex === idx
+                    : false;
                 const primaryUrl = project.liveUrl || project.githubUrl;
+
+                const toggleCard = (e: React.SyntheticEvent) => {
+                  if ((e.target as HTMLElement).closest("a, button")) return;
+
+                  if (isMobile) {
+                    if (hoveredCardIndex === idx) {
+                      setHoveredCardIndex(-1);
+                    } else if (hoveredCardIndex === -1 && activeIndex === idx) {
+                      setHoveredCardIndex(idx);
+                    } else if (hoveredCardIndex === null && activeIndex === idx) {
+                      setHoveredCardIndex(-1);
+                    } else {
+                      setHoveredCardIndex(idx);
+                    }
+                  } else {
+                    setHoveredCardIndex((prev) => (prev === idx ? null : idx));
+                  }
+                };
 
                 return (
                   <div
                     key={project.title}
                     tabIndex={0}
-                    onMouseEnter={() => setHoveredCardIndex(idx)}
-                    onMouseOver={() => setHoveredCardIndex(idx)}
-                    onMouseMove={() => {
-                      if (hoveredCardIndex !== idx) setHoveredCardIndex(idx);
+                    onMouseEnter={() => {
+                      if (!isMobile) setHoveredCardIndex(idx);
                     }}
-                    onMouseLeave={() => setHoveredCardIndex(null)}
-                    onFocus={() => setHoveredCardIndex(idx)}
-                    onBlur={(e) => {
-                      if (!e.currentTarget.contains(e.relatedTarget)) {
-                        setHoveredCardIndex(null);
+                    onMouseOver={() => {
+                      if (!isMobile) setHoveredCardIndex(idx);
+                    }}
+                    onMouseMove={() => {
+                      if (!isMobile && hoveredCardIndex !== idx) {
+                        setHoveredCardIndex(idx);
                       }
                     }}
-                    onClick={() => {
-                      setHoveredCardIndex(hoveredCardIndex === idx ? null : idx);
+                    onMouseLeave={() => {
+                      if (!isMobile) setHoveredCardIndex(null);
                     }}
+                    onTouchEnd={toggleCard}
+                    onClick={toggleCard}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
-                        setHoveredCardIndex(hoveredCardIndex === idx ? null : idx);
+                        toggleCard(e);
                       }
                     }}
-                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between overflow-hidden cursor-pointer bg-card transition-colors duration-300 group project-card outline-none focus-visible:ring-2 focus-visible:ring-primary ${isHovered ? "is-hovered" : ""
-                      }`}
-                    aria-label={`${project.title} - Click or hover to view details`}
+                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between overflow-hidden cursor-pointer bg-card transition-colors duration-300 group project-card outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                      isCardActive ? "is-hovered is-active" : ""
+                    }`}
+                    aria-label={`${project.title} - Click, tap or hover to view details`}
                   >
                     {/* Expanding Accent Background Circle on Card Hover & onMouseOver */}
                     <div
-                      className={`project-card-accent-bg ${isHovered ? "is-active" : ""
-                        }`}
+                      className={`project-card-accent-bg ${
+                        isCardActive ? "is-active" : ""
+                      }`}
                       style={{
-                        clipPath: isHovered
+                        clipPath: isCardActive
                           ? "circle(160% at 0% 0%)"
                           : undefined,
                       }}
@@ -449,10 +515,11 @@ export default function Projects() {
 
                     {/* ── 1. Default State: Title-Only Minimalist View ── */}
                     <div
-                      className={`absolute inset-0 p-6 sm:p-10 flex flex-col justify-between transition-all duration-400 z-10 ${isHovered
-                        ? "opacity-0 scale-95 pointer-events-none"
-                        : "opacity-100 scale-100 pointer-events-auto"
-                        }`}
+                      className={`absolute inset-0 p-6 sm:p-10 flex flex-col justify-between transition-all duration-400 z-10 ${
+                        isCardActive
+                          ? "opacity-0 scale-95 pointer-events-none"
+                          : "opacity-100 scale-100 pointer-events-auto"
+                      }`}
                     >
                       {/* Top Header */}
                       <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10">
@@ -483,10 +550,11 @@ export default function Projects() {
 
                     {/* ── 2. Hover / Active State: Full Details & Screenshot View ── */}
                     <div
-                      className={`absolute inset-0 p-5 sm:p-8 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${isHovered
-                        ? "opacity-100 translate-y-0 pointer-events-auto"
-                        : "opacity-0 translate-y-3 pointer-events-none"
-                        }`}
+                      className={`absolute inset-0 p-5 sm:p-8 pb-20 sm:pb-8 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${
+                        isCardActive
+                          ? "opacity-100 translate-y-0 pointer-events-auto"
+                          : "opacity-0 translate-y-3 pointer-events-none"
+                      }`}
                     >
                       <div>
                         {/* Top Header Strip */}
@@ -737,7 +805,8 @@ export default function Projects() {
         .project-card:active .project-card-accent-bg,
         .project-card:focus-within .project-card-accent-bg,
         .project-card-accent-bg.is-active,
-        .project-card.is-hovered .project-card-accent-bg {
+        .project-card.is-hovered .project-card-accent-bg,
+        .project-card.is-active .project-card-accent-bg {
           clip-path: circle(160% at 0% 0%) !important;
         }
 
