@@ -29,8 +29,8 @@ export default function SectionHeader({
       ? typeof countBadge === "string"
         ? countBadge.match(/\d+[\+]?/)?.[0] || countBadge
         : countBadge < 10
-        ? `0${countBadge}`
-        : `${countBadge}`
+          ? `0${countBadge}`
+          : `${countBadge}`
       : "";
 
   return (
@@ -85,14 +85,12 @@ export default function SectionHeader({
 
                 {/* 2. Pure White Document Paper Sheets Peeking Out */}
                 <div
-                  className={`absolute left-3 right-3 sm:left-4 sm:right-4 top-1.5 h-10 sm:h-11 rounded bg-white/85 border border-black/5 shadow-xs transition-transform duration-300 ease-out ${
-                    isHovered ? "-translate-y-5 rotate-1" : "-translate-y-2 rotate-0.5"
-                  }`}
+                  className={`absolute left-3 right-3 sm:left-4 sm:right-4 top-1.5 h-10 sm:h-11 rounded bg-white/85 border border-black/5 shadow-xs transition-transform duration-300 ease-out ${isHovered ? "-translate-y-5 rotate-1" : "-translate-y-2 rotate-0.5"
+                    }`}
                 />
                 <div
-                  className={`absolute left-2.5 right-2.5 sm:left-3 sm:right-3 top-1 h-10 sm:h-12 rounded-md bg-[#ffffff] border border-black/10 p-1.5 sm:p-2 shadow-[0_2px_8px_rgba(0,0,0,0.12)] transition-transform duration-300 ease-out flex flex-col justify-center gap-1 sm:gap-1.5 ${
-                    isHovered ? "-translate-y-4" : "-translate-y-1.5"
-                  }`}
+                  className={`absolute left-2.5 right-2.5 sm:left-3 sm:right-3 top-1 h-10 sm:h-12 rounded-md bg-[#ffffff] border border-black/10 p-1.5 sm:p-2 shadow-[0_2px_8px_rgba(0,0,0,0.12)] transition-transform duration-300 ease-out flex flex-col justify-center gap-1 sm:gap-1.5 ${isHovered ? "-translate-y-4" : "-translate-y-1.5"
+                    }`}
                 >
                   <div className="w-6 sm:w-10 h-1 bg-[#c78b35]/70 rounded-full" />
                   <div className="w-10 sm:w-14 h-0.5 bg-neutral-300 rounded-full" />
@@ -102,7 +100,7 @@ export default function SectionHeader({
                 {/* 3. Front Manila Pocket with Depth & Stamped Count */}
                 <div className="absolute inset-x-0 bottom-0 h-12 sm:h-16 rounded-xl bg-gradient-to-t from-[#c48d37] via-[#e0ad5c] to-[#eec77d] border-t border-white/50 shadow-[0_12px_24px_rgba(0,0,0,0.18)] dark:shadow-[0_14px_30px_rgba(0,0,0,0.65)] flex flex-col justify-between p-2 sm:p-3">
                   <div className="w-full h-[1px] bg-white/40 shadow-xs" />
-                  
+
                   <div className="flex items-center justify-end">
                     <span className="font-mono text-sm sm:text-lg font-black text-[#261608] tracking-tight drop-shadow-[0_1px_1px_rgba(255,255,255,0.4)]">
                       {countDisplay}

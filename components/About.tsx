@@ -68,7 +68,6 @@ export default function About() {
       >
         {/* ── 1. Reusable Editorial Section Header ── */}
         <SectionHeader
-          tag="[ 01 / BACKGROUND & BIO ]"
           title="About"
           titleSecondLine="me."
           stickerText="SOFTWARE ENGINEER"
@@ -83,37 +82,36 @@ export default function About() {
           className="w-full font-sans text-base sm:text-lg lg:text-[1.28rem] leading-[1.8] font-medium select-text max-w-5xl"
         >
           <p className="flex flex-wrap gap-x-2 gap-y-2">
-              {words.map((word, i) => {
-                const clean = word.toLowerCase().replace(/[^a-z0-9-]/g, "");
-                const isKeyWord = [
-                  "developer",
-                  "passionate",
-                  "seamless",
-                  "high-performance",
-                  "expertise",
-                  "clean",
-                  "code",
-                  "user-centric",
-                  "scalable",
-                  "solutions",
-                  "front-end",
-                  "backend",
-                  "full-stack",
-                ].includes(clean);
+            {words.map((word, i) => {
+              const clean = word.toLowerCase().replace(/[^a-z0-9-]/g, "");
+              const isKeyWord = [
+                "developer",
+                "passionate",
+                "seamless",
+                "high-performance",
+                "expertise",
+                "clean",
+                "code",
+                "user-centric",
+                "scalable",
+                "solutions",
+                "front-end",
+                "backend",
+                "full-stack",
+              ].includes(clean);
 
-                return (
-                  <span
-                    key={i}
-                    className={`about-word-item inline-block px-1.5 py-0.5 rounded-md ${
-                      isKeyWord ? "is-keyword" : ""
+              return (
+                <span
+                  key={i}
+                  className={`about-word-item inline-block px-1.5 py-0.5 rounded-md ${isKeyWord ? "is-keyword" : ""
                     }`}
-                  >
-                    {word}
-                  </span>
-                );
-              })}
-            </p>
-          </div>
+                >
+                  {word}
+                </span>
+              );
+            })}
+          </p>
+        </div>
 
         {/* ── 2. Bottom Section: Elevated White/Dark Stats Card Over Solid Flat Brown Base ── */}
         <div className="mt-16 sm:mt-24 relative">

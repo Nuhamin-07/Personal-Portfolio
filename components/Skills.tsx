@@ -62,7 +62,6 @@ export default function Skills() {
     <Section id="skills">
       {/* 1. Reusable Editorial Section Header */}
       <SectionHeader
-        tag="[ 04 / TECH & CAPABILITIES ]"
         title="Skills &"
         titleSecondLine="tools."
         stickerText="4+ YEARS EXP"
@@ -100,11 +99,10 @@ export default function Skills() {
             <button
               type="button"
               onClick={() => setSelectedCategory("all")}
-              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold shrink-0 transition-all cursor-pointer ${
-                selectedCategory === "all"
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold shrink-0 transition-all cursor-pointer ${selectedCategory === "all"
                   ? "bg-primary text-primary-foreground shadow-xs"
                   : "border border-border/80 bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
-              }`}
+                }`}
             >
               All
             </button>
@@ -113,11 +111,10 @@ export default function Skills() {
                 key={cat.id}
                 type="button"
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold shrink-0 transition-all cursor-pointer ${
-                  selectedCategory === cat.id
+                className={`rounded-full px-3.5 py-1.5 text-xs font-semibold shrink-0 transition-all cursor-pointer ${selectedCategory === cat.id
                     ? "bg-primary text-primary-foreground shadow-xs"
                     : "border border-border/80 bg-card text-muted-foreground hover:bg-muted hover:text-foreground"
-                }`}
+                  }`}
               >
                 {cat.shortTitle}
               </button>
