@@ -448,8 +448,8 @@ export default function Projects() {
                   hoveredCardIndex !== null
                     ? hoveredCardIndex === idx
                     : isMobile
-                    ? activeIndex === idx
-                    : false;
+                      ? activeIndex === idx
+                      : false;
                 const primaryUrl = project.liveUrl || project.githubUrl;
 
                 const toggleCard = (e: React.SyntheticEvent) => {
@@ -496,16 +496,14 @@ export default function Projects() {
                         toggleCard(e);
                       }
                     }}
-                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between overflow-hidden cursor-pointer bg-card transition-colors duration-300 group project-card outline-none focus-visible:ring-2 focus-visible:ring-primary ${
-                      isCardActive ? "is-hovered is-active" : ""
-                    }`}
+                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between overflow-hidden cursor-pointer bg-card transition-colors duration-300 group project-card outline-none focus-visible:ring-2 focus-visible:ring-primary ${isCardActive ? "is-hovered is-active" : ""
+                      }`}
                     aria-label={`${project.title} - Click, tap or hover to view details`}
                   >
                     {/* Expanding Accent Background Circle on Card Hover & onMouseOver */}
                     <div
-                      className={`project-card-accent-bg ${
-                        isCardActive ? "is-active" : ""
-                      }`}
+                      className={`project-card-accent-bg ${isCardActive ? "is-active" : ""
+                        }`}
                       style={{
                         clipPath: isCardActive
                           ? "circle(160% at 0% 0%)"
@@ -515,11 +513,10 @@ export default function Projects() {
 
                     {/* ── 1. Default State: Title-Only Minimalist View ── */}
                     <div
-                      className={`absolute inset-0 p-6 sm:p-10 flex flex-col justify-between transition-all duration-400 z-10 ${
-                        isCardActive
-                          ? "opacity-0 scale-95 pointer-events-none"
-                          : "opacity-100 scale-100 pointer-events-auto"
-                      }`}
+                      className={`absolute inset-0 p-6 sm:p-10 flex flex-col justify-between transition-all duration-400 z-10 ${isCardActive
+                        ? "opacity-0 scale-95 pointer-events-none"
+                        : "opacity-100 scale-100 pointer-events-auto"
+                        }`}
                     >
                       {/* Top Header */}
                       <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10">
@@ -538,23 +535,14 @@ export default function Projects() {
                         </h3>
                       </div>
 
-                      {/* Bottom Footer Cue */}
-                      <div className="pt-3 sm:pt-4 border-t border-black/10 dark:border-white/10 flex items-center justify-between text-muted-foreground font-mono text-[11px] sm:text-xs">
-                        <span className="uppercase tracking-wider font-semibold">VIEW DETAILS</span>
-                        <span className="inline-flex items-center gap-1.5 text-primary font-bold">
-                          <span>HOVER / TAP</span>
-                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                      </div>
                     </div>
 
                     {/* ── 2. Hover / Active State: Full Details & Screenshot View ── */}
                     <div
-                      className={`absolute inset-0 p-5 sm:p-8 pb-20 sm:pb-8 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${
-                        isCardActive
-                          ? "opacity-100 translate-y-0 pointer-events-auto"
-                          : "opacity-0 translate-y-3 pointer-events-none"
-                      }`}
+                      className={`absolute inset-0 p-5 sm:p-8 pb-20 sm:pb-8 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${isCardActive
+                        ? "opacity-100 translate-y-0 pointer-events-auto"
+                        : "opacity-0 translate-y-3 pointer-events-none"
+                        }`}
                     >
                       <div>
                         {/* Top Header Strip */}
