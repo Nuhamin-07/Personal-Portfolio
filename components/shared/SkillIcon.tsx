@@ -3,14 +3,16 @@
 import React from "react";
 import {
   Code2,
-  Server,
   Database,
   TestTube2,
   Zap,
-  Wrench,
   Lock,
-  FileCode,
-  GitBranch,
+  PanelsTopLeft,
+  AppWindow,
+  Workflow,
+  ChartNoAxesColumnIncreasing,
+  SearchCode,
+  Droplets,
 } from "lucide-react";
 
 interface SkillIconProps {
@@ -215,6 +217,26 @@ export default function SkillIcon({ iconKey, name, className = "w-5 h-5" }: Skil
         <path d="M127.961 70.478a7.734 7.734 0 00-2.808-8.64L64 17.323l32.599 53.155h31.362z" fill="#FCA326" />
       </svg>
     );
+  }
+
+  // Microsoft Power Platform tools use distinct marks instead of one repeated generic icon.
+  if (normalizedKey.includes("powerpages")) {
+    return <PanelsTopLeft className={`${className} text-[#742774]`} />;
+  }
+  if (normalizedKey.includes("powerapps")) {
+    return <AppWindow className={`${className} text-[#742774]`} />;
+  }
+  if (normalizedKey.includes("powerautomate")) {
+    return <Workflow className={`${className} text-[#0078D4]`} />;
+  }
+  if (normalizedKey.includes("powerbi")) {
+    return <ChartNoAxesColumnIncreasing className={`${className} text-[#E6B800]`} />;
+  }
+  if (normalizedKey.includes("liquid")) {
+    return <Droplets className={`${className} text-[#7AB55C]`} />;
+  }
+  if (normalizedKey.includes("fetchxml")) {
+    return <SearchCode className={`${className} text-[#0078D4]`} />;
   }
 
   // Power Platform / Dataverse - Purple Zap
