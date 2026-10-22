@@ -1,19 +1,94 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import {
-  ExternalLink,
-  ArrowRight,
-  ArrowUpRight,
-  Zap,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SkillIcon from "@/components/shared/SkillIcon";
-import { projects } from "@/data/projects";
+import { projects, type Project } from "@/data/projects";
+
+function ProjectPreview({ src, title }: { src: string; title: string }) {
+  return (
+    <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl border border-white/20 bg-black/10 shadow-lg">
+      <Image
+        src={src}
+        alt={`${title} interface preview`}
+        fill
+        sizes="(max-width: 640px) 84vw, (max-width: 1024px) 410px, 490px"
+        className="scale-[1.16] object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.2]"
+      />
+    </div>
+  );
+}
+
+function ProjectTitle({ color = "text-foreground", decorative = false, flipped = false }: { color?: string; decorative?: boolean; flipped?: boolean }) {
+  return (
+    <div aria-hidden={decorative} className={`project-heading-scene ${color} ${flipped ? "is-flipped" : ""}`}>
+      {!decorative && <h2 tabIndex={0} className="sr-only">My projects</h2>}
+      <span className="project-heading-face project-heading-front" aria-hidden="true">MY PROJECTS</span>
+      <span className="project-heading-face project-heading-back" aria-hidden="true">
+        <span className="project-heading-number">
+          <span className="project-heading-digits">
+            <span>{String(Math.max(0, projects.length - 1)).padStart(2, "0")}</span>
+            <span>{String(projects.length).padStart(2, "0")}</span>
+          </span>
+        </span>
+        <span>SELECTED WORKS</span>
+      </span>
+    </div>
+  );
+}
+
+function ProjectTechStack({ technologies, accent = false }: { technologies: string[]; accent?: boolean }) {
+  return (
+    <ul aria-label="Technology stack" className="flex flex-wrap gap-2">
+      {technologies.map((technology) => (
+        <li
+          key={technology}
+          title={technology}
+          className={`inline-flex min-h-9 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${accent ? "border-white/80 bg-white text-[#3a2112] shadow-sm hover:bg-[#f7eee6]" : "border-border bg-muted/60 text-foreground hover:bg-muted"}`}
+        >
+          <SkillIcon name={technology} className="h-4 w-4 shrink-0" />
+          <span>{technology}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ProjectActions({ project, accent = false }: { project: Project; accent?: boolean }) {
+  if (!project.liveUrl && !project.githubUrl) return null;
+
+  return (
+    <div className="mt-5 flex flex-wrap items-center gap-2">
+      {project.liveUrl && (
+        <a
+          href={project.liveUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Open live demo for ${project.title}`}
+          className={`inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-sm font-semibold transition-colors ${accent ? "bg-white text-[#71370f] hover:bg-white/90" : "bg-primary text-primary-foreground hover:bg-primary/90"}`}
+        >
+          Live demo
+          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+        </a>
+      )}
+      {project.githubUrl && (
+        <a
+          href={project.githubUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`View source code for ${project.title}`}
+          className={`inline-flex items-center gap-2 rounded-lg border px-3.5 py-2 text-sm font-semibold transition-colors ${accent ? "border-white/40 text-white hover:bg-white/10" : "border-border text-foreground hover:bg-muted"}`}
+        >
+          Source code
+          <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
+        </a>
+      )}
+    </div>
+  );
+}
 
 export default function Projects() {
   const pinWrapperRef = useRef<HTMLDivElement>(null);
@@ -21,6 +96,7 @@ export default function Projects() {
   const circleRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [hoveredCardIndex, setHoveredCardIndex] = useState<number | null>(null);
+  const [projectTitleFlipped, setProjectTitleFlipped] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -164,38 +240,6 @@ export default function Projects() {
     };
   }, [reducedMotion]);
 
-  // Smooth scroll jump to a specific project card
-  const scrollToProject = useCallback(
-    (targetIndex: number) => {
-      if (typeof window === "undefined") return;
-      const st = ScrollTrigger.getById("projects-horizontal-scroll");
-      if (st && st.start !== undefined && st.end !== undefined) {
-        const totalDist = st.end - st.start;
-        const targetProgress = 0.26 + (targetIndex / projects.length) * 0.72;
-        const targetScroll = st.start + targetProgress * totalDist;
-        window.scrollTo({
-          top: targetScroll + 2,
-          behavior: "smooth",
-        });
-      } else {
-        setActiveIndex(targetIndex);
-      }
-    },
-    []
-  );
-
-  const handlePrev = () => {
-    if (activeIndex > 0) {
-      scrollToProject(activeIndex - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (activeIndex < projects.length - 1) {
-      scrollToProject(activeIndex + 1);
-    }
-  };
-
   return (
     <section
       id="projects"
@@ -205,174 +249,36 @@ export default function Projects() {
       {reducedMotion ? (
         <div className="mx-auto max-w-5xl px-4 sm:px-8 py-16 space-y-8 bg-background text-foreground">
           {/* Header Panel */}
-          <div className="text-center mb-12">
-            <h2 className="text-4xl sm:text-6xl font-black uppercase mt-3 text-foreground">
-              PROJECTS
-            </h2>
+          <div className="mb-12 text-center">
+            <ProjectTitle />
             <p className="mt-3 text-sm sm:text-base text-muted-foreground max-w-md mx-auto">
               A showcase of full-stack systems, modern web applications, and scalable platforms.
             </p>
           </div>
 
-          {/* Project Cards (Title-only default, reveal on hover/tap) */}
+          {/* Reduced-motion cards keep the full project information visible. */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {projects.map((project, idx) => {
-              const isCardActive =
-                hoveredCardIndex !== null
-                  ? hoveredCardIndex === idx
-                  : false;
-              const primaryUrl = project.liveUrl || project.githubUrl;
-
-              const toggleCard = (e: React.SyntheticEvent) => {
-                if ((e.target as HTMLElement).closest("a, button")) return;
-                setHoveredCardIndex((prev) => (prev === idx ? null : idx));
-              };
-
-              return (
-                <div
-                  key={project.title}
-                  tabIndex={0}
-                  onMouseEnter={() => {
-                    if (!isMobile) setHoveredCardIndex(idx);
-                  }}
-                  onMouseOver={() => {
-                    if (!isMobile) setHoveredCardIndex(idx);
-                  }}
-                  onMouseLeave={() => {
-                    if (!isMobile) setHoveredCardIndex(null);
-                  }}
-                  onTouchEnd={toggleCard}
-                  onClick={toggleCard}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      toggleCard(e);
-                    }
-                  }}
-                  className={`relative rounded-2xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden project-card transition-colors duration-300 min-h-[460px] cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary ${isCardActive ? "is-hovered is-active" : ""
-                    }`}
-                  aria-label={`${project.title} - Click or tap to toggle details`}
-                >
-                  <div
-                    className={`project-card-accent-bg ${isCardActive ? "is-active" : ""
-                      }`}
-                    style={{
-                      clipPath: isCardActive
-                        ? "circle(160% at 0% 0%)"
-                        : undefined,
-                    }}
-                  />
-
-                  {/* 1. Default State: Title Only */}
-                  <div
-                    className={`absolute inset-0 p-6 sm:p-8 flex flex-col justify-between transition-all duration-400 z-10 ${isCardActive
-                      ? "opacity-0 scale-95 pointer-events-none"
-                      : "opacity-100 scale-100 pointer-events-auto"
-                      }`}
-                  >
-                    <div className="flex items-center justify-between pb-3 border-b border-border">
-                      {/* <span className="font-mono text-xs font-bold uppercase tracking-widest text-primary">
-                        PROJECT {(idx + 1).toString().padStart(2, "0")}
-                      </span> */}
-                      <span className="font-mono text-xs uppercase text-muted-foreground">
-                        {project.category}
-                      </span>
-                    </div>
-
-                    <div className="my-auto py-6">
-                      <h3 className="font-mono text-2xl sm:text-3xl font-black uppercase text-foreground leading-snug">
-                        {project.title}
-                      </h3>
-                    </div>
-
-                    <div className="pt-3 border-t border-border flex items-center justify-between text-muted-foreground font-mono text-xs">
-                      <span>VIEW DETAILS</span>
-                      <span className="inline-flex items-center gap-1 text-primary font-bold">
-                        <span>EXPLORE</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* 2. Hovered State: Details & Image */}
-                  <div
-                    className={`absolute inset-0 p-6 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${isCardActive
-                      ? "opacity-100 translate-y-0 pointer-events-auto"
-                      : "opacity-0 translate-y-3 pointer-events-none"
-                      }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between pb-2 border-b border-white/20">
-                        {/* <span className="font-mono text-xs font-bold uppercase text-white">
-                          PROJECT {(idx + 1).toString().padStart(2, "0")}
-                        </span> */}
-                        <span className="font-mono text-[10px] px-2 py-0.5 rounded-full bg-white/20 text-white">
-                          {project.category}
-                        </span>
-                      </div>
-
-                      <h3 className="mt-2 font-mono text-xl font-black uppercase text-white">
-                        {project.title}
-                      </h3>
-
-                      <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden my-2.5 border border-white/25">
-                        <Image
-                          src={project.image}
-                          alt={project.title}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 500px"
-                          className="object-cover object-top"
-                        />
-                      </div>
-
-                      <p className="text-xs text-white/95 leading-relaxed line-clamp-3">
-                        {project.description}
-                      </p>
-                    </div>
-
-                    <div className="pt-3 border-t border-white/20 space-y-2.5 mt-2">
-                      <div className="flex flex-wrap gap-1">
-                        {project.technologies.slice(0, 4).map((tech) => (
-                          <span
-                            key={tech}
-                            className="px-2 py-0.5 rounded font-mono text-[10px] bg-white/20 text-white"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center gap-2 pt-1">
-                        {project.liveUrl && (
-                          <a
-                            href={project.liveUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-[#8b4513] font-mono text-xs font-bold uppercase shadow-sm"
-                          >
-                            <span>Demo</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        )}
-                        {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/20 text-white font-mono text-xs font-bold uppercase border border-white/30"
-                          >
-                            <span>Code</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
+            {projects.map((project) => (
+              <article
+                key={project.title}
+                className="rounded-2xl border border-border bg-card p-6 sm:p-8"
+              >
+                <h3 className="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-foreground">
+                  {project.title}
+                </h3>
+                <div className="mt-5 overflow-hidden rounded-xl">
+                  <ProjectPreview src={project.image} title={project.title} />
                 </div>
-              );
-            })}
+                <p className="mt-4 max-w-prose text-sm sm:text-base leading-relaxed text-muted-foreground">
+                  {project.description}
+                </p>
+                  <div className="mt-6 border-t border-border pt-4">
+                    <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">Tech stack</p>
+                    <ProjectTechStack technologies={project.technologies} />
+                </div>
+                <ProjectActions project={project} />
+              </article>
+            ))}
           </div>
         </div>
       ) : (
@@ -387,54 +293,25 @@ export default function Projects() {
             className="absolute top-0 left-0 flex h-full will-change-transform w-max select-none"
           >
             {/* ── Panel 0: Single Cinematic Project Header (Reference Screenshots 1-5) ── */}
-            <div className="relative flex-shrink-0 w-screen h-full flex flex-col items-center justify-center p-6 sm:p-12 lg:p-20 overflow-hidden bg-background text-foreground header-panel select-none">
+            <div className="relative flex-shrink-0 w-screen h-full flex items-center justify-center px-4 sm:px-8 overflow-hidden bg-background text-foreground header-panel select-none">
               {/* Expanding Accent Reveal Layer that enters from top-left (0% 0%) and sweeps to bottom-right */}
               <div
                 ref={circleRef}
-                className="absolute inset-0 bg-[#8b4513] dark:bg-[#b45309] flex flex-col items-center justify-center p-6 sm:p-12 lg:p-20 overflow-hidden pointer-events-none z-10"
+                className="absolute inset-0 bg-primary flex items-center justify-center px-4 sm:px-8 overflow-hidden pointer-events-none z-10"
                 style={{ clipPath: "circle(0% at 0% 0%)" }}
               >
-                {/* High-Contrast White Text Version of Header (Revealed with pixel-perfect alignment) */}
-                <div className="relative flex flex-col items-center text-center max-w-4xl px-4 text-white">
-                  <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-white leading-none drop-shadow-sm">
-                    PROJECTS
-                  </h2>
-
-                  <div className="mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-white text-[#8b4513] font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none">
-                    PROJECT SHOWCASE • 08 WORKS
-                  </div>
-
-                  <p className="mt-4 sm:mt-6 text-xs sm:text-base lg:text-lg font-medium text-white/90 max-w-xl leading-relaxed">
-                    A continuous horizontal journey through full-stack systems, modern web
-                    applications, and scalable platforms.
-                  </p>
-
-                  <div className="mt-6 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/30 bg-white/15 font-mono text-xs font-bold uppercase tracking-wider text-white">
-                    <span>SCROLL DOWN TO ADVANCE CARDS</span>
-                    <ArrowRight className="w-4 h-4 text-white animate-pulse" />
-                  </div>
-                </div>
+                <ProjectTitle color="text-primary-foreground" decorative flipped={projectTitleFlipped} />
               </div>
 
               {/* Base Header Layer (Visible before accent reveal) */}
-              <div className="relative z-0 flex flex-col items-center text-center max-w-4xl px-4 text-foreground pointer-events-auto">
-                <h2 className="text-4xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tight text-foreground leading-none drop-shadow-xs">
-                  PROJECTS
-                </h2>
-
-                <div className="mt-4 sm:mt-6 inline-flex items-center justify-center px-4 py-1.5 rounded-lg bg-primary text-primary-foreground font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-md -rotate-2 select-none border border-black/10">
-                  PROJECT SHOWCASE • 08 WORKS
-                </div>
-
-                <p className="mt-4 sm:mt-6 text-xs sm:text-base lg:text-lg font-medium text-muted-foreground max-w-xl leading-relaxed">
-                  A continuous horizontal journey through full-stack systems, modern web
-                  applications, and scalable platforms.
-                </p>
-
-                <div className="mt-6 sm:mt-10 inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-black/10 dark:border-white/15 bg-black/5 dark:bg-white/10 font-mono text-xs font-bold uppercase tracking-wider text-foreground">
-                  <span>SCROLL DOWN TO ADVANCE CARDS</span>
-                  <ArrowRight className="w-4 h-4 text-primary animate-pulse" />
-                </div>
+              <div
+                className="relative z-0 w-full text-center text-foreground pointer-events-auto"
+                onPointerEnter={() => setProjectTitleFlipped(true)}
+                onPointerLeave={() => setProjectTitleFlipped(false)}
+                onFocusCapture={() => setProjectTitleFlipped(true)}
+                onBlurCapture={() => setProjectTitleFlipped(false)}
+              >
+                <ProjectTitle flipped={projectTitleFlipped} />
               </div>
             </div>
 
@@ -444,17 +321,15 @@ export default function Projects() {
               className="flex flex-shrink-0 h-full items-stretch"
             >
               {projects.map((project, idx) => {
+                const projectType = project.category
+                  .replace(/(?:\s*&)?\s*Web App$/i, "")
+                  .replace(/\s+(?:System|Software)$/i, "");
+                const projectLabel = `${projectType} Project ${String(idx + 1).padStart(2, "0")}`;
                 const isCardActive =
                   hoveredCardIndex !== null
                     ? hoveredCardIndex === idx
-                    : isMobile
-                      ? activeIndex === idx
-                      : false;
-                const primaryUrl = project.liveUrl || project.githubUrl;
-
-                const toggleCard = (e: React.SyntheticEvent) => {
-                  if ((e.target as HTMLElement).closest("a, button")) return;
-
+                    : activeIndex === idx;
+                const toggleCard = () => {
                   if (isMobile) {
                     if (hoveredCardIndex === idx) {
                       setHoveredCardIndex(-1);
@@ -472,8 +347,9 @@ export default function Projects() {
 
                 return (
                   <div
+                    role="group"
                     key={project.title}
-                    tabIndex={0}
+                    aria-label={`${projectLabel}: ${project.title}`}
                     onMouseEnter={() => {
                       if (!isMobile) setHoveredCardIndex(idx);
                     }}
@@ -488,171 +364,38 @@ export default function Projects() {
                     onMouseLeave={() => {
                       if (!isMobile) setHoveredCardIndex(null);
                     }}
-                    onTouchEnd={toggleCard}
-                    onClick={toggleCard}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        toggleCard(e);
-                      }
-                    }}
-                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between overflow-hidden cursor-pointer bg-card transition-colors duration-300 group project-card outline-none focus-visible:ring-2 focus-visible:ring-primary ${isCardActive ? "is-hovered is-active" : ""
+                    className={`relative flex-shrink-0 w-[84vw] max-w-[340px] sm:max-w-[410px] lg:max-w-[460px] xl:max-w-[490px] h-full border-r border-[#ebdcd0] dark:border-[#3d2a1e] flex flex-col justify-between overflow-hidden cursor-pointer bg-card transition-colors duration-300 group project-card outline-none focus-visible:ring-2 focus-visible:ring-primary ${isCardActive ? "is-hovered is-active bg-[#8b4513] dark:bg-[#b45309]" : ""
                       }`}
-                    aria-label={`${project.title} - Click, tap or hover to view details`}
                   >
-                    {/* Expanding Accent Background Circle on Card Hover & onMouseOver */}
+                    {/* One title panel; the definition and stack rise into view beneath it. */}
                     <div
-                      className={`project-card-accent-bg ${isCardActive ? "is-active" : ""
-                        }`}
-                      style={{
-                        clipPath: isCardActive
-                          ? "circle(160% at 0% 0%)"
-                          : undefined,
-                      }}
-                    />
-
-                    {/* ── 1. Default State: Title-Only Minimalist View ── */}
-                    <div
-                      className={`absolute inset-0 p-6 sm:p-10 flex flex-col justify-between transition-all duration-400 z-10 ${isCardActive
-                        ? "opacity-0 scale-95 pointer-events-none"
-                        : "opacity-100 scale-100 pointer-events-auto"
-                        }`}
+                      className={`absolute inset-0 p-6 sm:p-10 flex flex-col justify-center z-10 transition-colors duration-500 ${isCardActive ? "text-white" : "text-foreground"}`}
                     >
-                      {/* Top Header */}
-                      <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-black/10 dark:border-white/10">
-                        {/* <span className="font-mono text-xs sm:text-sm font-bold uppercase tracking-widest text-primary">
-                          PROJECT {(idx + 1).toString().padStart(2, "0")}
-                        </span> */}
-                        <span className="font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-muted-foreground truncate max-w-[170px]">
-                          {project.category}
-                        </span>
-                      </div>
-
-                      {/* Center Prominent Title */}
-                      <div className="my-auto py-6 sm:py-10">
-                        <h3 className="font-mono text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-black uppercase tracking-tight text-foreground leading-[1.12]">
-                          {project.title}
-                        </h3>
-                      </div>
-
-                    </div>
-
-                    {/* ── 2. Hover / Active State: Full Details & Screenshot View ── */}
-                    <div
-                      className={`absolute inset-0 p-5 sm:p-8 pb-20 sm:pb-8 flex flex-col justify-between transition-all duration-400 z-20 overflow-y-auto no-scrollbar ${isCardActive
-                        ? "opacity-100 translate-y-0 pointer-events-auto"
-                        : "opacity-0 translate-y-3 pointer-events-none"
-                        }`}
-                    >
-                      <div>
-                        {/* Top Header Strip */}
-                        <div className="flex items-center justify-between pb-2.5 sm:pb-3 border-b border-white/20">
-                          {/* <span className="font-mono text-xs sm:text-[13px] font-bold uppercase tracking-widest text-white">
-                            PROJECT {(idx + 1).toString().padStart(2, "0")}
-                          </span> */}
-                          <span className="font-mono text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/20 text-white border border-white/30 truncate max-w-[170px]">
-                            {project.category}
+                      <div className={`mx-auto w-full max-w-sm transition-transform duration-500 ease-out ${isCardActive ? "-translate-y-3" : "translate-y-0"}`}>
+                        <button
+                          type="button"
+                          onClick={toggleCard}
+                          aria-expanded={isCardActive}
+                          aria-label={`${isCardActive ? "Hide" : "Show"} details for ${project.title}`}
+                          className="w-full text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
+                        >
+                          <p className={`mb-4 text-xs sm:text-sm font-semibold uppercase tracking-[0.12em] ${isCardActive ? "text-white/75" : "text-muted-foreground"}`}>
+                            {projectLabel}
+                          </p>
+                          <span className={`block font-sans text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-semibold tracking-tight leading-[1.12] ${isCardActive ? "text-white" : "text-foreground"}`}>
+                            {project.title}
                           </span>
-                        </div>
-
-                        {/* Title */}
-                        <h3 className="mt-2.5 sm:mt-3 font-mono text-lg sm:text-2xl font-black uppercase tracking-tight text-white leading-snug line-clamp-2">
-                          {project.title}
-                        </h3>
-
-                        {/* Visual Image Preview */}
-                        <div className="relative w-full aspect-[16/10] rounded-xl overflow-hidden my-2.5 sm:my-3 border border-white/25 shadow-xl bg-slate-950">
-                          <Image
-                            src={project.image}
-                            alt={project.title}
-                            fill
-                            sizes="(max-width: 640px) 320px, (max-width: 1024px) 410px, 490px"
-                            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                        </div>
-
-                        {/* Project Narrative Description */}
-                        <p className="text-xs sm:text-sm text-white/95 leading-relaxed line-clamp-3">
-                          {project.description}
-                        </p>
-
-                        {/* Highlight (if available) */}
-                        {project.highlights?.[0] && (
-                          <div className="mt-2 p-2 rounded-lg bg-white/15 border border-white/25 text-white">
-                            <p className="text-[10px] sm:text-[11px] leading-relaxed line-clamp-2">
-                              <span className="font-mono font-bold uppercase mr-1 text-white">
-                                HIGHLIGHT:
-                              </span>
-                              <span>{project.highlights[0]}</span>
-                            </p>
+                        </button>
+                        <div className={`overflow-hidden transition-[max-height,opacity,margin] duration-500 ease-out ${isCardActive ? "mt-5 max-h-[calc(100dvh-8rem)] opacity-100" : "mt-0 max-h-0 opacity-0"}`}>
+                          <ProjectPreview src={project.image} title={project.title} />
+                          <p className="mt-4 text-sm sm:text-base leading-relaxed text-white/90">
+                            {project.description}
+                          </p>
+                          <div className="mt-6 border-t border-white/30 pt-4">
+                            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-white/65">Tech stack</p>
+                            <ProjectTechStack technologies={project.technologies} accent />
                           </div>
-                        )}
-                      </div>
-
-                      {/* Bottom: Tech Stack Pills & Action Links */}
-                      <div className="pt-2.5 sm:pt-3 border-t border-white/20 space-y-2.5 sm:space-y-3 mt-2">
-                        {/* Technology Stack Pills */}
-                        <div className="flex flex-wrap gap-1 sm:gap-1.5">
-                          {project.technologies.slice(0, 4).map((tech) => (
-                            <span
-                              key={tech}
-                              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md font-mono text-[10px] font-semibold bg-white/15 border border-white/25 text-white"
-                            >
-                              <SkillIcon name={tech} className="w-2.5 h-2.5 shrink-0" />
-                              <span>{tech}</span>
-                            </span>
-                          ))}
-                          {project.technologies.length > 4 && (
-                            <span className="px-1.5 py-0.5 rounded font-mono text-[10px] text-white/80">
-                              +{project.technologies.length - 4}
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Action Buttons: Live Demo & GitHub */}
-                        <div className="flex items-center justify-between gap-2 pt-1">
-                          <div className="flex items-center gap-2">
-                            {project.liveUrl && (
-                              <a
-                                href={project.liveUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="inline-flex items-center gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider bg-white text-[#8b4513] shadow-md hover:scale-105 active:scale-95 transition-all cursor-pointer"
-                              >
-                                <Zap className="w-3.5 h-3.5 fill-current" />
-                                <span>Demo</span>
-                                <ExternalLink className="w-3 h-3" />
-                              </a>
-                            )}
-                            {project.githubUrl && (
-                              <a
-                                href={project.githubUrl}
-                                target="_blank"
-                                rel="noreferrer"
-                                onClick={(e) => e.stopPropagation()}
-                                className="inline-flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl font-mono text-xs font-bold uppercase tracking-wider bg-white/20 border border-white/35 text-white hover:scale-105 active:scale-95 transition-all cursor-pointer"
-                              >
-                                <SkillIcon name="github" className="w-3.5 h-3.5 shrink-0" />
-                                <span>Code</span>
-                                <ExternalLink className="w-3 h-3" />
-                              </a>
-                            )}
-                          </div>
-
-                          {primaryUrl && (
-                            <a
-                              href={primaryUrl}
-                              target="_blank"
-                              rel="noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="inline-flex h-7 w-7 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-white text-[#8b4513] hover:scale-110 active:scale-95 transition-all shrink-0 shadow-sm"
-                              aria-label={`Open ${project.title}`}
-                            >
-                              <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                            </a>
-                          )}
+                          <ProjectActions project={project} accent />
                         </div>
                       </div>
                     </div>
@@ -697,63 +440,6 @@ export default function Projects() {
             </div>
           </div>
 
-          {/* ── Bottom Floating Kinetic Controls & Project Stepper Bar ── */}
-          <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 px-3 sm:px-6 py-1.5 sm:py-2 rounded-full border border-black/10 dark:border-white/10 bg-card/90 text-card-foreground backdrop-blur-md shadow-xl flex items-center gap-2 sm:gap-4 max-w-[94vw]">
-            <div className="flex items-center gap-1.5 font-mono text-xs font-bold text-primary">
-              <span>PROJECT {(activeIndex + 1).toString().padStart(2, "0")}</span>
-              <span className="text-muted-foreground">/ 08</span>
-            </div>
-
-            <span className="text-border">•</span>
-
-            {/* Numeric Quick Jump Trackers */}
-            <div className="hidden sm:flex items-center gap-1">
-              {projects.map((p, idx) => {
-                const isActive = activeIndex === idx;
-                return (
-                  <button
-                    key={p.title}
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      scrollToProject(idx);
-                    }}
-                    className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold transition-all cursor-pointer ${isActive
-                      ? "bg-primary text-primary-foreground shadow-xs scale-105"
-                      : "text-muted-foreground hover:text-foreground"
-                      }`}
-                    aria-label={`Jump to project ${idx + 1}`}
-                  >
-                    {(idx + 1).toString().padStart(2, "0")}
-                  </button>
-                );
-              })}
-            </div>
-
-            <span className="text-border">•</span>
-
-            {/* Prev / Next controls */}
-            <div className="flex items-center gap-1">
-              <button
-                type="button"
-                onClick={handlePrev}
-                disabled={activeIndex === 0}
-                className="p-1 rounded-md hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-foreground"
-                aria-label="Previous project"
-              >
-                <ChevronLeft className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={handleNext}
-                disabled={activeIndex === projects.length - 1}
-                className="p-1 rounded-md hover:bg-black/5 dark:hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-foreground"
-                aria-label="Next project"
-              >
-                <ChevronRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
         </div>
       )}
 
@@ -773,29 +459,112 @@ export default function Projects() {
           pointer-events: none !important;
         }
 
-        /* ── Project Cards Hover & MouseOver Accent Background (#8b4513 / #b45309) ── */
-        .project-card-accent-bg {
-          position: absolute;
-          inset: 0;
+        .project-card.is-active {
           background-color: #8b4513 !important;
-          clip-path: circle(0% at 0% 0%);
-          transition: clip-path 0.65s cubic-bezier(0.16, 1, 0.3, 1);
-          pointer-events: none;
-          z-index: 0;
         }
 
-        .dark .project-card-accent-bg,
-        [data-theme="dark"] .project-card-accent-bg {
+        .project-heading-scene {
+          position: relative;
+          display: grid;
+          width: 100%;
+          container-type: inline-size;
+          overflow: hidden;
+          perspective: 1100px;
+          font-size: clamp(2.5rem, 13vw, 13rem);
+          font-weight: 900;
+          line-height: 0.86;
+          letter-spacing: -0.045em;
+          white-space: nowrap;
+          text-align: center;
+        }
+
+        .project-heading-face {
+          grid-area: 1 / 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.14em;
+          transform-style: preserve-3d;
+          backface-visibility: hidden;
+          transition: transform 1200ms cubic-bezier(0.65, 0, 0.35, 1), opacity 400ms ease;
+        }
+
+        .project-heading-front {
+          transform-origin: center bottom;
+          transform: rotateX(0deg);
+        }
+
+        .project-heading-back {
+          position: relative;
+          max-width: 100%;
+          font-size: clamp(1.5rem, 8.3cqw, 10rem);
+          transform-origin: center top;
+          transform: rotateX(90deg);
+          opacity: 0;
+        }
+
+        .project-heading-number {
+          display: inline-flex;
+          width: 2.2em;
+          height: 1.1em;
+          box-sizing: content-box;
+          padding-inline: 0.08em;
+          font-size: 1em;
+          font-variant-numeric: tabular-nums;
+          letter-spacing: -0.02em;
+          overflow: hidden;
+        }
+
+        .project-heading-digits {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          line-height: 1.1;
+          transition: transform 1200ms cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        .project-heading-digits > span {
+          display: block;
+          min-width: 100%;
+          text-align: center;
+        }
+
+        .project-heading-scene:hover .project-heading-front,
+        .project-heading-scene:focus-within .project-heading-front,
+        .project-heading-scene.is-flipped .project-heading-front {
+          transform: rotateX(-90deg);
+          opacity: 0;
+        }
+
+        .project-heading-scene:focus-within {
+          outline: 2px solid currentColor;
+          outline-offset: 0.12em;
+          border-radius: 0.04em;
+        }
+
+        .project-heading-scene:hover .project-heading-back,
+        .project-heading-scene:focus-within .project-heading-back,
+        .project-heading-scene.is-flipped .project-heading-back {
+          transform: rotateX(0deg);
+          opacity: 1;
+        }
+
+        .project-heading-scene:hover .project-heading-digits,
+        .project-heading-scene:focus-within .project-heading-digits,
+        .project-heading-scene.is-flipped .project-heading-digits {
+          transform: translateY(-1.1em);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .project-heading-face,
+          .project-heading-digits {
+            transition: none;
+          }
+        }
+
+        .dark .project-card.is-active,
+        [data-theme="dark"] .project-card.is-active {
           background-color: #b45309 !important;
-        }
-
-        .project-card:hover .project-card-accent-bg,
-        .project-card:active .project-card-accent-bg,
-        .project-card:focus-within .project-card-accent-bg,
-        .project-card-accent-bg.is-active,
-        .project-card.is-hovered .project-card-accent-bg,
-        .project-card.is-active .project-card-accent-bg {
-          clip-path: circle(160% at 0% 0%) !important;
         }
 
         /* Hide scrollbars on internal card details */
