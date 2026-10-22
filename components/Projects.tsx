@@ -505,7 +505,7 @@ export default function Projects() {
 
         .project-heading-number {
           display: inline-flex;
-          width: 2.2em;
+          width: 1.3em;
           height: 1.1em;
           box-sizing: content-box;
           padding-inline: 0.08em;
